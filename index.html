@@ -3,245 +3,540 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NBA 陣容抽籤與對戰工具</title>
+    <title>NBA 球隊隨機抽籤 & 陣容對決</title>
     <style>
-        body {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f4f6f9;
-            color: #333;
         }
-        h1 {
-            text-align: center;
-            color: #1d4ed8;
-        }
-        .team-container {
+
+        body {
+            background-color: #f0f2f5;
             display: flex;
-            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            padding: 20px 0;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 480px;
+        }
+
+        h1 {
+            font-size: 1.3rem;
+            color: #555;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .display-card {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 230px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .display-card.active {
+            border-color: #006bb6;
+            box-shadow: 0 0 15px rgba(0, 107, 182, 0.15);
+        }
+
+        .team-node {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .team-node.show {
+            display: flex;
+        }
+
+        .team-node.pop {
+            animation: popIn 0.08s ease-out forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        .team-logo {
+            width: 95px;
+            height: 95px;
+            margin-bottom: 12px;
+            object-fit: contain;
+        }
+
+        .team-zh {
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #1a202c;
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+
+        .team-en {
+            font-size: 1rem;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .btn-roll {
+            background-color: #121212;
+            color: #ffffff;
+            border: none;
+            padding: 14px 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+        }
+
+        .btn-roll:hover { background-color: #333; }
+        .btn-roll:active { transform: scale(0.98); }
+        .btn-roll:disabled { background-color: #cbd5e1; color: #888; cursor: not-allowed; box-shadow: none; }
+
+        .divider {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 10px 0 25px 0;
+        }
+
+        .teams-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
             margin-bottom: 20px;
         }
+
         .team-box {
             flex: 1;
-            background: #ffffff;
-            padding: 20px;
+            background: #f8fafc;
+            padding: 15px 10px;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #edf2f7;
         }
-        .team-box h2 {
-            margin-top: 0;
+
+        .team-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #2d3748;
+            margin-bottom: 15px;
             text-align: center;
-            color: #1e293b;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 10px;
         }
-        .input-group {
-            margin-bottom: 12px;
+
+        .position-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
         }
-        .input-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 4px;
-            font-size: 0.9em;
-            color: #64748b;
+
+        .pos-label {
+            width: 42px;
+            text-align: right;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #4a5568;
+            padding-right: 4px;
+            white-space: nowrap;
         }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
+
+        .player-input {
+            flex: 1;
+            padding: 6px 10px;
             border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 1em;
-            transition: all 0.2s;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            text-align: left;
+            width: 100%;
+            background-color: #fff;
         }
-        input[type="text"]:disabled {
-            background-color: #f1f5f9;
-            cursor: not-allowed;
-            opacity: 0.6;
+
+        .player-input:focus {
+            border-color: #006bb6;
+            box-shadow: 0 0 0 2px rgba(0, 107, 182, 0.15);
         }
-        .btn-group {
+
+        .action-btns {
             display: flex;
             gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
         }
-        button {
-            padding: 12px 24px;
-            font-size: 1em;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s, opacity 0.2s;
-        }
-        .btn-draw {
-            background-color: #0284c7;
-            color: white;
-        }
+
         .btn-create {
-            background-color: #16a34a;
-            color: white;
-        }
-        .btn-copy {
-            background-color: #ea580c;
-            color: white;
-        }
-        .btn-clear {
-            background-color: #dc2626;
-            color: white;
-        }
-        button:disabled {
-            background-color: #94a3b8 !important;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-        .output-section {
-            margin-top: 25px;
-            background: #ffffff;
-            padding: 20px;
+            flex: 3;
+            background-color: #10b981;
+            color: #ffffff;
+            border: none;
+            padding: 14px 18px;
+            font-size: 1.05rem;
+            font-weight: 600;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
-        textarea {
-            width: 100%;
-            height: 120px;
-            padding: 10px;
+
+        .btn-create:hover { background-color: #059669; }
+        .btn-create:active { transform: scale(0.98); }
+
+        .btn-clear {
+            flex: 1;
+            background-color: #ef4444;
+            color: #ffffff;
+            border: none;
+            padding: 14px 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-clear:hover { background-color: #dc2626; }
+        .btn-clear:active { transform: scale(0.98); }
+
+        .output-section {
+            margin-top: 20px;
+            display: none;
+            text-align: left;
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 12px;
             border: 1px solid #cbd5e1;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .status-text {
+            color: #10b981;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .btn-copy {
+            background-color: #e2e8f0;
+            color: #334155;
+            border: none;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
             border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .btn-copy:hover { background-color: #cbd5e1; }
+
+        .output-text {
+            width: 100%;
+            height: 90px;
+            border: none;
+            background: transparent;
+            font-size: 0.9rem;
+            color: #334155;
             resize: none;
-            margin-bottom: 10px;
+            outline: none;
+            line-height: 1.4;
         }
     </style>
 </head>
 <body>
 
-    <h1>🏀 NBA 陣容對戰生成器</h1>
-
-    <div class="team-container">
-        <!-- A 隊 -->
-        <div class="team-box">
-            <h2>A 隊</h2>
-            <div class="input-group"><label>PG 控球後衛</label><input type="text" id="a_pg" class="player-input"></div>
-            <div class="input-group"><label>SG 得分後衛</label><input type="text" id="a_sg" class="player-input"></div>
-            <div class="input-group"><label>SF 小前鋒</label><input type="text" id="a_sf" class="player-input"></div>
-            <div class="input-group"><label>PF 大前鋒</label><input type="text" id="a_pf" class="player-input"></div>
-            <div class="input-group"><label>C 中鋒</label><input type="text" id="a_c" class="player-input"></div>
-        </div>
-
-        <!-- B 隊 -->
-        <div class="team-box">
-            <h2>B 隊</h2>
-            <div class="input-group"><label>PG 控球後衛</label><input type="text" id="b_pg" class="player-input"></div>
-            <div class="input-group"><label>SG 得分後衛</label><input type="text" id="b_sg" class="player-input"></div>
-            <div class="input-group"><label>SF 小前鋒</label><input type="text" id="b_sf" class="player-input"></div>
-            <div class="input-group"><label>PF 大前鋒</label><input type="text" id="b_pf" class="player-input"></div>
-            <div class="input-group"><label>C 中鋒</label><input type="text" id="b_c" class="player-input"></div>
+<div class="container">
+    <h1>NBA 球隊隨機抽籤</h1>
+    
+    <div class="display-card" id="displayCard">
+        <div class="team-node show" id="node-pending">
+            <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png" alt="NBA" class="team-logo" style="opacity:0.35;">
+            <div class="team-zh">待定</div>
+            <div class="team-en">Pending</div>
         </div>
     </div>
 
-    <!-- 按鈕控制區 -->
-    <div class="btn-group">
-        <button id="createBtn" class="btn-create" onclick="generatePrompt()" disabled>創建文案</button>
-        <button id="copyBtn" class="btn-copy" onclick="copyText()" disabled>複製文案</button>
-        <button id="clearBtn" class="btn-clear" onclick="clearInputs()" disabled>清空重置</button>
+    <button class="btn-roll" id="rollBtn" onclick="startRolling()">隨機抽取球隊</button>
+
+    <div class="divider"></div>
+
+    <div class="teams-container">
+        <div class="team-box">
+            <div class="team-title">A隊</div>
+            <div class="position-row"><span class="pos-label">PG-</span><input type="text" class="player-input" id="a_pg"></div>
+            <div class="position-row"><span class="pos-label">SG-</span><input type="text" class="player-input" id="a_sg"></div>
+            <div class="position-row"><span class="pos-label">SF-</span><input type="text" class="player-input" id="a_sf"></div>
+            <div class="position-row"><span class="pos-label">PF-</span><input type="text" class="player-input" id="a_pf"></div>
+            <div class="position-row"><span class="pos-label">C-</span><input type="text" class="player-input" id="a_c"></div>
+        </div>
+
+        <div class="team-box">
+            <div class="team-title">B隊</div>
+            <div class="position-row"><span class="pos-label">PG-</span><input type="text" class="player-input" id="b_pg"></div>
+            <div class="position-row"><span class="pos-label">SG-</span><input type="text" class="player-input" id="b_sg"></div>
+            <div class="position-row"><span class="pos-label">SF-</span><input type="text" class="player-input" id="b_sf"></div>
+            <div class="position-row"><span class="pos-label">PF-</span><input type="text" class="player-input" id="b_pf"></div>
+            <div class="position-row"><span class="pos-label">C-</span><input type="text" class="player-input" id="b_c"></div>
+        </div>
     </div>
 
-    <!-- 文案輸出區 -->
-    <div class="output-section">
-        <h3>生成文案結果：</h3>
-        <textarea id="outputText" readonly placeholder="請填滿所有框後點擊「創建文案」..."></textarea>
+    <div class="action-btns">
+        <button class="btn-create" onclick="generatePrompt()">創建球隊完成</button>
+        <button class="btn-clear" onclick="clearInputs()">清空</button>
     </div>
 
-    <script>
-        const inputs = Array.from(document.querySelectorAll('.player-input'));
-        const createBtn = document.getElementById('createBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        const clearBtn = document.getElementById('clearBtn');
-        const outputText = document.getElementById('outputText');
+    <div class="output-section" id="outputSection">
+        <div class="output-header">
+            <span class="status-text">已生成文案！</span>
+            <button class="btn-copy" onclick="copyText()">複製文案</button>
+        </div>
+        <textarea class="output-text" id="outputText" readonly></textarea>
+    </div>
+</div>
 
-        let hasCopied = false; // 紀錄是否已經複製過文案
+<script>
+    const nbaTeams = [
+        { zh: "老鷹", en: "Atlanta Hawks", logo: "https://a.espncdn.com/i/teamlogos/nba/500/atl.png" },
+        { zh: "塞爾提克", en: "Boston Celtics", logo: "https://a.espncdn.com/i/teamlogos/nba/500/bos.png" },
+        { zh: "籃網", en: "Brooklyn Nets", logo: "https://a.espncdn.com/i/teamlogos/nba/500/bkn.png" },
+        { zh: "黃蜂", en: "Charlotte Hornets", logo: "https://a.espncdn.com/i/teamlogos/nba/500/cha.png" },
+        { zh: "公牛", en: "Chicago Bulls", logo: "https://a.espncdn.com/i/teamlogos/nba/500/chi.png" },
+        { zh: "騎士", en: "Cleveland Cavaliers", logo: "https://a.espncdn.com/i/teamlogos/nba/500/cle.png" },
+        { zh: "獨行俠", en: "Dallas Mavericks", logo: "https://a.espncdn.com/i/teamlogos/nba/500/dal.png" },
+        { zh: "金塊", en: "Denver Nuggets", logo: "https://a.espncdn.com/i/teamlogos/nba/500/den.png" },
+        { zh: "活塞", en: "Detroit Pistons", logo: "https://a.espncdn.com/i/teamlogos/nba/500/det.png" },
+        { zh: "勇士", en: "Golden State Warriors", logo: "https://a.espncdn.com/i/teamlogos/nba/500/gs.png" },
+        { zh: "火箭", en: "Houston Rockets", logo: "https://a.espncdn.com/i/teamlogos/nba/500/hou.png" },
+        { zh: "遛馬", en: "Indiana Pacers", logo: "https://a.espncdn.com/i/teamlogos/nba/500/ind.png" },
+        { zh: "快艇", en: "LA Clippers", logo: "https://a.espncdn.com/i/teamlogos/nba/500/lac.png" },
+        { zh: "湖人", en: "Los Angeles Lakers", logo: "https://a.espncdn.com/i/teamlogos/nba/500/lal.png" },
+        { zh: "灰熊", en: "Memphis Grizzlies", logo: "https://a.espncdn.com/i/teamlogos/nba/500/mem.png" },
+        { zh: "熱火", en: "Miami Heat", logo: "https://a.espncdn.com/i/teamlogos/nba/500/mia.png" },
+        { zh: "公鹿", en: "Milwaukee Bucks", logo: "https://a.espncdn.com/i/teamlogos/nba/500/mil.png" },
+        { zh: "灰狼", en: "Minnesota Timberwolves", logo: "https://a.espncdn.com/i/teamlogos/nba/500/min.png" },
+        { zh: "鵜鶘", en: "New Orleans Pelicans", logo: "https://a.espncdn.com/i/teamlogos/nba/500/no.png" },
+        { zh: "尼克", en: "New York Knicks", logo: "https://a.espncdn.com/i/teamlogos/nba/500/ny.png" },
+        { zh: "雷霆", en: "Oklahoma City Thunder", logo: "https://a.espncdn.com/i/teamlogos/nba/500/okc.png" },
+        { zh: "魔術", en: "Orlando Magic", logo: "https://a.espncdn.com/i/teamlogos/nba/500/orl.png" },
+        { zh: "七六人", en: "Philadelphia 76ers", logo: "https://a.espncdn.com/i/teamlogos/nba/500/phi.png" },
+        { zh: "太陽", en: "Phoenix Suns", logo: "https://a.espncdn.com/i/teamlogos/nba/500/phx.png" },
+        { zh: "開拓者", en: "Portland Trail Blazers", logo: "https://a.espncdn.com/i/teamlogos/nba/500/por.png" },
+        { zh: "國王", en: "Sacramento Kings", logo: "https://a.espncdn.com/i/teamlogos/nba/500/sac.png" },
+        { zh: "馬刺", en: "San Antonio Spurs", logo: "https://a.espncdn.com/i/teamlogos/nba/500/sas.png" },
+        { zh: "猛龍", en: "Toronto Raptors", logo: "https://a.espncdn.com/i/teamlogos/nba/500/tor.png" },
+        { zh: "爵士", en: "Utah Jazz", logo: "https://a.espncdn.com/i/teamlogos/nba/500/utah.png" },
+        { zh: "奇才", en: "Washington Wizards", logo: "https://a.espncdn.com/i/teamlogos/nba/500/was.png" }
+    ];
 
-        // 初始化狀態
-        window.onload = function() {
-            updateInputLogic();
-        };
+    const displayCard = document.getElementById('displayCard');
+    const teamNodeElements = [];
 
-        // 監聽所有 Input 輸入狀態
-        inputs.forEach(input => {
-            input.addEventListener('input', updateInputLogic);
+    function buildTeamDOMNodes() {
+        nbaTeams.forEach((team, index) => {
+            const node = document.createElement('div');
+            node.className = 'team-node';
+            node.id = `team-node-${index}`;
+            node.innerHTML = `
+                <img src="${team.logo}" alt="${team.en}" class="team-logo">
+                <div class="team-zh">${team.zh}</div>
+                <div class="team-en">${team.en}</div>
+            `;
+            displayCard.appendChild(node);
+            teamNodeElements.push(node);
         });
+    }
 
-        // 核心邏輯 1：單框輸入限制 + 全部填滿先亮起創建按鈕
-        function updateInputLogic() {
-            const filledInputs = inputs.filter(i => i.value.trim() !== '');
+    buildTeamDOMNodes();
 
-            // 限制：每次只可以喺一個框輸入，只要有其中一個框填咗，鎖住其他空白框
-            if (filledInputs.length > 0 && filledInputs.length < inputs.length) {
-                inputs.forEach(i => {
-                    if (i.value.trim() === '') {
-                        i.disabled = true;
-                    } else {
-                        i.disabled = false;
-                    }
-                });
+    // ─── Web Audio API 音效引擎 ───
+    let audioCtx = null;
+
+    function playTickSound(isFinal = false) {
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            if (isFinal) {
+                // 定格：「叮！」高音金屬鈴聲，清脆延音
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1046.5, audioCtx.currentTime); // C6 高音
+                
+                gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.6);
             } else {
-                // 如果全空或者全滿，所有框解鎖
-                inputs.forEach(i => i.disabled = false);
+                // 前面切換：調高音調（1200Hz -> 400Hz），改用正弦波 + 高音量，發出清脆乾脆嘅「嗒（Tick）」聲
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.015);
+                
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime); // 音量加大
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.015);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.015);
+            }
+        } catch (e) {
+            // 防止瀏覽器音效限制
+        }
+    }
+
+    let isRolling = false;
+    let activeNodeIndex = -1;
+
+    function startRolling() {
+        if (isRolling) return;
+
+        isRolling = true;
+        const btn = document.getElementById('rollBtn');
+        const pendingNode = document.getElementById('node-pending');
+
+        btn.disabled = true;
+        displayCard.classList.add('active');
+
+        if (pendingNode) pendingNode.style.display = 'none';
+
+        let delay = 20; 
+        let count = 0;
+        const maxSteps = 35; 
+        let lastIndex = activeNodeIndex;
+
+        function rollStep() {
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * nbaTeams.length);
+            } while (randomIndex === lastIndex);
+            
+            if (lastIndex !== -1 && teamNodeElements[lastIndex]) {
+                teamNodeElements[lastIndex].classList.remove('show', 'pop');
             }
 
-            // 檢查是否 10 個框全部都有填內容
-            const isAllFilled = inputs.every(i => i.value.trim() !== '');
-            createBtn.disabled = !isAllFilled; // 全部框起晒嘢先會亮起
-        }
+            lastIndex = randomIndex;
+            activeNodeIndex = randomIndex;
 
-        // 生成文案
-        function generatePrompt() {
-            const getVal = (id) => document.getElementById(id).value.trim();
+            const currentNode = teamNodeElements[randomIndex];
+            
+            currentNode.classList.remove('pop');
+            void currentNode.offsetWidth; 
+            currentNode.classList.add('show', 'pop');
 
-            const promptText = `假設全員巔峯 請問A隊 PG “${getVal('a_pg')}” SG “${getVal('a_sg')}” SF“${getVal('a_sf')}” PF “${getVal('a_pf')}” C “${getVal('a_c')}” 同埋 B隊 PG “${getVal('b_pg')}” SG “${getVal('b_sg')}” SF“${getVal('b_sf')}” PF “${getVal('b_pf')}” C “${getVal('b_c')}” 邊一隊更強`;
+            count++;
 
-            outputText.value = promptText;
-            copyBtn.disabled = false; // 亮起複製按鈕
-        }
+            const remaining = maxSteps - count;
 
-        // 核心邏輯 2：複製文案
-        function copyText() {
-            if (!outputText.value) return;
+            // 播放音效
+            playTickSound(remaining === 0);
 
-            outputText.select();
-            document.execCommand('copy');
-
-            hasCopied = true;
-            clearBtn.disabled = false; // 複製完之後，解鎖清空按鈕，防誤觸！
-            alert('文案已成功複製！現在可以使用「清空重置」按鈕。');
-        }
-
-        // 核心邏輯 3：防誤觸清空 (必須複製過先清到)
-        function clearInputs() {
-            if (!hasCopied) {
-                alert('請先複製文案，才能進行清空！');
-                return;
+            if (remaining === 0) {
+                // 定格
+            } else if (remaining === 1) {
+                delay = 550; 
+            } else if (remaining === 2) {
+                delay = 400; 
+            } else if (remaining === 3) {
+                delay = 280; 
+            } else if (remaining === 4) {
+                delay = 180; 
+            } else if (remaining === 5) {
+                delay = 110; 
+            } else if (remaining <= 10) {
+                delay += 10; 
             }
 
-            // 清空所有框內容並恢復預設
-            inputs.forEach(input => {
-                input.value = '';
-                input.disabled = false;
-            });
-
-            outputText.value = '';
-
-            // 重置按鈕狀態
-            hasCopied = false;
-            createBtn.disabled = true;
-            copyBtn.disabled = true;
-            clearBtn.disabled = true;
-
-            updateInputLogic();
+            if (count < maxSteps) {
+                setTimeout(rollStep, delay);
+            } else {
+                isRolling = false;
+                btn.disabled = false;
+                displayCard.classList.remove('active');
+            }
         }
-    </script>
+
+        rollStep();
+    }
+
+    function generatePrompt() {
+        const a_pg = document.getElementById('a_pg').value.trim();
+        const a_sg = document.getElementById('a_sg').value.trim();
+        const a_sf = document.getElementById('a_sf').value.trim();
+        const a_pf = document.getElementById('a_pf').value.trim();
+        const a_c  = document.getElementById('a_c').value.trim();
+
+        const b_pg = document.getElementById('b_pg').value.trim();
+        const b_sg = document.getElementById('b_sg').value.trim();
+        const b_sf = document.getElementById('b_sf').value.trim();
+        const b_pf = document.getElementById('b_pf').value.trim();
+        const b_c  = document.getElementById('b_c').value.trim();
+
+        const resultText = `假設全員巔峯 請問A隊 PG “${a_pg}” SG “${a_sg}” SF“${a_sf}” PF “${a_pf}” C “${a_c}” 同埋 B隊 PG “${b_pg}” SG “${b_sg}” SF“${b_sf}” PF “${b_pf}” C “${b_c}” 邊一隊更強`;
+
+        const outputSection = document.getElementById('outputSection');
+        const outputText = document.getElementById('outputText');
+        
+        outputText.value = resultText;
+        outputSection.style.display = 'block';
+        outputSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function clearInputs() {
+        const inputs = document.querySelectorAll('.player-input');
+        inputs.forEach(input => input.value = '');
+        
+        const outputSection = document.getElementById('outputSection');
+        const outputText = document.getElementById('outputText');
+        outputText.value = '';
+        outputSection.style.display = 'none';
+    }
+
+    function copyText() {
+        const outputText = document.getElementById('outputText');
+        outputText.select();
+        document.execCommand('copy');
+        alert('文案已成功複製到剪貼簿！');
+    }
+</script>
+
 </body>
 </html>
