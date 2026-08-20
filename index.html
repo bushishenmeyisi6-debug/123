@@ -1,541 +1,3695 @@
 <!DOCTYPE html>
 <html lang="zh-HK">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NBA 球隊隨機抽籤 & 陣容對決</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
 
-        body {
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #333;
-            padding: 20px 0;
-        }
+<meta charset="UTF-8">
 
-        .container {
-            background: #ffffff;
-            padding: 30px 25px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 90%;
-            max-width: 480px;
-        }
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-        h1 {
-            font-size: 1.3rem;
-            color: #555;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+<title>NBA 球隊隨機抽籤 & 陣容對決</title>
 
-        .display-card {
-            background: #ffffff;
-            border: 2px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            min-height: 230px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
 
-        .display-card.active {
-            border-color: #006bb6;
-            box-shadow: 0 0 15px rgba(0, 107, 182, 0.15);
-        }
+<style>
 
-        .team-node {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 
-        .team-node.show {
-            display: flex;
-        }
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+}
 
-        .team-node.pop {
-            animation: popIn 0.08s ease-out forwards;
-        }
 
-        @keyframes popIn {
-            0% { transform: scale(0.9); }
-            100% { transform: scale(1); }
-        }
+body {
 
-        .team-logo {
-            width: 95px;
-            height: 95px;
-            margin-bottom: 12px;
-            object-fit: contain;
-        }
+    background-color: #f0f2f5;
 
-        .team-zh {
-            font-size: 2.6rem;
-            font-weight: 800;
-            color: #1a202c;
-            line-height: 1.1;
-            margin-bottom: 6px;
-        }
+    display: flex;
 
-        .team-en {
-            font-size: 1rem;
-            color: #718096;
-            font-weight: 500;
-        }
+    justify-content: center;
 
-        .btn-roll {
-            background-color: #121212;
-            color: #ffffff;
-            border: none;
-            padding: 14px 24px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 12px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            margin-bottom: 30px;
-        }
+    align-items: center;
 
-        .btn-roll:hover { background-color: #333; }
-        .btn-roll:active { transform: scale(0.98); }
-        .btn-roll:disabled { background-color: #cbd5e1; color: #888; cursor: not-allowed; box-shadow: none; }
+    min-height: 100vh;
 
-        .divider {
-            height: 1px;
-            background-color: #e2e8f0;
-            margin: 10px 0 25px 0;
-        }
+    color: #333;
 
-        .teams-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
+    padding: 20px 0;
 
-        .team-box {
-            flex: 1;
-            background: #f8fafc;
-            padding: 15px 10px;
-            border-radius: 12px;
-            border: 1px solid #edf2f7;
-        }
+}
 
-        .team-title {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #2d3748;
-            margin-bottom: 15px;
-            text-align: center;
-        }
 
-        .position-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
+.container {
 
-        .pos-label {
-            width: 42px;
-            text-align: right;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #4a5568;
-            padding-right: 4px;
-            white-space: nowrap;
-        }
+    background: #ffffff;
 
-        .player-input {
-            flex: 1;
-            padding: 6px 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            text-align: left;
-            width: 100%;
-            background-color: #fff;
-        }
+    padding: 30px 25px;
 
-        .player-input:focus {
-            border-color: #006bb6;
-            box-shadow: 0 0 0 2px rgba(0, 107, 182, 0.15);
-        }
+    border-radius: 20px;
 
-        .action-btns {
-            display: flex;
-            gap: 10px;
-        }
+    box-shadow:
+        0 15px 35px rgba(0,0,0,0.1);
 
-        .btn-create {
-            flex: 3;
-            background-color: #10b981;
-            color: #ffffff;
-            border: none;
-            padding: 14px 18px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-        }
+    text-align: center;
 
-        .btn-create:hover { background-color: #059669; }
-        .btn-create:active { transform: scale(0.98); }
+    width: 90%;
 
-        .btn-clear {
-            flex: 1;
-            background-color: #ef4444;
-            color: #ffffff;
-            border: none;
-            padding: 14px 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-        }
+    max-width: 480px;
 
-        .btn-clear:hover { background-color: #dc2626; }
-        .btn-clear:active { transform: scale(0.98); }
+}
 
-        .output-section {
-            margin-top: 20px;
-            display: none;
-            text-align: left;
-            background: #f1f5f9;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid #cbd5e1;
-        }
 
-        .output-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
+h1 {
 
-        .status-text {
-            color: #10b981;
-            font-weight: 700;
-            font-size: 0.95rem;
-        }
+    font-size: 1.3rem;
 
-        .btn-copy {
-            background-color: #e2e8f0;
-            color: #334155;
-            border: none;
-            padding: 4px 10px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+    color: #555;
 
-        .btn-copy:hover { background-color: #cbd5e1; }
+    margin-bottom: 20px;
 
-        .output-text {
-            width: 100%;
-            height: 90px;
-            border: none;
-            background: transparent;
-            font-size: 0.9rem;
-            color: #334155;
-            resize: none;
-            outline: none;
-            line-height: 1.4;
-        }
-    </style>
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+}
+
+
+/* =====================================================
+   房間區域
+===================================================== */
+
+.room-section {
+
+    background: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 14px;
+
+    padding: 15px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.room-title {
+
+    font-weight: 700;
+
+    color: #334155;
+
+    margin-bottom: 10px;
+
+}
+
+
+.room-code {
+
+    font-size: 1.8rem;
+
+    font-weight: 900;
+
+    letter-spacing: 4px;
+
+    color: #006bb6;
+
+    margin: 8px 0;
+
+}
+
+
+.role-text {
+
+    font-size: 0.95rem;
+
+    color: #64748b;
+
+    margin-bottom: 12px;
+
+}
+
+
+.room-actions {
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+
+.room-input {
+
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 10px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    text-align: center;
+
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
+}
+
+
+.room-btn {
+
+    border: none;
+
+    color: white;
+
+    background: #006bb6;
+
+    border-radius: 8px;
+
+    padding: 10px 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+.room-btn:hover {
+
+    background: #005a99;
+
+}
+
+
+.status-text {
+
+    margin-top: 10px;
+
+    font-size: 0.9rem;
+
+    color: #64748b;
+
+}
+
+
+/* =====================================================
+   Display
+===================================================== */
+
+.display-card {
+
+    background: #ffffff;
+
+    border: 2px solid #e2e8f0;
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+    min-height: 230px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+
+}
+
+
+.display-card.active {
+
+    border-color: #006bb6;
+
+    box-shadow:
+        0 0 15px rgba(0,107,182,0.15);
+
+}
+
+
+.team-node {
+
+    display: none;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    width: 100%;
+
+}
+
+
+.team-node.show {
+
+    display: flex;
+
+}
+
+
+.team-node.pop {
+
+    animation:
+        popIn 0.08s ease-out forwards;
+
+}
+
+
+@keyframes popIn {
+
+    0% {
+
+        transform: scale(0.9);
+
+    }
+
+    100% {
+
+        transform: scale(1);
+
+    }
+
+}
+
+
+.team-logo {
+
+    width: 95px;
+
+    height: 95px;
+
+    margin-bottom: 12px;
+
+    object-fit: contain;
+
+}
+
+
+.team-zh {
+
+    font-size: 2.6rem;
+
+    font-weight: 800;
+
+    color: #1a202c;
+
+    line-height: 1.1;
+
+    margin-bottom: 6px;
+
+}
+
+
+.team-en {
+
+    font-size: 1rem;
+
+    color: #718096;
+
+    font-weight: 500;
+
+}
+
+
+/* =====================================================
+   Roll
+===================================================== */
+
+.btn-roll {
+
+    background-color: #121212;
+
+    color: #ffffff;
+
+    border: none;
+
+    padding: 14px 24px;
+
+    font-size: 1.1rem;
+
+    font-weight: 600;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    width: 100%;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.1s ease;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.15);
+
+    margin-bottom: 30px;
+
+}
+
+
+.btn-roll:hover {
+
+    background-color: #333;
+
+}
+
+
+.btn-roll:active {
+
+    transform: scale(0.98);
+
+}
+
+
+.btn-roll:disabled {
+
+    background-color: #cbd5e1;
+
+    color: #888;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+
+}
+
+
+/* =====================================================
+   Divider
+===================================================== */
+
+.divider {
+
+    height: 1px;
+
+    background-color: #e2e8f0;
+
+    margin: 10px 0 25px 0;
+
+}
+
+
+/* =====================================================
+   Teams
+===================================================== */
+
+.teams-container {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.team-box {
+
+    flex: 1;
+
+    background: #f8fafc;
+
+    padding: 15px 10px;
+
+    border-radius: 12px;
+
+    border: 1px solid #edf2f7;
+
+}
+
+
+.team-title {
+
+    font-weight: 700;
+
+    font-size: 1.1rem;
+
+    color: #2d3748;
+
+    margin-bottom: 15px;
+
+    text-align: center;
+
+}
+
+
+.position-row {
+
+    display: flex;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+
+}
+
+
+.pos-label {
+
+    width: 42px;
+
+    text-align: right;
+
+    font-weight: 700;
+
+    font-size: 0.95rem;
+
+    color: #4a5568;
+
+    padding-right: 4px;
+
+    white-space: nowrap;
+
+}
+
+
+.player-input {
+
+    flex: 1;
+
+    padding: 6px 10px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 8px;
+
+    font-size: 0.9rem;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+
+    text-align: left;
+
+    width: 100%;
+
+    background-color: #fff;
+
+}
+
+
+.player-input:focus {
+
+    border-color: #006bb6;
+
+    box-shadow:
+        0 0 0 2px rgba(0,107,182,0.15);
+
+}
+
+
+.player-input:disabled {
+
+    background-color: #e9eef5;
+
+    color: #94a3b8;
+
+    cursor: not-allowed;
+
+}
+
+
+/* =====================================================
+   Action buttons
+===================================================== */
+
+.action-btns {
+
+    display: flex;
+
+    gap: 10px;
+
+}
+
+
+.btn-create {
+
+    flex: 3;
+
+    background-color: #10b981;
+
+    color: #ffffff;
+
+    border: none;
+
+    padding: 14px 18px;
+
+    font-size: 1.05rem;
+
+    font-weight: 600;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 12px rgba(16,185,129,0.2);
+
+}
+
+
+.btn-create:disabled {
+
+    background-color: #cbd5e1;
+
+    color: #888;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+
+}
+
+
+.btn-clear {
+
+    flex: 1;
+
+    background-color: #ef4444;
+
+    color: #ffffff;
+
+    border: none;
+
+    padding: 14px 12px;
+
+    font-size: 1rem;
+
+    font-weight: 600;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+}
+
+
+.btn-clear:disabled {
+
+    background-color: #cbd5e1;
+
+    color: #888;
+
+    cursor: not-allowed;
+
+}
+
+
+/* =====================================================
+   Output
+===================================================== */
+
+.output-section {
+
+    margin-top: 20px;
+
+    display: none;
+
+    text-align: left;
+
+    background: #f1f5f9;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    border: 1px solid #cbd5e1;
+
+}
+
+
+.output-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 8px;
+
+}
+
+
+.output-status {
+
+    color: #10b981;
+
+    font-weight: 700;
+
+    font-size: 0.95rem;
+
+}
+
+
+.btn-copy {
+
+    background-color: #e2e8f0;
+
+    color: #334155;
+
+    border: none;
+
+    padding: 4px 10px;
+
+    font-size: 0.8rem;
+
+    font-weight: 600;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+}
+
+
+.output-text {
+
+    width: 100%;
+
+    height: 90px;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 0.9rem;
+
+    color: #334155;
+
+    resize: none;
+
+    outline: none;
+
+    line-height: 1.4;
+
+}
+
+
+.turn-banner {
+
+    display: none;
+
+    margin-bottom: 15px;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background: #eff6ff;
+
+    color: #1d4ed8;
+
+    font-weight: 700;
+
+}
+
+
+@media (max-width: 420px) {
+
+    .container {
+
+        width: 94%;
+
+        padding: 25px 15px;
+
+    }
+
+    .teams-container {
+
+        gap: 8px;
+
+    }
+
+    .team-box {
+
+        padding: 12px 6px;
+
+    }
+
+    .pos-label {
+
+        width: 38px;
+
+        font-size: 0.85rem;
+
+    }
+
+    .player-input {
+
+        font-size: 0.82rem;
+
+        padding: 6px 7px;
+
+    }
+
+}
+
+</style>
+
 </head>
+
+
 <body>
 
+
 <div class="container">
-    <h1>NBA 球隊隨機抽籤</h1>
-    
-    <div class="display-card" id="displayCard">
-        <div class="team-node show" id="node-pending">
-            <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png" alt="NBA" class="team-logo" style="opacity:0.35;">
-            <div class="team-zh">待定</div>
-            <div class="team-en">Pending</div>
-        </div>
+
+
+<h1>NBA 球隊隨機抽籤</h1>
+
+
+<!-- =====================================================
+     房間
+===================================================== -->
+
+<div class="room-section" id="roomSection">
+
+    <div class="room-title">
+        聯機房間
     </div>
 
-    <button class="btn-roll" id="rollBtn" onclick="startRolling()">隨機抽取球隊</button>
-
-    <div class="divider"></div>
-
-    <div class="teams-container">
-        <div class="team-box">
-            <div class="team-title">A隊</div>
-            <div class="position-row"><span class="pos-label">PG-</span><input type="text" class="player-input" id="a_pg"></div>
-            <div class="position-row"><span class="pos-label">SG-</span><input type="text" class="player-input" id="a_sg"></div>
-            <div class="position-row"><span class="pos-label">SF-</span><input type="text" class="player-input" id="a_sf"></div>
-            <div class="position-row"><span class="pos-label">PF-</span><input type="text" class="player-input" id="a_pf"></div>
-            <div class="position-row"><span class="pos-label">C-</span><input type="text" class="player-input" id="a_c"></div>
-        </div>
-
-        <div class="team-box">
-            <div class="team-title">B隊</div>
-            <div class="position-row"><span class="pos-label">PG-</span><input type="text" class="player-input" id="b_pg"></div>
-            <div class="position-row"><span class="pos-label">SG-</span><input type="text" class="player-input" id="b_sg"></div>
-            <div class="position-row"><span class="pos-label">SF-</span><input type="text" class="player-input" id="b_sf"></div>
-            <div class="position-row"><span class="pos-label">PF-</span><input type="text" class="player-input" id="b_pf"></div>
-            <div class="position-row"><span class="pos-label">C-</span><input type="text" class="player-input" id="b_c"></div>
-        </div>
+    <div
+        class="room-code"
+        id="roomCode"
+    >
+        未加入
     </div>
 
-    <div class="action-btns">
-        <button class="btn-create" onclick="generatePrompt()">創建球隊完成</button>
-        <button class="btn-clear" onclick="clearInputs()">清空</button>
+    <div
+        class="role-text"
+        id="roleText"
+    >
+        請建立或加入房間
     </div>
 
-    <div class="output-section" id="outputSection">
-        <div class="output-header">
-            <span class="status-text">已生成文案！</span>
-            <button class="btn-copy" onclick="copyText()">複製文案</button>
-        </div>
-        <textarea class="output-text" id="outputText" readonly></textarea>
+
+    <div class="room-actions">
+
+        <button
+            class="room-btn"
+            id="createRoomBtn"
+            onclick="createRoom()"
+        >
+            建立房間
+        </button>
+
+
+        <input
+            id="joinRoomInput"
+            class="room-input"
+            placeholder="房間碼"
+            maxlength="6"
+        >
+
+
+        <button
+            class="room-btn"
+            onclick="joinRoom()"
+        >
+            加入
+        </button>
+
     </div>
+
+
+    <div
+        class="status-text"
+        id="roomStatus"
+    >
+        尚未連接
+    </div>
+
 </div>
 
+
+<div
+    class="turn-banner"
+    id="turnBanner"
+>
+</div>
+
+
+<!-- =====================================================
+     NBA display
+===================================================== -->
+
+<div
+    class="display-card"
+    id="displayCard"
+>
+
+
+    <div
+        class="team-node show"
+        id="node-pending"
+    >
+
+        <img
+            src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png"
+            alt="NBA"
+            class="team-logo"
+            style="opacity:0.35;"
+        >
+
+        <div class="team-zh">
+            待定
+        </div>
+
+        <div class="team-en">
+            Pending
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<button
+    class="btn-roll"
+    id="rollBtn"
+    onclick="startRolling()"
+    disabled
+>
+    請先加入房間
+</button>
+
+
+<div class="divider"></div>
+
+
+<!-- =====================================================
+     Teams
+===================================================== -->
+
+<div class="teams-container">
+
+
+<div class="team-box">
+
+    <div class="team-title">
+        A隊
+    </div>
+
+
+    <div class="position-row">
+        <span class="pos-label">
+            PG-
+        </span>
+
+        <input
+            type="text"
+            class="player-input"
+            id="a_pg"
+        >
+    </div>
+
+
+    <div class="position-row">
+        <span class="pos-label">
+            SG-
+        </span>
+
+        <input
+            type="text"
+            class="player-input"
+            id="a_sg"
+        >
+    </div>
+
+
+    <div class="position-row">
+        <span class="pos-label">
+            SF-
+        </span>
+
+        <input
+            type="text"
+            class="player-input"
+            id="a_sf"
+        >
+    </div>
+
+
+    <div class="position-row">
+        <span class="pos-label">
+            PF-
+        </span>
+
+        <input
+            type="text"
+            class="player-input"
+            id="a_pf"
+        >
+    </div>
+
+
+    <div class="position-row">
+        <span class="pos-label">
+            C-
+        </span>
+
+        <input
+            type="text"
+            class="player-input"
+            id="a_c"
+        >
+    </div>
+
+</div>
+
+
+<div class="team-box">
+
+    <div class="team-title">
+        B隊
+    </div>
+
+
+    <div class="position-row">
+        <span class="pos-label">
+            PG-
+        </span>
+
+        <input
+            type="text"
+            class="player-input"
+            id="b_pg"
+        >
+    </div>
+
+
+    <div class="position-row">
+        <span class="pos-label">
+            SG-
+        </span>
+
+        <input
+            type="text"
+            class="player-input"
+            id="b_sg"
+        >
+    </div>
+
+
+    <div class="position-row">
+        <span class="pos-label">
+            SF-
+        </span>
+
+        <input
+            type="text"
+            class="player-input"
+            id="b_sf"
+        >
+    </div>
+
+
+    <div class="position-row">
+        <span class="pos-label">
+            PF-
+        </span>
+
+        <input
+            type="text"
+            class="player-input"
+            id="b_pf"
+        >
+    </div>
+
+
+    <div class="position-row">
+        <span class="pos-label">
+            C-
+        </span>
+
+        <input
+            type="text"
+            class="player-input"
+            id="b_c"
+        >
+    </div>
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     Actions
+===================================================== -->
+
+<div class="action-btns">
+
+
+<button
+    class="btn-create"
+    id="createBtn"
+    onclick="generatePrompt()"
+    disabled
+>
+    創建球隊完成
+</button>
+
+
+<button
+    class="btn-clear"
+    id="clearBtn"
+    onclick="clearInputs()"
+    disabled
+>
+    清空
+</button>
+
+
+</div>
+
+
+<!-- =====================================================
+     Output
+===================================================== -->
+
+<div
+    class="output-section"
+    id="outputSection"
+>
+
+
+<div class="output-header">
+
+    <span class="output-status">
+        已生成文案！
+    </span>
+
+    <button
+        class="btn-copy"
+        onclick="copyText()"
+    >
+        複製文案
+    </button>
+
+</div>
+
+
+<textarea
+    class="output-text"
+    id="outputText"
+    readonly
+></textarea>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     Supabase CDN
+===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
 <script>
-    const nbaTeams = [
-        { zh: "老鷹", en: "Atlanta Hawks", logo: "https://a.espncdn.com/i/teamlogos/nba/500/atl.png" },
-        { zh: "塞爾提克", en: "Boston Celtics", logo: "https://a.espncdn.com/i/teamlogos/nba/500/bos.png" },
-        { zh: "籃網", en: "Brooklyn Nets", logo: "https://a.espncdn.com/i/teamlogos/nba/500/bkn.png" },
-        { zh: "黃蜂", en: "Charlotte Hornets", logo: "https://a.espncdn.com/i/teamlogos/nba/500/cha.png" },
-        { zh: "公牛", en: "Chicago Bulls", logo: "https://a.espncdn.com/i/teamlogos/nba/500/chi.png" },
-        { zh: "騎士", en: "Cleveland Cavaliers", logo: "https://a.espncdn.com/i/teamlogos/nba/500/cle.png" },
-        { zh: "獨行俠", en: "Dallas Mavericks", logo: "https://a.espncdn.com/i/teamlogos/nba/500/dal.png" },
-        { zh: "金塊", en: "Denver Nuggets", logo: "https://a.espncdn.com/i/teamlogos/nba/500/den.png" },
-        { zh: "活塞", en: "Detroit Pistons", logo: "https://a.espncdn.com/i/teamlogos/nba/500/det.png" },
-        { zh: "勇士", en: "Golden State Warriors", logo: "https://a.espncdn.com/i/teamlogos/nba/500/gs.png" },
-        { zh: "火箭", en: "Houston Rockets", logo: "https://a.espncdn.com/i/teamlogos/nba/500/hou.png" },
-        { zh: "遛馬", en: "Indiana Pacers", logo: "https://a.espncdn.com/i/teamlogos/nba/500/ind.png" },
-        { zh: "快艇", en: "LA Clippers", logo: "https://a.espncdn.com/i/teamlogos/nba/500/lac.png" },
-        { zh: "湖人", en: "Los Angeles Lakers", logo: "https://a.espncdn.com/i/teamlogos/nba/500/lal.png" },
-        { zh: "灰熊", en: "Memphis Grizzlies", logo: "https://a.espncdn.com/i/teamlogos/nba/500/mem.png" },
-        { zh: "熱火", en: "Miami Heat", logo: "https://a.espncdn.com/i/teamlogos/nba/500/mia.png" },
-        { zh: "公鹿", en: "Milwaukee Bucks", logo: "https://a.espncdn.com/i/teamlogos/nba/500/mil.png" },
-        { zh: "灰狼", en: "Minnesota Timberwolves", logo: "https://a.espncdn.com/i/teamlogos/nba/500/min.png" },
-        { zh: "鵜鶘", en: "New Orleans Pelicans", logo: "https://a.espncdn.com/i/teamlogos/nba/500/no.png" },
-        { zh: "尼克", en: "New York Knicks", logo: "https://a.espncdn.com/i/teamlogos/nba/500/ny.png" },
-        { zh: "雷霆", en: "Oklahoma City Thunder", logo: "https://a.espncdn.com/i/teamlogos/nba/500/okc.png" },
-        { zh: "魔術", en: "Orlando Magic", logo: "https://a.espncdn.com/i/teamlogos/nba/500/orl.png" },
-        { zh: "七六人", en: "Philadelphia 76ers", logo: "https://a.espncdn.com/i/teamlogos/nba/500/phi.png" },
-        { zh: "太陽", en: "Phoenix Suns", logo: "https://a.espncdn.com/i/teamlogos/nba/500/phx.png" },
-        { zh: "開拓者", en: "Portland Trail Blazers", logo: "https://a.espncdn.com/i/teamlogos/nba/500/por.png" },
-        { zh: "國王", en: "Sacramento Kings", logo: "https://a.espncdn.com/i/teamlogos/nba/500/sac.png" },
-        { zh: "馬刺", en: "San Antonio Spurs", logo: "https://a.espncdn.com/i/teamlogos/nba/500/sas.png" },
-        { zh: "猛龍", en: "Toronto Raptors", logo: "https://a.espncdn.com/i/teamlogos/nba/500/tor.png" },
-        { zh: "爵士", en: "Utah Jazz", logo: "https://a.espncdn.com/i/teamlogos/nba/500/utah.png" },
-        { zh: "奇才", en: "Washington Wizards", logo: "https://a.espncdn.com/i/teamlogos/nba/500/was.png" }
+
+
+/*
+=========================================================
+                     必須修改
+=========================================================
+
+去 Supabase：
+
+Project Settings
+    ↓
+API
+
+將以下兩行換成你自己 Project 的資料。
+
+=========================================================
+*/
+
+
+const SUPABASE_URL =
+    "YOUR_SUPABASE_URL";
+
+
+const SUPABASE_KEY =
+    "YOUR_SUPABASE_PUBLISHABLE_KEY";
+
+
+const {
+    createClient
+} = window.supabase;
+
+
+const supabaseClient =
+    createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/*
+=========================================================
+NBA 球隊
+=========================================================
+*/
+
+
+const nbaTeams = [
+
+    {
+        zh: "老鷹",
+        en: "Atlanta Hawks",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/atl.png"
+    },
+
+    {
+        zh: "塞爾提克",
+        en: "Boston Celtics",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/bos.png"
+    },
+
+    {
+        zh: "籃網",
+        en: "Brooklyn Nets",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/bkn.png"
+    },
+
+    {
+        zh: "黃蜂",
+        en: "Charlotte Hornets",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/cha.png"
+    },
+
+    {
+        zh: "公牛",
+        en: "Chicago Bulls",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/chi.png"
+    },
+
+    {
+        zh: "騎士",
+        en: "Cleveland Cavaliers",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/cle.png"
+    },
+
+    {
+        zh: "獨行俠",
+        en: "Dallas Mavericks",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/dal.png"
+    },
+
+    {
+        zh: "金塊",
+        en: "Denver Nuggets",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/den.png"
+    },
+
+    {
+        zh: "活塞",
+        en: "Detroit Pistons",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/det.png"
+    },
+
+    {
+        zh: "勇士",
+        en: "Golden State Warriors",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/gs.png"
+    },
+
+    {
+        zh: "火箭",
+        en: "Houston Rockets",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/hou.png"
+    },
+
+    {
+        zh: "遛馬",
+        en: "Indiana Pacers",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/ind.png"
+    },
+
+    {
+        zh: "快艇",
+        en: "LA Clippers",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/lac.png"
+    },
+
+    {
+        zh: "湖人",
+        en: "Los Angeles Lakers",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/lal.png"
+    },
+
+    {
+        zh: "灰熊",
+        en: "Memphis Grizzlies",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/mem.png"
+    },
+
+    {
+        zh: "熱火",
+        en: "Miami Heat",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/mia.png"
+    },
+
+    {
+        zh: "公鹿",
+        en: "Milwaukee Bucks",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/mil.png"
+    },
+
+    {
+        zh: "灰狼",
+        en: "Minnesota Timberwolves",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/min.png"
+    },
+
+    {
+        zh: "鵜鶘",
+        en: "New Orleans Pelicans",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/no.png"
+    },
+
+    {
+        zh: "尼克",
+        en: "New York Knicks",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/ny.png"
+    },
+
+    {
+        zh: "雷霆",
+        en: "Oklahoma City Thunder",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/okc.png"
+    },
+
+    {
+        zh: "魔術",
+        en: "Orlando Magic",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/orl.png"
+    },
+
+    {
+        zh: "七六人",
+        en: "Philadelphia 76ers",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/phi.png"
+    },
+
+    {
+        zh: "太陽",
+        en: "Phoenix Suns",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/phx.png"
+    },
+
+    {
+        zh: "開拓者",
+        en: "Portland Trail Blazers",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/por.png"
+    },
+
+    {
+        zh: "國王",
+        en: "Sacramento Kings",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/sac.png"
+    },
+
+    {
+        zh: "馬刺",
+        en: "San Antonio Spurs",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/sas.png"
+    },
+
+    {
+        zh: "猛龍",
+        en: "Toronto Raptors",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/tor.png"
+    },
+
+    {
+        zh: "爵士",
+        en: "Utah Jazz",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/utah.png"
+    },
+
+    {
+        zh: "奇才",
+        en: "Washington Wizards",
+        logo: "https://a.espncdn.com/i/teamlogos/nba/500/was.png"
+    }
+
+];
+
+
+/*
+=========================================================
+DOM
+=========================================================
+*/
+
+
+const displayCard =
+    document.getElementById(
+        "displayCard"
+    );
+
+
+const rollBtn =
+    document.getElementById(
+        "rollBtn"
+    );
+
+
+const createBtn =
+    document.getElementById(
+        "createBtn"
+    );
+
+
+const clearBtn =
+    document.getElementById(
+        "clearBtn"
+    );
+
+
+const roomCode =
+    document.getElementById(
+        "roomCode"
+    );
+
+
+const roleText =
+    document.getElementById(
+        "roleText"
+    );
+
+
+const roomStatus =
+    document.getElementById(
+        "roomStatus"
+    );
+
+
+const turnBanner =
+    document.getElementById(
+        "turnBanner"
+    );
+
+
+const outputSection =
+    document.getElementById(
+        "outputSection"
+    );
+
+
+const outputText =
+    document.getElementById(
+        "outputText"
+    );
+
+
+const allInputs =
+    Array.from(
+        document.querySelectorAll(
+            ".player-input"
+        )
+    );
+
+
+let teamNodeElements = [];
+
+
+/*
+=========================================================
+建立球隊 DOM
+=========================================================
+*/
+
+
+function buildTeamDOMNodes() {
+
+    nbaTeams.forEach(
+        (team, index) => {
+
+            const node =
+                document.createElement(
+                    "div"
+                );
+
+
+            node.className =
+                "team-node";
+
+
+            node.id =
+                `team-node-${index}`;
+
+
+            node.innerHTML = `
+
+                <img
+                    src="${team.logo}"
+                    alt="${team.en}"
+                    class="team-logo"
+                >
+
+                <div class="team-zh">
+                    ${team.zh}
+                </div>
+
+                <div class="team-en">
+                    ${team.en}
+                </div>
+
+            `;
+
+
+            displayCard.appendChild(
+                node
+            );
+
+
+            teamNodeElements.push(
+                node
+            );
+
+        }
+    );
+
+}
+
+
+buildTeamDOMNodes();
+
+
+/*
+=========================================================
+玩家身份
+=========================================================
+*/
+
+
+let currentRoomCode =
+    localStorage.getItem(
+        "nba_room_code"
+    );
+
+
+let myRole =
+    localStorage.getItem(
+        "nba_my_role"
+    );
+
+
+let playerToken =
+    localStorage.getItem(
+        "nba_player_token"
+    );
+
+
+/*
+第一次使用：
+產生一個永久 token。
+
+呢個 token 唔係密碼，
+只係用嚟令同一部裝置認得自己係 A/B。
+*/
+
+
+if (!playerToken) {
+
+    playerToken =
+        crypto.randomUUID();
+
+    localStorage.setItem(
+        "nba_player_token",
+        playerToken
+    );
+
+}
+
+
+/*
+=========================================================
+目前遊戲
+=========================================================
+*/
+
+
+let gameState = null;
+
+let realtimeChannel = null;
+
+let isRolling = false;
+
+let activeNodeIndex = -1;
+
+let hasCopiedPrompt = false;
+
+
+/*
+=========================================================
+音效
+=========================================================
+*/
+
+
+let audioCtx = null;
+
+
+function playTickSound(
+    isFinal = false
+) {
+
+    try {
+
+        if (!audioCtx) {
+
+            audioCtx =
+                new (
+                    window.AudioContext ||
+                    window.webkitAudioContext
+                )();
+
+        }
+
+
+        if (
+            audioCtx.state ===
+            "suspended"
+        ) {
+
+            audioCtx.resume();
+
+        }
+
+
+        const osc =
+            audioCtx.createOscillator();
+
+
+        const gain =
+            audioCtx.createGain();
+
+
+        if (isFinal) {
+
+            osc.type =
+                "sine";
+
+
+            osc.frequency.setValueAtTime(
+                1046.5,
+                audioCtx.currentTime
+            );
+
+
+            gain.gain.setValueAtTime(
+                0.35,
+                audioCtx.currentTime
+            );
+
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                audioCtx.currentTime + 0.6
+            );
+
+
+            osc.connect(gain);
+
+            gain.connect(
+                audioCtx.destination
+            );
+
+
+            osc.start();
+
+            osc.stop(
+                audioCtx.currentTime + 0.6
+            );
+
+
+        } else {
+
+            osc.type =
+                "sine";
+
+
+            osc.frequency.setValueAtTime(
+                1200,
+                audioCtx.currentTime
+            );
+
+
+            osc.frequency.exponentialRampToValueAtTime(
+                400,
+                audioCtx.currentTime + 0.015
+            );
+
+
+            gain.gain.setValueAtTime(
+                0.3,
+                audioCtx.currentTime
+            );
+
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                audioCtx.currentTime + 0.015
+            );
+
+
+            osc.connect(gain);
+
+            gain.connect(
+                audioCtx.destination
+            );
+
+
+            osc.start();
+
+            osc.stop(
+                audioCtx.currentTime + 0.015
+            );
+
+        }
+
+    } catch (e) {
+
+    }
+
+}
+
+
+/*
+=========================================================
+顯示房間狀態
+=========================================================
+*/
+
+
+function setRoomStatus(
+    text
+) {
+
+    roomStatus.textContent =
+        text;
+
+}
+
+
+/*
+=========================================================
+建立房間
+=========================================================
+*/
+
+
+async function createRoom() {
+
+    try {
+
+        setRoomStatus(
+            "正在建立房間..."
+        );
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "create_nba_room",
+                {
+                    p_token:
+                        playerToken
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        currentRoomCode =
+            data.room_code;
+
+
+        myRole =
+            data.role;
+
+
+        gameState =
+            data.state;
+
+
+        localStorage.setItem(
+            "nba_room_code",
+            currentRoomCode
+        );
+
+
+        localStorage.setItem(
+            "nba_my_role",
+            myRole
+        );
+
+
+        updateRoomUI();
+
+        subscribeToRoom();
+
+        renderState();
+
+
+        setRoomStatus(
+            "房間已建立，等待朋友加入"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "建立房間失敗：\n" +
+            error.message
+        );
+
+        setRoomStatus(
+            "建立失敗"
+        );
+
+    }
+
+}
+
+
+/*
+=========================================================
+加入房間
+=========================================================
+*/
+
+
+async function joinRoom() {
+
+    const input =
+        document.getElementById(
+            "joinRoomInput"
+        );
+
+
+    const code =
+        input.value
+            .trim()
+            .toUpperCase();
+
+
+    if (
+        code.length !== 6
+    ) {
+
+        alert(
+            "請輸入 6 位房間碼"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        setRoomStatus(
+            "正在加入房間..."
+        );
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "join_nba_room",
+                {
+                    p_code: code,
+                    p_token:
+                        playerToken
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        currentRoomCode =
+            data.room_code;
+
+
+        myRole =
+            data.role;
+
+
+        gameState =
+            data.state;
+
+
+        localStorage.setItem(
+            "nba_room_code",
+            currentRoomCode
+        );
+
+
+        localStorage.setItem(
+            "nba_my_role",
+            myRole
+        );
+
+
+        updateRoomUI();
+
+        subscribeToRoom();
+
+        renderState();
+
+
+        setRoomStatus(
+            "已成功加入房間"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "加入房間失敗：\n" +
+            error.message
+        );
+
+        setRoomStatus(
+            "加入失敗"
+        );
+
+    }
+
+}
+
+
+/*
+=========================================================
+更新房間 UI
+=========================================================
+*/
+
+
+function updateRoomUI() {
+
+    if (!currentRoomCode) {
+
+        roomCode.textContent =
+            "未加入";
+
+        roleText.textContent =
+            "請建立或加入房間";
+
+        return;
+
+    }
+
+
+    roomCode.textContent =
+        currentRoomCode;
+
+
+    roleText.textContent =
+        `你係 ${myRole}隊`;
+
+
+    if (gameState) {
+
+        updateTurnUI();
+
+    }
+
+}
+
+
+/*
+=========================================================
+Realtime
+=========================================================
+*/
+
+
+function subscribeToRoom() {
+
+    if (
+        realtimeChannel
+    ) {
+
+        supabaseClient.removeChannel(
+            realtimeChannel
+        );
+
+    }
+
+
+    realtimeChannel =
+        supabaseClient
+            .channel(
+                `nba-room-${currentRoomCode}`
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "UPDATE",
+                    schema: "public",
+                    table: "nba_rooms",
+                    filter:
+                        `room_code=eq.${currentRoomCode}`
+                },
+                payload => {
+
+                    if (
+                        payload.new &&
+                        payload.new.game_state
+                    ) {
+
+                        gameState =
+                            payload.new.game_state;
+
+                        renderState();
+
+                    }
+
+                }
+            )
+            .subscribe(
+                status => {
+
+                    console.log(
+                        "Realtime:",
+                        status
+                    );
+
+                }
+            );
+
+}
+
+
+/*
+=========================================================
+重新取得房間
+=========================================================
+*/
+
+
+async function refreshRoom() {
+
+    if (
+        !currentRoomCode ||
+        !playerToken
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "get_nba_room",
+                {
+                    p_code:
+                        currentRoomCode,
+
+                    p_token:
+                        playerToken
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        gameState =
+            data.state;
+
+
+        myRole =
+            data.role;
+
+
+        renderState();
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+    }
+
+}
+
+
+/*
+=========================================================
+Render
+=========================================================
+*/
+
+
+function renderState() {
+
+    if (!gameState) {
+
+        return;
+
+    }
+
+
+    renderPlayers();
+
+
+    updateTurnUI();
+
+
+    updateButtons();
+
+
+    updateTeamDisplay();
+
+
+    if (
+        gameState.completed_count >=
+        10
+    ) {
+
+        createBtn.disabled =
+            false;
+
+    } else {
+
+        createBtn.disabled =
+            true;
+
+    }
+
+}
+
+
+/*
+=========================================================
+同步 10 個輸入框
+=========================================================
+*/
+
+
+function renderPlayers() {
+
+    const teams = [
+        "a",
+        "b"
     ];
 
-    const displayCard = document.getElementById('displayCard');
-    const teamNodeElements = [];
 
-    function buildTeamDOMNodes() {
-        nbaTeams.forEach((team, index) => {
-            const node = document.createElement('div');
-            node.className = 'team-node';
-            node.id = `team-node-${index}`;
-            node.innerHTML = `
-                <img src="${team.logo}" alt="${team.en}" class="team-logo">
-                <div class="team-zh">${team.zh}</div>
-                <div class="team-en">${team.en}</div>
-            `;
-            displayCard.appendChild(node);
-            teamNodeElements.push(node);
-        });
+    teams.forEach(
+        team => {
+
+            const positions = [
+                "pg",
+                "sg",
+                "sf",
+                "pf",
+                "c"
+            ];
+
+
+            positions.forEach(
+                position => {
+
+                    const input =
+                        document.getElementById(
+                            `${team}_${position}`
+                        );
+
+
+                    const value =
+                        gameState[
+                            team
+                        ][
+                            position
+                        ];
+
+
+                    input.value =
+                        value || "";
+
+
+                    input.disabled =
+                        true;
+
+                }
+            );
+
+        }
+    );
+
+
+    /*
+    =====================================================
+    只有：
+
+    1. 係自己回合
+    2. phase = input
+
+    先可以揀一格。
+    =====================================================
+    */
+
+
+    if (
+        gameState.phase !==
+        "input"
+    ) {
+
+        return;
+
     }
 
-    buildTeamDOMNodes();
 
-    // ─── Web Audio API 音效引擎 ───
-    let audioCtx = null;
+    if (
+        gameState.turn !==
+        myRole
+    ) {
 
-    function playTickSound(isFinal = false) {
+        return;
+
+    }
+
+
+    const team =
+        myRole.toLowerCase();
+
+
+    const positions = [
+        "pg",
+        "sg",
+        "sf",
+        "pf",
+        "c"
+    ];
+
+
+    positions.forEach(
+        position => {
+
+            const input =
+                document.getElementById(
+                    `${team}_${position}`
+                );
+
+
+            if (
+                !gameState[
+                    team
+                ][
+                    position
+                ]
+            ) {
+
+                input.disabled =
+                    false;
+
+            }
+
+        }
+    );
+
+}
+
+
+/*
+=========================================================
+Input focus
+=========================================================
+*/
+
+
+allInputs.forEach(
+    input => {
+
+
+        input.addEventListener(
+            "focus",
+            function () {
+
+                if (!gameState) {
+
+                    input.blur();
+
+                    return;
+
+                }
+
+
+                if (
+                    gameState.phase !==
+                    "input"
+                ) {
+
+                    input.blur();
+
+                    return;
+
+                }
+
+
+                if (
+                    gameState.turn !==
+                    myRole
+                ) {
+
+                    input.blur();
+
+                    return;
+
+                }
+
+
+                const myTeam =
+                    myRole.toLowerCase();
+
+
+                if (
+                    !input.id.startsWith(
+                        `${myTeam}_`
+                    )
+                ) {
+
+                    input.blur();
+
+                    return;
+
+                }
+
+
+                /*
+                鎖住同隊其他位置
+                */
+
+                allInputs.forEach(
+                    other => {
+
+                        if (
+                            other !==
+                            input
+                        ) {
+
+                            other.disabled =
+                                true;
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        input.addEventListener(
+            "input",
+            function () {
+
+                /*
+                輸入任意長度。
+
+                唔會因為第一個字就鎖。
+                */
+
+                if (
+                    input.value.trim()
+                        .length > 0
+                ) {
+
+                    rollBtn.disabled =
+                        true;
+
+                }
+
+            }
+        );
+
+
+        input.addEventListener(
+            "blur",
+            function () {
+
+                /*
+                如果使用者輸入完成，
+                唔立即送出。
+
+                必須按「提交位置」。
+                */
+
+            }
+        );
+
+    }
+);
+
+
+/*
+=========================================================
+更新回合 UI
+=========================================================
+*/
+
+
+function updateTurnUI() {
+
+    if (!gameState) {
+
+        turnBanner.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    turnBanner.style.display =
+        "block";
+
+
+    if (
+        gameState.phase ===
+        "done"
+    ) {
+
+        turnBanner.textContent =
+            "🏆 所有球員已完成，可以創建文案";
+
+        return;
+
+    }
+
+
+    if (
+        gameState.turn ===
+        myRole
+    ) {
+
+        if (
+            gameState.phase ===
+            "roll"
+        ) {
+
+            turnBanner.textContent =
+                `🟢 到你 (${myRole}隊)！請先隨機抽取球隊`;
+
+        } else {
+
+            turnBanner.textContent =
+                `🟢 ${myRole}隊請選擇一個位置並輸入球員`;
+
+        }
+
+    } else {
+
+        turnBanner.textContent =
+            `🔴 而家係 ${gameState.turn}隊回合，請等待`;
+
+    }
+
+}
+
+
+/*
+=========================================================
+按鈕
+=========================================================
+*/
+
+
+function updateButtons() {
+
+    if (!gameState) {
+
+        rollBtn.disabled =
+            true;
+
+        return;
+
+    }
+
+
+    if (
+        gameState.phase ===
+        "done"
+    ) {
+
+        rollBtn.disabled =
+            true;
+
+        return;
+
+    }
+
+
+    /*
+    -----------------------------------------------------
+    Roll phase
+    -----------------------------------------------------
+    */
+
+    if (
+        gameState.phase ===
+        "roll"
+    ) {
+
+        rollBtn.disabled =
+            gameState.turn !==
+            myRole;
+
+        rollBtn.textContent =
+            "隨機抽取球隊";
+
+        return;
+
+    }
+
+
+    /*
+    -----------------------------------------------------
+    Input phase
+    -----------------------------------------------------
+    */
+
+    if (
+        gameState.phase ===
+        "input"
+    ) {
+
+        /*
+        暫時將 Roll button 當成
+        「提交位置」
+        */
+
+        rollBtn.disabled =
+            true;
+
+        rollBtn.textContent =
+            "請輸入球員";
+
+        return;
+
+    }
+
+}
+
+
+/*
+=========================================================
+球隊 display
+=========================================================
+*/
+
+
+function updateTeamDisplay() {
+
+    if (
+        gameState.selected_team_index ===
+        null ||
+        gameState.selected_team_index ===
+        undefined
+    ) {
+
+        return;
+
+    }
+
+
+    const index =
+        Number(
+            gameState.selected_team_index
+        );
+
+
+    if (
+        !teamNodeElements[index]
+    ) {
+
+        return;
+
+    }
+
+
+    teamNodeElements.forEach(
+        node => {
+
+            node.classList.remove(
+                "show",
+                "pop"
+            );
+
+        }
+    );
+
+
+    teamNodeElements[index]
+        .classList.add(
+            "show"
+        );
+
+}
+
+
+/*
+=========================================================
+抽籤
+=========================================================
+*/
+
+
+async function startRolling() {
+
+    if (
+        isRolling ||
+        !gameState
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        gameState.phase !==
+        "roll"
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        gameState.turn !==
+        myRole
+    ) {
+
+        alert(
+            "未到你的回合"
+        );
+
+        return;
+
+    }
+
+
+    isRolling =
+        true;
+
+
+    rollBtn.disabled =
+        true;
+
+
+    displayCard.classList.add(
+        "active"
+    );
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "roll_nba_room",
+                {
+                    p_code:
+                        currentRoomCode,
+
+                    p_token:
+                        playerToken
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        /*
+        伺服器已經決定結果。
+
+        但前端照樣播放原本
+        35 次滾動動畫。
+
+        最後一定停喺伺服器結果。
+        */
+
+        const finalIndex =
+            Number(
+                data.state
+                    .selected_team_index
+            );
+
+
+        await animateRoll(
+            finalIndex
+        );
+
+
+        gameState =
+            data.state;
+
+
+        renderState();
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            error.message
+        );
+
+
+        await refreshRoom();
+
+    }
+
+
+    isRolling =
+        false;
+
+
+    displayCard.classList.remove(
+        "active"
+    );
+
+
+    renderState();
+
+}
+
+
+/*
+=========================================================
+動畫
+=========================================================
+*/
+
+
+function animateRoll(
+    finalIndex
+) {
+
+    return new Promise(
+        resolve => {
+
+            let delay = 20;
+
+            let count = 0;
+
+            const maxSteps = 35;
+
+            let lastIndex =
+                activeNodeIndex;
+
+
+            function step() {
+
+                let randomIndex;
+
+
+                if (
+                    count ===
+                    maxSteps - 1
+                ) {
+
+                    randomIndex =
+                        finalIndex;
+
+                } else {
+
+                    do {
+
+                        randomIndex =
+                            Math.floor(
+                                Math.random() *
+                                nbaTeams.length
+                            );
+
+                    } while (
+                        randomIndex ===
+                        lastIndex
+                    );
+
+                }
+
+
+                if (
+                    lastIndex !== -1 &&
+                    teamNodeElements[
+                        lastIndex
+                    ]
+                ) {
+
+                    teamNodeElements[
+                        lastIndex
+                    ]
+                    .classList
+                    .remove(
+                        "show",
+                        "pop"
+                    );
+
+                }
+
+
+                lastIndex =
+                    randomIndex;
+
+
+                activeNodeIndex =
+                    randomIndex;
+
+
+                const node =
+                    teamNodeElements[
+                        randomIndex
+                    ];
+
+
+                node.classList.remove(
+                    "pop"
+                );
+
+
+                void node.offsetWidth;
+
+
+                node.classList.add(
+                    "show",
+                    "pop"
+                );
+
+
+                count++;
+
+
+                const remaining =
+                    maxSteps -
+                    count;
+
+
+                playTickSound(
+                    remaining === 0
+                );
+
+
+                if (
+                    remaining === 0
+                ) {
+
+                    resolve();
+
+                    return;
+
+                }
+
+
+                if (
+                    remaining === 1
+                ) {
+
+                    delay = 550;
+
+                } else if (
+                    remaining === 2
+                ) {
+
+                    delay = 400;
+
+                } else if (
+                    remaining === 3
+                ) {
+
+                    delay = 280;
+
+                } else if (
+                    remaining === 4
+                ) {
+
+                    delay = 180;
+
+                } else if (
+                    remaining === 5
+                ) {
+
+                    delay = 110;
+
+                } else if (
+                    remaining <= 10
+                ) {
+
+                    delay += 10;
+
+                }
+
+
+                setTimeout(
+                    step,
+                    delay
+                );
+
+            }
+
+
+            step();
+
+        }
+    );
+
+}
+
+
+/*
+=========================================================
+輸入框提交
+=========================================================
+*/
+
+
+allInputs.forEach(
+    input => {
+
+        input.addEventListener(
+            "change",
+            async function () {
+
+                /*
+                change 只會喺使用者完成輸入、
+                然後離開個框時觸發。
+
+                呢個版本唔靠第一個字符判定完成。
+                */
+
+            }
+        );
+
+    }
+);
+
+
+/*
+=========================================================
+攔截 Enter
+=========================================================
+*/
+
+
+allInputs.forEach(
+    input => {
+
+        input.addEventListener(
+            "keydown",
+            async function (event) {
+
+                if (
+                    event.key !==
+                    "Enter"
+                ) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+
+                await submitCurrentInput(
+                    input
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/*
+=========================================================
+提交目前位置
+
+手機上冇 Enter，
+所以會喺玩家輸入完成後，
+下一次點「隨機抽取球隊」時提交。
+
+為咗保持原本 UI，
+呢度另外加一個隱藏邏輯：
+
+如果 phase=input，
+Roll button 會變成
+「提交位置 → 下一回合」。
+=========================================================
+*/
+
+
+async function submitCurrentInput(
+    input
+) {
+
+    if (!gameState) {
+
+        return;
+
+    }
+
+
+    if (
+        gameState.phase !==
+        "input"
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        gameState.turn !==
+        myRole
+    ) {
+
+        return;
+
+    }
+
+
+    const team =
+        myRole.toLowerCase();
+
+
+    if (
+        !input.id.startsWith(
+            `${team}_`
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    const position =
+        input.id.split("_")[1];
+
+
+    const name =
+        input.value.trim();
+
+
+    if (!name) {
+
+        alert(
+            "請先輸入球員名字"
+        );
+
+        return;
+
+    }
+
+
+    /*
+    防止玩家在同一回合
+    改另一格。
+    */
+
+    allInputs.forEach(
+        other => {
+
+            other.disabled =
+                true;
+
+        }
+    );
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "fill_nba_player",
+                {
+                    p_code:
+                        currentRoomCode,
+
+                    p_token:
+                        playerToken,
+
+                    p_position:
+                        position,
+
+                    p_player_name:
+                        name
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        gameState =
+            data.state;
+
+
+        renderState();
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            error.message
+        );
+
+
+        await refreshRoom();
+
+    }
+
+}
+
+
+/*
+=========================================================
+點擊 Roll：
+
+如果目前係 input phase，
+就變成提交目前位置。
+
+=========================================================
+*/
+
+
+rollBtn.addEventListener(
+    "click",
+    async function () {
+
+        if (
+            !gameState
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            gameState.phase ===
+            "input"
+        ) {
+
+            const team =
+                myRole.toLowerCase();
+
+
+            const activeInput =
+                document.querySelector(
+                    `#${team}_pg:not(:disabled),
+                     #${team}_sg:not(:disabled),
+                     #${team}_sf:not(:disabled),
+                     #${team}_pf:not(:disabled),
+                     #${team}_c:not(:disabled)`
+                );
+
+
+            if (
+                activeInput &&
+                activeInput.value.trim()
+            ) {
+
+                await submitCurrentInput(
+                    activeInput
+                );
+
+            } else {
+
+                alert(
+                    "請先選擇一個位置並輸入球員"
+                );
+
+            }
+
+        }
+
+    }
+);
+
+
+/*
+=========================================================
+修正 onclick 與 addEventListener
+=========================================================
+*/
+
+
+const originalStartRolling =
+    startRolling;
+
+
+/*
+因為 HTML button 本身有 onclick，
+所以將實際流程集中於
+下面的 handler。
+*/
+
+
+rollBtn.onclick =
+    async function () {
+
+        if (
+            !gameState
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            gameState.phase ===
+            "roll"
+        ) {
+
+            await originalStartRolling();
+
+            return;
+
+        }
+
+
+        if (
+            gameState.phase ===
+            "input"
+        ) {
+
+            const team =
+                myRole.toLowerCase();
+
+
+            const inputs =
+                [
+                    "pg",
+                    "sg",
+                    "sf",
+                    "pf",
+                    "c"
+                ]
+                .map(
+                    position =>
+                        document.getElementById(
+                            `${team}_${position}`
+                        )
+                );
+
+
+            const selected =
+                inputs.find(
+                    input =>
+                        !input.disabled
+                );
+
+
+            if (
+                !selected ||
+                !selected.value.trim()
+            ) {
+
+                alert(
+                    "請先選擇一個位置並輸入球員"
+                );
+
+                return;
+
+            }
+
+
+            await submitCurrentInput(
+                selected
+            );
+
+        }
+
+    };
+
+
+/*
+=========================================================
+生成文案
+=========================================================
+*/
+
+
+function generatePrompt() {
+
+    if (
+        !gameState ||
+        gameState.completed_count <
+        10
+    ) {
+
+        return;
+
+    }
+
+
+    const a =
+        gameState.a;
+
+
+    const b =
+        gameState.b;
+
+
+    const resultText =
+
+        `假設全員巔峯 請問A隊 PG “${a.pg}” SG “${a.sg}” SF“${a.sf}” PF “${a.pf}” C “${a.c}” 同埋 B隊 PG “${b.pg}” SG “${b.sg}” SF“${b.sf}” PF “${b.pf}” C “${b.c}” 邊一隊更強`;
+
+
+    outputText.value =
+        resultText;
+
+
+    outputSection.style.display =
+        "block";
+
+
+    outputSection.scrollIntoView({
+        behavior: "smooth"
+    });
+
+
+    clearBtn.disabled =
+        true;
+
+
+    hasCopiedPrompt =
+        false;
+
+}
+
+
+/*
+=========================================================
+Copy
+=========================================================
+*/
+
+
+async function copyText() {
+
+    const text =
+        outputText.value;
+
+
+    if (!text) {
+
+        return;
+
+    }
+
+
+    let success =
+        false;
+
+
+    try {
+
+        if (
+            navigator.clipboard &&
+            window.isSecureContext
+        ) {
+
+            await navigator.clipboard.writeText(
+                text
+            );
+
+            success =
+                true;
+
+        }
+
+    } catch (error) {
+
+        success =
+            false;
+
+    }
+
+
+    if (!success) {
+
         try {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
 
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
+            outputText.focus();
 
-            if (isFinal) {
-                // 定格：「叮！」高音金屬鈴聲，清脆延音
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(1046.5, audioCtx.currentTime); // C6 高音
-                
-                gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
-                
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.6);
-            } else {
-                // 前面切換：調高音調（1200Hz -> 400Hz），改用正弦波 + 高音量，發出清脆乾脆嘅「嗒（Tick）」聲
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.015);
-                
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime); // 音量加大
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.015);
-                
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.015);
-            }
-        } catch (e) {
-            // 防止瀏覽器音效限制
-        }
-    }
+            outputText.select();
 
-    let isRolling = false;
-    let activeNodeIndex = -1;
+            success =
+                document.execCommand(
+                    "copy"
+                );
 
-    function startRolling() {
-        if (isRolling) return;
+        } catch (error) {
 
-        isRolling = true;
-        const btn = document.getElementById('rollBtn');
-        const pendingNode = document.getElementById('node-pending');
+            success =
+                false;
 
-        btn.disabled = true;
-        displayCard.classList.add('active');
-
-        if (pendingNode) pendingNode.style.display = 'none';
-
-        let delay = 20; 
-        let count = 0;
-        const maxSteps = 35; 
-        let lastIndex = activeNodeIndex;
-
-        function rollStep() {
-            let randomIndex;
-            do {
-                randomIndex = Math.floor(Math.random() * nbaTeams.length);
-            } while (randomIndex === lastIndex);
-            
-            if (lastIndex !== -1 && teamNodeElements[lastIndex]) {
-                teamNodeElements[lastIndex].classList.remove('show', 'pop');
-            }
-
-            lastIndex = randomIndex;
-            activeNodeIndex = randomIndex;
-
-            const currentNode = teamNodeElements[randomIndex];
-            
-            currentNode.classList.remove('pop');
-            void currentNode.offsetWidth; 
-            currentNode.classList.add('show', 'pop');
-
-            count++;
-
-            const remaining = maxSteps - count;
-
-            // 播放音效
-            playTickSound(remaining === 0);
-
-            if (remaining === 0) {
-                // 定格
-            } else if (remaining === 1) {
-                delay = 550; 
-            } else if (remaining === 2) {
-                delay = 400; 
-            } else if (remaining === 3) {
-                delay = 280; 
-            } else if (remaining === 4) {
-                delay = 180; 
-            } else if (remaining === 5) {
-                delay = 110; 
-            } else if (remaining <= 10) {
-                delay += 10; 
-            }
-
-            if (count < maxSteps) {
-                setTimeout(rollStep, delay);
-            } else {
-                isRolling = false;
-                btn.disabled = false;
-                displayCard.classList.remove('active');
-            }
         }
 
-        rollStep();
     }
 
-    function generatePrompt() {
-        const a_pg = document.getElementById('a_pg').value.trim();
-        const a_sg = document.getElementById('a_sg').value.trim();
-        const a_sf = document.getElementById('a_sf').value.trim();
-        const a_pf = document.getElementById('a_pf').value.trim();
-        const a_c  = document.getElementById('a_c').value.trim();
 
-        const b_pg = document.getElementById('b_pg').value.trim();
-        const b_sg = document.getElementById('b_sg').value.trim();
-        const b_sf = document.getElementById('b_sf').value.trim();
-        const b_pf = document.getElementById('b_pf').value.trim();
-        const b_c  = document.getElementById('b_c').value.trim();
+    if (success) {
 
-        const resultText = `假設全員巔峯 請問A隊 PG “${a_pg}” SG “${a_sg}” SF“${a_sf}” PF “${a_pf}” C “${a_c}” 同埋 B隊 PG “${b_pg}” SG “${b_sg}” SF“${b_sf}” PF “${b_pf}” C “${b_c}” 邊一隊更強`;
+        hasCopiedPrompt =
+            true;
 
-        const outputSection = document.getElementById('outputSection');
-        const outputText = document.getElementById('outputText');
-        
-        outputText.value = resultText;
-        outputSection.style.display = 'block';
-        outputSection.scrollIntoView({ behavior: 'smooth' });
+
+        clearBtn.disabled =
+            false;
+
+
+        alert(
+            "文案已成功複製到剪貼簿！"
+        );
+
+    } else {
+
+        alert(
+            "複製失敗，請再試一次。"
+        );
+
     }
 
-    function clearInputs() {
-        const inputs = document.querySelectorAll('.player-input');
-        inputs.forEach(input => input.value = '');
-        
-        const outputSection = document.getElementById('outputSection');
-        const outputText = document.getElementById('outputText');
-        outputText.value = '';
-        outputSection.style.display = 'none';
+}
+
+
+/*
+=========================================================
+清空
+
+注意：
+
+聯機版唔容許其中一個人單方面清空。
+
+完成一局之後，
+兩個人可以重新建立一個房間。
+
+所以呢度只清除本機 UI，
+唔會破壞其他玩家嘅遊戲。
+
+=========================================================
+*/
+
+
+function clearInputs() {
+
+    if (
+        !hasCopiedPrompt
+    ) {
+
+        return;
+
     }
 
-    function copyText() {
-        const outputText = document.getElementById('outputText');
-        outputText.select();
-        document.execCommand('copy');
-        alert('文案已成功複製到剪貼簿！');
+
+    allInputs.forEach(
+        input => {
+
+            input.value =
+                "";
+
+            input.disabled =
+                true;
+
+        }
+    );
+
+
+    outputText.value =
+        "";
+
+
+    outputSection.style.display =
+        "none";
+
+
+    hasCopiedPrompt =
+        false;
+
+
+    /*
+    清除本機房間記錄，
+    下次可以重新建立房間。
+    */
+
+    localStorage.removeItem(
+        "nba_room_code"
+    );
+
+    localStorage.removeItem(
+        "nba_my_role"
+    );
+
+
+    currentRoomCode =
+        null;
+
+
+    myRole =
+        null;
+
+
+    gameState =
+        null;
+
+
+    roomCode.textContent =
+        "未加入";
+
+
+    roleText.textContent =
+        "請建立或加入房間";
+
+
+    roomStatus.textContent =
+        "尚未連接";
+
+
+    turnBanner.style.display =
+        "none";
+
+
+    rollBtn.disabled =
+        true;
+
+
+    rollBtn.textContent =
+        "請先加入房間";
+
+
+    createBtn.disabled =
+        true;
+
+
+    clearBtn.disabled =
+        true;
+
+
+    teamNodeElements.forEach(
+        node => {
+
+            node.classList.remove(
+                "show",
+                "pop"
+            );
+
+        }
+    );
+
+
+    const pendingNode =
+        document.getElementById(
+            "node-pending"
+        );
+
+
+    if (pendingNode) {
+
+        pendingNode.style.display =
+            "flex";
+
+        pendingNode.classList.add(
+            "show"
+        );
+
     }
+
+}
+
+
+/*
+=========================================================
+如果網址有 ?room=XXXXXX
+自動填入
+=========================================================
+*/
+
+
+const urlParams =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const urlRoom =
+    urlParams.get(
+        "room"
+    );
+
+
+if (urlRoom) {
+
+    document.getElementById(
+        "joinRoomInput"
+    ).value =
+        urlRoom
+            .trim()
+            .toUpperCase();
+
+}
+
+
+/*
+=========================================================
+如果本機之前有房間，
+嘗試重新連接
+=========================================================
+*/
+
+
+(async function restoreRoom() {
+
+    if (
+        currentRoomCode &&
+        playerToken
+    ) {
+
+        await refreshRoom();
+
+        if (gameState) {
+
+            updateRoomUI();
+
+            subscribeToRoom();
+
+            setRoomStatus(
+                "已重新連接房間"
+            );
+
+        }
+
+    }
+
+})();
+
+
 </script>
 
 </body>
