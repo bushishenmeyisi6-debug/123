@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-HK">
+
 <head>
 
 <meta charset="UTF-8">
@@ -23,14 +24,13 @@
         BlinkMacSystemFont,
         "Segoe UI",
         Roboto,
-        "Helvetica Neue",
         Arial,
         sans-serif;
 }
 
 body {
 
-    background-color: #f0f2f5;
+    background: #f0f2f5;
 
     display: flex;
 
@@ -40,27 +40,29 @@ body {
 
     min-height: 100vh;
 
+    padding: 20px 0;
+
     color: #333;
 
-    padding: 20px 0;
 }
 
 .container {
 
-    background: #ffffff;
+    width: 90%;
+
+    max-width: 480px;
+
+    background: white;
 
     padding: 30px 25px;
 
     border-radius: 20px;
 
     box-shadow:
-        0 15px 35px rgba(0,0,0,0.1);
+        0 15px 35px rgba(0,0,0,.1);
 
     text-align: center;
 
-    width: 90%;
-
-    max-width: 480px;
 }
 
 h1 {
@@ -71,14 +73,11 @@ h1 {
 
     margin-bottom: 20px;
 
-    letter-spacing: 1px;
-
-    text-transform: uppercase;
 }
 
 
 /* =====================================================
-   房間
+ROOM
 ===================================================== */
 
 .room-section {
@@ -92,6 +91,7 @@ h1 {
     padding: 15px;
 
     margin-bottom: 20px;
+
 }
 
 .room-title {
@@ -100,7 +100,8 @@ h1 {
 
     color: #334155;
 
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+
 }
 
 .room-code {
@@ -114,15 +115,29 @@ h1 {
     color: #006bb6;
 
     margin: 8px 0;
+
 }
 
 .role-text {
 
-    font-size: 0.95rem;
+    font-size: .95rem;
 
     color: #64748b;
 
+    margin-bottom: 8px;
+
+}
+
+.room-count {
+
+    font-size: .9rem;
+
+    font-weight: 700;
+
+    color: #475569;
+
     margin-bottom: 12px;
+
 }
 
 .room-actions {
@@ -130,6 +145,7 @@ h1 {
     display: flex;
 
     gap: 8px;
+
 }
 
 .room-input {
@@ -151,6 +167,7 @@ h1 {
     font-weight: 600;
 
     letter-spacing: 1px;
+
 }
 
 .room-btn {
@@ -168,11 +185,7 @@ h1 {
     font-weight: 700;
 
     cursor: pointer;
-}
 
-.room-btn:hover {
-
-    background: #005a99;
 }
 
 .room-btn:disabled {
@@ -180,20 +193,32 @@ h1 {
     background: #cbd5e1;
 
     cursor: not-allowed;
+
+}
+
+.leave-btn {
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    background: #ef4444;
+
 }
 
 .status-text {
 
     margin-top: 10px;
 
-    font-size: 0.9rem;
+    font-size: .9rem;
 
     color: #64748b;
+
 }
 
 
 /* =====================================================
-   回合提示
+WAITING
 ===================================================== */
 
 .turn-banner {
@@ -202,7 +227,7 @@ h1 {
 
     margin-bottom: 15px;
 
-    padding: 10px;
+    padding: 11px;
 
     border-radius: 10px;
 
@@ -211,92 +236,25 @@ h1 {
     color: #1d4ed8;
 
     font-weight: 700;
+
 }
 
+.turn-banner.waiting {
 
-/* =====================================================
-   未齊人鎖定層
-===================================================== */
-
-.game-area {
-
-    position: relative;
-}
-
-.game-area.locked {
-
-    opacity: 0.55;
-
-    pointer-events: none;
-
-    user-select: none;
-}
-
-.waiting-overlay {
-
-    display: none;
-
-    position: absolute;
-
-    z-index: 50;
-
-    top: 0;
-
-    left: 0;
-
-    right: 0;
-
-    bottom: 0;
-
-    border-radius: 16px;
-
-    background:
-        rgba(241,245,249,0.78);
-
-    backdrop-filter: blur(1px);
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-    padding: 30px;
+    background: #f1f5f9;
 
     color: #64748b;
 
-    font-weight: 700;
-
-    pointer-events: none;
-}
-
-.game-area.locked .waiting-overlay {
-
-    display: flex;
-}
-
-.waiting-message {
-
-    background: #ffffff;
-
-    padding: 14px 18px;
-
-    border-radius: 12px;
-
-    box-shadow:
-        0 5px 20px rgba(0,0,0,0.08);
-
-    border: 1px solid #e2e8f0;
 }
 
 
 /* =====================================================
-   Display
+DISPLAY
 ===================================================== */
 
 .display-card {
 
-    background: #ffffff;
+    background: #fff;
 
     border: 2px solid #e2e8f0;
 
@@ -318,9 +276,8 @@ h1 {
 
     overflow: hidden;
 
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+    transition: .3s;
+
 }
 
 .display-card.active {
@@ -328,7 +285,16 @@ h1 {
     border-color: #006bb6;
 
     box-shadow:
-        0 0 15px rgba(0,107,182,0.15);
+        0 0 15px rgba(0,107,182,.15);
+
+}
+
+.display-card.locked {
+
+    background: #f8fafc;
+
+    opacity: .72;
+
 }
 
 .team-node {
@@ -342,28 +308,32 @@ h1 {
     align-items: center;
 
     width: 100%;
+
 }
 
 .team-node.show {
 
     display: flex;
+
 }
 
 .team-node.pop {
 
     animation:
-        popIn 0.08s ease-out forwards;
+        popIn .08s ease-out forwards;
+
 }
 
 @keyframes popIn {
 
-    0% {
-        transform: scale(0.9);
+    from {
+        transform: scale(.9);
     }
 
-    100% {
+    to {
         transform: scale(1);
     }
+
 }
 
 .team-logo {
@@ -375,6 +345,7 @@ h1 {
     margin-bottom: 12px;
 
     object-fit: contain;
+
 }
 
 .team-zh {
@@ -385,9 +356,6 @@ h1 {
 
     color: #1a202c;
 
-    line-height: 1.1;
-
-    margin-bottom: 6px;
 }
 
 .team-en {
@@ -396,19 +364,26 @@ h1 {
 
     color: #718096;
 
-    font-weight: 500;
+}
+
+.pending-node {
+
+    opacity: .5;
+
 }
 
 
 /* =====================================================
-   Roll
+ROLL
 ===================================================== */
 
 .btn-roll {
 
-    background-color: #121212;
+    width: 100%;
 
-    color: #ffffff;
+    background: #121212;
+
+    color: white;
 
     border: none;
 
@@ -422,57 +397,42 @@ h1 {
 
     cursor: pointer;
 
-    width: 100%;
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.1s ease;
-
-    box-shadow:
-        0 4px 12px rgba(0,0,0,0.15);
-
     margin-bottom: 30px;
+
 }
 
-.btn-roll:hover {
+.btn-roll:hover:not(:disabled) {
 
-    background-color: #333;
-}
+    background: #333;
 
-.btn-roll:active {
-
-    transform: scale(0.98);
 }
 
 .btn-roll:disabled {
 
-    background-color: #cbd5e1;
+    background: #cbd5e1;
 
     color: #888;
 
     cursor: not-allowed;
 
     box-shadow: none;
+
 }
 
 
 /* =====================================================
-   Divider
+TEAMS
 ===================================================== */
 
 .divider {
 
     height: 1px;
 
-    background-color: #e2e8f0;
+    background: #e2e8f0;
 
-    margin: 10px 0 25px 0;
+    margin: 10px 0 25px;
+
 }
-
-
-/* =====================================================
-   Teams
-===================================================== */
 
 .teams-container {
 
@@ -483,6 +443,7 @@ h1 {
     gap: 15px;
 
     margin-bottom: 20px;
+
 }
 
 .team-box {
@@ -497,16 +458,23 @@ h1 {
 
     border: 1px solid #edf2f7;
 
-    transition:
-        background-color 0.2s,
-        opacity 0.2s;
+    transition: .2s;
+
+}
+
+.team-box.active-team {
+
+    border-color: #006bb6;
+
+    box-shadow:
+        0 0 0 2px rgba(0,107,182,.08);
+
 }
 
 .team-box.locked {
 
-    background: #eef2f7;
+    opacity: .65;
 
-    opacity: 0.65;
 }
 
 .team-title {
@@ -519,7 +487,6 @@ h1 {
 
     margin-bottom: 15px;
 
-    text-align: center;
 }
 
 .position-row {
@@ -529,6 +496,7 @@ h1 {
     align-items: center;
 
     margin-bottom: 10px;
+
 }
 
 .pos-label {
@@ -539,18 +507,19 @@ h1 {
 
     font-weight: 700;
 
-    font-size: 0.95rem;
+    font-size: .95rem;
 
     color: #4a5568;
 
     padding-right: 4px;
 
-    white-space: nowrap;
 }
 
 .player-input {
 
     flex: 1;
+
+    min-width: 0;
 
     padding: 6px 10px;
 
@@ -558,19 +527,12 @@ h1 {
 
     border-radius: 8px;
 
-    font-size: 0.9rem;
+    font-size: .9rem;
 
     outline: none;
 
-    transition:
-        border-color 0.2s,
-        box-shadow 0.2s;
+    background: white;
 
-    text-align: left;
-
-    width: 100%;
-
-    background-color: #fff;
 }
 
 .player-input:focus {
@@ -578,21 +540,23 @@ h1 {
     border-color: #006bb6;
 
     box-shadow:
-        0 0 0 2px rgba(0,107,182,0.15);
+        0 0 0 2px rgba(0,107,182,.15);
+
 }
 
 .player-input:disabled {
 
-    background-color: #e9eef5;
+    background: #e9eef5;
 
     color: #94a3b8;
 
     cursor: not-allowed;
+
 }
 
 
 /* =====================================================
-   Action buttons
+ACTION
 ===================================================== */
 
 .action-btns {
@@ -600,15 +564,16 @@ h1 {
     display: flex;
 
     gap: 10px;
+
 }
 
 .btn-create {
 
     flex: 3;
 
-    background-color: #10b981;
+    background: #10b981;
 
-    color: #ffffff;
+    color: white;
 
     border: none;
 
@@ -622,28 +587,25 @@ h1 {
 
     cursor: pointer;
 
-    box-shadow:
-        0 4px 12px rgba(16,185,129,0.2);
 }
 
 .btn-create:disabled {
 
-    background-color: #cbd5e1;
+    background: #cbd5e1;
 
     color: #888;
 
     cursor: not-allowed;
 
-    box-shadow: none;
 }
 
 .btn-clear {
 
     flex: 1;
 
-    background-color: #ef4444;
+    background: #ef4444;
 
-    color: #ffffff;
+    color: white;
 
     border: none;
 
@@ -656,20 +618,22 @@ h1 {
     border-radius: 12px;
 
     cursor: pointer;
+
 }
 
 .btn-clear:disabled {
 
-    background-color: #cbd5e1;
+    background: #cbd5e1;
 
     color: #888;
 
     cursor: not-allowed;
+
 }
 
 
 /* =====================================================
-   Output
+OUTPUT
 ===================================================== */
 
 .output-section {
@@ -687,6 +651,7 @@ h1 {
     border-radius: 12px;
 
     border: 1px solid #cbd5e1;
+
 }
 
 .output-header {
@@ -698,6 +663,7 @@ h1 {
     align-items: center;
 
     margin-bottom: 8px;
+
 }
 
 .output-status {
@@ -706,12 +672,11 @@ h1 {
 
     font-weight: 700;
 
-    font-size: 0.95rem;
 }
 
 .btn-copy {
 
-    background-color: #e2e8f0;
+    background: #e2e8f0;
 
     color: #334155;
 
@@ -719,13 +684,10 @@ h1 {
 
     padding: 4px 10px;
 
-    font-size: 0.8rem;
-
-    font-weight: 600;
-
     border-radius: 6px;
 
     cursor: pointer;
+
 }
 
 .output-text {
@@ -738,65 +700,77 @@ h1 {
 
     background: transparent;
 
-    font-size: 0.9rem;
-
-    color: #334155;
-
     resize: none;
 
     outline: none;
 
     line-height: 1.4;
+
 }
 
 
-@media (max-width: 420px) {
+/* =====================================================
+MOBILE
+===================================================== */
+
+@media (max-width:420px) {
 
     .container {
 
         width: 94%;
 
         padding: 25px 15px;
+
     }
 
     .teams-container {
 
         gap: 8px;
+
     }
 
     .team-box {
 
         padding: 12px 6px;
+
     }
 
     .pos-label {
 
         width: 38px;
 
-        font-size: 0.85rem;
+        font-size: .85rem;
+
     }
 
     .player-input {
 
-        font-size: 0.82rem;
+        font-size: .82rem;
 
         padding: 6px 7px;
+
     }
+
 }
 
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="container">
 
-<h1>NBA 球隊隨機抽籤</h1>
+
+<h1>
+NBA 球隊隨機抽籤
+</h1>
 
 
 <!-- =====================================================
-     房間
+ROOM
 ===================================================== -->
 
 <div class="room-section">
@@ -819,11 +793,19 @@ h1 {
         請建立或加入房間
     </div>
 
+    <div
+        class="room-count"
+        id="roomCount"
+    >
+        👥 0 / 2
+    </div>
+
     <div class="room-actions">
 
         <button
             class="room-btn"
             id="createRoomBtn"
+            onclick="createRoom()"
         >
             建立房間
         </button>
@@ -838,11 +820,21 @@ h1 {
         <button
             class="room-btn"
             id="joinRoomBtn"
+            onclick="joinRoom()"
         >
             加入
         </button>
 
     </div>
+
+    <button
+        class="room-btn leave-btn"
+        id="leaveRoomBtn"
+        onclick="leaveRoom()"
+        style="display:none;"
+    >
+        退出房間
+    </button>
 
     <div
         class="status-text"
@@ -857,308 +849,250 @@ h1 {
 <div
     class="turn-banner"
     id="turnBanner"
-></div>
+>
+</div>
 
 
 <!-- =====================================================
-     所有遊戲內容
+DISPLAY
 ===================================================== -->
 
 <div
-    class="game-area locked"
-    id="gameArea"
+    class="display-card locked"
+    id="displayCard"
 >
 
-    <div class="waiting-overlay">
-
-        <div
-            class="waiting-message"
-            id="waitingMessage"
-        >
-            ⏳ 等待第二位玩家加入
-        </div>
-
-    </div>
-
-
-    <!-- =================================================
-         Display
-    ================================================= -->
-
+    <!-- Pending -->
     <div
-        class="display-card"
-        id="displayCard"
+        class="team-node show pending-node"
+        id="node-pending"
     >
 
-        <div
-            class="team-node show"
-            id="node-pending"
+        <img
+            src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png"
+            class="team-logo"
+            alt="NBA"
         >
 
-            <img
-                src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png"
-                alt="NBA"
-                class="team-logo"
-                style="opacity:0.35;"
-            >
-
-            <div class="team-zh">
-                待定
-            </div>
-
-            <div class="team-en">
-                Pending
-            </div>
-
+        <div class="team-zh">
+            待定
         </div>
 
-    </div>
-
-
-    <button
-        class="btn-roll"
-        id="rollBtn"
-        disabled
-    >
-        請先加入房間
-    </button>
-
-
-    <div class="divider"></div>
-
-
-    <!-- =================================================
-         Teams
-    ================================================= -->
-
-    <div class="teams-container">
-
-        <div
-            class="team-box"
-            id="teamBoxA"
-        >
-
-            <div class="team-title">
-                A隊
-            </div>
-
-            <div class="position-row">
-                <span class="pos-label">
-                    PG-
-                </span>
-
-                <input
-                    type="text"
-                    class="player-input"
-                    id="a_pg"
-                >
-            </div>
-
-            <div class="position-row">
-                <span class="pos-label">
-                    SG-
-                </span>
-
-                <input
-                    type="text"
-                    class="player-input"
-                    id="a_sg"
-                >
-            </div>
-
-            <div class="position-row">
-                <span class="pos-label">
-                    SF-
-                </span>
-
-                <input
-                    type="text"
-                    class="player-input"
-                    id="a_sf"
-                >
-            </div>
-
-            <div class="position-row">
-                <span class="pos-label">
-                    PF-
-                </span>
-
-                <input
-                    type="text"
-                    class="player-input"
-                    id="a_pf"
-                >
-            </div>
-
-            <div class="position-row">
-                <span class="pos-label">
-                    C-
-                </span>
-
-                <input
-                    type="text"
-                    class="player-input"
-                    id="a_c"
-                >
-            </div>
-
+        <div class="team-en">
+            Pending
         </div>
-
-
-        <div
-            class="team-box"
-            id="teamBoxB"
-        >
-
-            <div class="team-title">
-                B隊
-            </div>
-
-            <div class="position-row">
-                <span class="pos-label">
-                    PG-
-                </span>
-
-                <input
-                    type="text"
-                    class="player-input"
-                    id="b_pg"
-                >
-            </div>
-
-            <div class="position-row">
-                <span class="pos-label">
-                    SG-
-                </span>
-
-                <input
-                    type="text"
-                    class="player-input"
-                    id="b_sg"
-                >
-            </div>
-
-            <div class="position-row">
-                <span class="pos-label">
-                    SF-
-                </span>
-
-                <input
-                    type="text"
-                    class="player-input"
-                    id="b_sf"
-                >
-            </div>
-
-            <div class="position-row">
-                <span class="pos-label">
-                    PF-
-                </span>
-
-                <input
-                    type="text"
-                    class="player-input"
-                    id="b_pf"
-                >
-            </div>
-
-            <div class="position-row">
-                <span class="pos-label">
-                    C-
-                </span>
-
-                <input
-                    type="text"
-                    class="player-input"
-                    id="b_c"
-                </span>
-
-        </div>
-
-    </div>
-
-
-    <!-- =================================================
-         Actions
-    ================================================= -->
-
-    <div class="action-btns">
-
-        <button
-            class="btn-create"
-            id="createBtn"
-            disabled
-        >
-            創建球隊完成
-        </button>
-
-        <button
-            class="btn-clear"
-            id="clearBtn"
-            disabled
-        >
-            清空
-        </button>
-
-    </div>
-
-
-    <!-- =================================================
-         Output
-    ================================================= -->
-
-    <div
-        class="output-section"
-        id="outputSection"
-    >
-
-        <div class="output-header">
-
-            <span class="output-status">
-                已生成文案！
-            </span>
-
-            <button
-                class="btn-copy"
-                id="copyBtn"
-            >
-                複製文案
-            </button>
-
-        </div>
-
-        <textarea
-            class="output-text"
-            id="outputText"
-            readonly
-        ></textarea>
 
     </div>
 
 </div>
+
+
+<button
+    class="btn-roll"
+    id="rollBtn"
+    disabled
+    onclick="handleRollButton()"
+>
+    等待第二位玩家
+</button>
+
+
+<div class="divider"></div>
+
+
+<!-- =====================================================
+TEAMS
+===================================================== -->
+
+<div class="teams-container">
+
+
+<div
+    class="team-box"
+    id="teamBoxA"
+>
+
+    <div class="team-title">
+        A隊
+    </div>
+
+    <div class="position-row">
+        <span class="pos-label">PG-</span>
+        <input
+            class="player-input"
+            id="a_pg"
+            disabled
+        >
+    </div>
+
+    <div class="position-row">
+        <span class="pos-label">SG-</span>
+        <input
+            class="player-input"
+            id="a_sg"
+            disabled
+        >
+    </div>
+
+    <div class="position-row">
+        <span class="pos-label">SF-</span>
+        <input
+            class="player-input"
+            id="a_sf"
+            disabled
+        >
+    </div>
+
+    <div class="position-row">
+        <span class="pos-label">PF-</span>
+        <input
+            class="player-input"
+            id="a_pf"
+            disabled
+        >
+    </div>
+
+    <div class="position-row">
+        <span class="pos-label">C-</span>
+        <input
+            class="player-input"
+            id="a_c"
+            disabled
+        >
+    </div>
+
+</div>
+
+
+<div
+    class="team-box"
+    id="teamBoxB"
+>
+
+    <div class="team-title">
+        B隊
+    </div>
+
+    <div class="position-row">
+        <span class="pos-label">PG-</span>
+        <input
+            class="player-input"
+            id="b_pg"
+            disabled
+        >
+    </div>
+
+    <div class="position-row">
+        <span class="pos-label">SG-</span>
+        <input
+            class="player-input"
+            id="b_sg"
+            disabled
+        >
+    </div>
+
+    <div class="position-row">
+        <span class="pos-label">SF-</span>
+        <input
+            class="player-input"
+            id="b_sf"
+            disabled
+        >
+    </div>
+
+    <div class="position-row">
+        <span class="pos-label">PF-</span>
+        <input
+            class="player-input"
+            id="b_pf"
+            disabled
+        >
+    </div>
+
+    <div class="position-row">
+        <span class="pos-label">C-</span>
+        <input
+            class="player-input"
+            id="b_c"
+            disabled
+        >
+    </div>
+
+</div>
+
+
+</div>
+
+
+<div class="action-btns">
+
+    <button
+        class="btn-create"
+        id="createBtn"
+        onclick="generatePrompt()"
+        disabled
+    >
+        創建球隊完成
+    </button>
+
+    <button
+        class="btn-clear"
+        id="clearBtn"
+        onclick="clearLocalGame()"
+        disabled
+    >
+        清空
+    </button>
+
+</div>
+
+
+<div
+    class="output-section"
+    id="outputSection"
+>
+
+    <div class="output-header">
+
+        <span class="output-status">
+            已生成文案！
+        </span>
+
+        <button
+            class="btn-copy"
+            onclick="copyText()"
+        >
+            複製文案
+        </button>
+
+    </div>
+
+    <textarea
+        class="output-text"
+        id="outputText"
+        readonly
+    ></textarea>
+
+</div>
+
 
 </div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
 
-/* =====================================================
-   Supabase
-===================================================== */
+/* =========================================================
+SUPABASE
+========================================================= */
 
 const SUPABASE_URL =
     "https://yafuniflixhbkdcqnqfz.supabase.co";
 
 const SUPABASE_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhZnVuaWZsaXhoYmtkY3FucWZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyMjM0ODQsImV4cCI6MjEwMjc5OTQ4NH0.IBxTIxuHXDBT6OhyTtMxPsigZgx5oca7ZjFHS7h6Zyg";
-
-/*
-   ↑↑↑
-   這裡請保留你原本完整的 SUPABASE_KEY。
-*/
-
 
 const {
     createClient
@@ -1171,219 +1105,56 @@ const supabaseClient =
     );
 
 
-/* =====================================================
-   NBA
-===================================================== */
+/* =========================================================
+NBA
+========================================================= */
 
 const nbaTeams = [
 
-    {
-        zh:"老鷹",
-        en:"Atlanta Hawks",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/atl.png"
-    },
+["老鷹","Atlanta Hawks","atl"],
+["塞爾提克","Boston Celtics","bos"],
+["籃網","Brooklyn Nets","bkn"],
+["黃蜂","Charlotte Hornets","cha"],
+["公牛","Chicago Bulls","chi"],
+["騎士","Cleveland Cavaliers","cle"],
+["獨行俠","Dallas Mavericks","dal"],
+["金塊","Denver Nuggets","den"],
+["活塞","Detroit Pistons","det"],
+["勇士","Golden State Warriors","gs"],
+["火箭","Houston Rockets","hou"],
+["遛馬","Indiana Pacers","ind"],
+["快艇","LA Clippers","lac"],
+["湖人","Los Angeles Lakers","lal"],
+["灰熊","Memphis Grizzlies","mem"],
+["熱火","Miami Heat","mia"],
+["公鹿","Milwaukee Bucks","mil"],
+["灰狼","Minnesota Timberwolves","min"],
+["鵜鶘","New Orleans Pelicans","no"],
+["尼克","New York Knicks","ny"],
+["雷霆","Oklahoma City Thunder","okc"],
+["魔術","Orlando Magic","orl"],
+["七六人","Philadelphia 76ers","phi"],
+["太陽","Phoenix Suns","phx"],
+["開拓者","Portland Trail Blazers","por"],
+["國王","Sacramento Kings","sac"],
+["馬刺","San Antonio Spurs","sas"],
+["猛龍","Toronto Raptors","tor"],
+["爵士","Utah Jazz","utah"],
+["奇才","Washington Wizards","was"]
 
-    {
-        zh:"塞爾提克",
-        en:"Boston Celtics",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/bos.png"
-    },
-
-    {
-        zh:"籃網",
-        en:"Brooklyn Nets",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/bkn.png"
-    },
-
-    {
-        zh:"黃蜂",
-        en:"Charlotte Hornets",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/cha.png"
-    },
-
-    {
-        zh:"公牛",
-        en:"Chicago Bulls",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/chi.png"
-    },
-
-    {
-        zh:"騎士",
-        en:"Cleveland Cavaliers",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/cle.png"
-    },
-
-    {
-        zh:"獨行俠",
-        en:"Dallas Mavericks",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/dal.png"
-    },
-
-    {
-        zh:"金塊",
-        en:"Denver Nuggets",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/den.png"
-    },
-
-    {
-        zh:"活塞",
-        en:"Detroit Pistons",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/det.png"
-    },
-
-    {
-        zh:"勇士",
-        en:"Golden State Warriors",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/gs.png"
-    },
-
-    {
-        zh:"火箭",
-        en:"Houston Rockets",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/hou.png"
-    },
-
-    {
-        zh:"遛馬",
-        en:"Indiana Pacers",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/ind.png"
-    },
-
-    {
-        zh:"快艇",
-        en:"LA Clippers",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/lac.png"
-    },
-
-    {
-        zh:"湖人",
-        en:"Los Angeles Lakers",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/lal.png"
-    },
-
-    {
-        zh:"灰熊",
-        en:"Memphis Grizzlies",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/mem.png"
-    },
-
-    {
-        zh:"熱火",
-        en:"Miami Heat",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/mia.png"
-    },
-
-    {
-        zh:"公鹿",
-        en:"Milwaukee Bucks",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/mil.png"
-    },
-
-    {
-        zh:"灰狼",
-        en:"Minnesota Timberwolves",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/min.png"
-    },
-
-    {
-        zh:"鵜鶘",
-        en:"New Orleans Pelicans",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/no.png"
-    },
-
-    {
-        zh:"尼克",
-        en:"New York Knicks",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/ny.png"
-    },
-
-    {
-        zh:"雷霆",
-        en:"Oklahoma City Thunder",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/okc.png"
-    },
-
-    {
-        zh:"魔術",
-        en:"Orlando Magic",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/orl.png"
-    },
-
-    {
-        zh:"七六人",
-        en:"Philadelphia 76ers",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/phi.png"
-    },
-
-    {
-        zh:"太陽",
-        en:"Phoenix Suns",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/phx.png"
-    },
-
-    {
-        zh:"開拓者",
-        en:"Portland Trail Blazers",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/por.png"
-    },
-
-    {
-        zh:"國王",
-        en:"Sacramento Kings",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/sac.png"
-    },
-
-    {
-        zh:"馬刺",
-        en:"San Antonio Spurs",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/sas.png"
-    },
-
-    {
-        zh:"猛龍",
-        en:"Toronto Raptors",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/tor.png"
-    },
-
-    {
-        zh:"爵士",
-        en:"Utah Jazz",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/utah.png"
-    },
-
-    {
-        zh:"奇才",
-        en:"Washington Wizards",
-        logo:"https://a.espncdn.com/i/teamlogos/nba/500/was.png"
-    }
-
-];
+].map(
+    team => ({
+        zh: team[0],
+        en: team[1],
+        logo:
+            `https://a.espncdn.com/i/teamlogos/nba/500/${team[2]}.png`
+    })
+);
 
 
-/* =====================================================
-   DOM
-===================================================== */
-
-const gameArea =
-    document.getElementById("gameArea");
-
-const waitingMessage =
-    document.getElementById("waitingMessage");
-
-const displayCard =
-    document.getElementById("displayCard");
-
-const pendingNode =
-    document.getElementById("node-pending");
-
-const rollBtn =
-    document.getElementById("rollBtn");
-
-const createBtn =
-    document.getElementById("createBtn");
-
-const clearBtn =
-    document.getElementById("clearBtn");
+/* =========================================================
+DOM
+========================================================= */
 
 const roomCode =
     document.getElementById("roomCode");
@@ -1391,11 +1162,29 @@ const roomCode =
 const roleText =
     document.getElementById("roleText");
 
+const roomCount =
+    document.getElementById("roomCount");
+
 const roomStatus =
     document.getElementById("roomStatus");
 
+const rollBtn =
+    document.getElementById("rollBtn");
+
+const displayCard =
+    document.getElementById("displayCard");
+
 const turnBanner =
     document.getElementById("turnBanner");
+
+const createBtn =
+    document.getElementById("createBtn");
+
+const clearBtn =
+    document.getElementById("clearBtn");
+
+const leaveRoomBtn =
+    document.getElementById("leaveRoomBtn");
 
 const outputSection =
     document.getElementById("outputSection");
@@ -1403,23 +1192,15 @@ const outputSection =
 const outputText =
     document.getElementById("outputText");
 
-const teamBoxA =
-    document.getElementById("teamBoxA");
-
-const teamBoxB =
-    document.getElementById("teamBoxB");
-
 const allInputs =
-    Array.from(
-        document.querySelectorAll(".player-input")
-    );
-
-let teamNodeElements = [];
+    [...document.querySelectorAll(".player-input")];
 
 
-/* =====================================================
-   建立球隊 DOM
-===================================================== */
+/* =========================================================
+TEAM DOM
+========================================================= */
+
+const teamNodes = [];
 
 nbaTeams.forEach(
     (team,index) => {
@@ -1437,8 +1218,8 @@ nbaTeams.forEach(
 
             <img
                 src="${team.logo}"
-                alt="${team.en}"
                 class="team-logo"
+                alt="${team.en}"
             >
 
             <div class="team-zh">
@@ -1453,25 +1234,20 @@ nbaTeams.forEach(
 
         displayCard.appendChild(node);
 
-        teamNodeElements.push(node);
+        teamNodes.push(node);
 
     }
 );
 
 
-/* =====================================================
-   玩家身份
-===================================================== */
-
-let currentRoomCode =
-    localStorage.getItem("nba_room_code");
-
-let myRole =
-    localStorage.getItem("nba_my_role");
+/* =========================================================
+PLAYER ID
+========================================================= */
 
 let playerToken =
-    localStorage.getItem("nba_player_token");
-
+    localStorage.getItem(
+        "nba_player_token"
+    );
 
 if (!playerToken) {
 
@@ -1486,9 +1262,19 @@ if (!playerToken) {
 }
 
 
-/* =====================================================
-   Game
-===================================================== */
+/* =========================================================
+ROOM STATE
+========================================================= */
+
+let currentRoomCode =
+    localStorage.getItem(
+        "nba_room_code"
+    );
+
+let myRole =
+    localStorage.getItem(
+        "nba_my_role"
+    );
 
 let gameState = null;
 
@@ -1496,147 +1282,29 @@ let realtimeChannel = null;
 
 let isRolling = false;
 
-let activeNodeIndex = -1;
 
-let hasCopiedPrompt = false;
+/* =========================================================
+DEFAULT STATE
+========================================================= */
 
+function getPlayerCount() {
 
-/* =====================================================
-   判斷是否已經兩個玩家
-===================================================== */
+    if (!gameState) {
 
-/*
-   因為你現有 Supabase state 命名可能係之前
-   SQL function 定義嘅不同版本，所以呢度兼容
-   幾種常見欄位。
-
-   最重要：
-   「未知」唔當成「已齊人」。
-
-   即係安全起見：
-   如果前端完全搵唔到第二個玩家資料，
-   就會鎖住遊戲。
-*/
-
-function getPlayerCount(state) {
-
-    if (!state) {
         return 0;
-    }
-
-    const candidates = [
-
-        state.player_count,
-
-        state.players_count,
-
-        state.playerCount,
-
-        state.playersCount,
-
-        state.connected_players,
-
-        state.connectedPlayers,
-
-        state.joined_players,
-
-        state.joinedPlayers,
-
-        Array.isArray(state.players)
-            ? state.players.length
-            : null,
-
-        Array.isArray(state.player_tokens)
-            ? state.player_tokens.length
-            : null,
-
-        Array.isArray(state.playerTokens)
-            ? state.playerTokens.length
-            : null
-
-    ];
-
-    for (
-        const value of candidates
-    ) {
-
-        if (
-            typeof value === "number" &&
-            Number.isFinite(value)
-        ) {
-
-            return value;
-
-        }
 
     }
 
-
-    /*
-    如果 state 直接有 A/B 玩家 token，
-    亦可以判斷。
-    */
-
-    const hasA =
-        !!(
-            state.a_player ||
-            state.aPlayer ||
-            state.a_token ||
-            state.aToken ||
-            state.player_a ||
-            state.playerA
-        );
-
-    const hasB =
-        !!(
-            state.b_player ||
-            state.bPlayer ||
-            state.b_token ||
-            state.bToken ||
-            state.player_b ||
-            state.playerB
-        );
-
-    if (hasA && hasB) {
-        return 2;
-    }
-
-    if (hasA || hasB) {
-        return 1;
-    }
-
-
-    /*
-    最後，如果 phase 本身已經進入真正遊戲階段，
-    代表後端已經讓遊戲開始。
-    */
-
-    if (
-        state.phase === "input" ||
-        state.phase === "done"
-    ) {
-
-        return 2;
-
-    }
-
-
-    return 1;
-}
-
-
-function isRoomReady() {
-
-    return (
-        getPlayerCount(gameState) >= 2
+    return Number(
+        gameState.player_count || 0
     );
 
 }
 
 
-/* =====================================================
-   房間 UI
-===================================================== */
+/* =========================================================
+ROOM UI
+========================================================= */
 
 function updateRoomUI() {
 
@@ -1648,144 +1316,519 @@ function updateRoomUI() {
         roleText.textContent =
             "請建立或加入房間";
 
+        roomCount.textContent =
+            "👥 0 / 2";
+
+        leaveRoomBtn.style.display =
+            "none";
+
         return;
 
     }
+
 
     roomCode.textContent =
         currentRoomCode;
 
     roleText.textContent =
-        `你係 ${myRole}隊`;
+        myRole === "A"
+            ? "你係 A隊（房主）"
+            : "你係 B隊";
+
+    roomCount.textContent =
+        `👥 ${getPlayerCount()} / 2`;
+
+    leaveRoomBtn.style.display =
+        "block";
 
 }
 
 
-/* =====================================================
-   遊戲鎖定 UI
-===================================================== */
+/* =========================================================
+WAITING
+========================================================= */
 
-function updateGameLock() {
+function isRoomReady() {
 
-    const ready =
-        isRoomReady();
+    return (
+        gameState &&
+        getPlayerCount() >= 2
+    );
+
+}
 
 
-    if (!currentRoomCode) {
+/* =========================================================
+RENDER
+========================================================= */
 
-        gameArea.classList.add("locked");
+function renderState() {
 
-        waitingMessage.textContent =
-            "🔒 請先建立或加入房間";
+    if (!gameState) {
+
+        resetGameUI();
 
         return;
 
     }
 
 
-    if (!ready) {
+    updateRoomUI();
 
-        gameArea.classList.add("locked");
+    renderPlayers();
 
-        waitingMessage.textContent =
-            "⏳ 等待第二位玩家加入";
+    renderTurn();
 
-        rollBtn.disabled =
-            true;
+    renderButtons();
+
+    renderTeam();
+
+}
+
+
+/* =========================================================
+RESET
+========================================================= */
+
+function resetGameUI() {
+
+    displayCard.classList.add("locked");
+
+    turnBanner.style.display =
+        "block";
+
+    turnBanner.className =
+        "turn-banner waiting";
+
+    turnBanner.textContent =
+        "等待加入房間";
+
+    rollBtn.disabled =
+        true;
+
+    rollBtn.textContent =
+        "等待第二位玩家";
+
+    createBtn.disabled =
+        true;
+
+    clearBtn.disabled =
+        true;
+
+    allInputs.forEach(
+        input => {
+
+            input.value = "";
+
+            input.disabled = true;
+
+        }
+    );
+
+
+    showPending();
+
+}
+
+
+/* =========================================================
+PENDING
+========================================================= */
+
+function showPending() {
+
+    teamNodes.forEach(
+        node => {
+
+            node.classList.remove(
+                "show",
+                "pop"
+            );
+
+        }
+    );
+
+
+    const pending =
+        document.getElementById(
+            "node-pending"
+        );
+
+    if (pending) {
+
+        pending.classList.add(
+            "show"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+TEAM DISPLAY
+========================================================= */
+
+function renderTeam() {
+
+    if (!isRoomReady()) {
+
+        showPending();
+
+        return;
+
+    }
+
+
+    const selected =
+        gameState.selected_team_index;
+
+
+    if (
+        selected === null ||
+        selected === undefined
+    ) {
+
+        showPending();
+
+        return;
+
+    }
+
+
+    const index =
+        Number(selected);
+
+
+    teamNodes.forEach(
+        node => {
+
+            node.classList.remove(
+                "show",
+                "pop"
+            );
+
+        }
+    );
+
+
+    if (teamNodes[index]) {
+
+        teamNodes[index]
+            .classList.add("show");
+
+    }
+
+
+    displayCard.classList.remove(
+        "locked"
+    );
+
+}
+
+
+/* =========================================================
+PLAYERS
+========================================================= */
+
+function renderPlayers() {
+
+    const positions =
+        ["pg","sg","sf","pf","c"];
+
+
+    for (
+        const team of ["a","b"]
+    ) {
+
+        for (
+            const pos of positions
+        ) {
+
+            const input =
+                document.getElementById(
+                    `${team}_${pos}`
+                );
+
+            input.value =
+                gameState[team]?.[pos] || "";
+
+            input.disabled = true;
+
+        }
+
+    }
+
+
+    if (!isRoomReady()) {
+
+        return;
+
+    }
+
+
+    if (
+        gameState.phase !== "input"
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        gameState.turn !== myRole
+    ) {
+
+        return;
+
+    }
+
+
+    const team =
+        myRole.toLowerCase();
+
+
+    positions.forEach(
+        pos => {
+
+            const input =
+                document.getElementById(
+                    `${team}_${pos}`
+                );
+
+
+            if (
+                !gameState[team]?.[pos]
+            ) {
+
+                input.disabled = false;
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+TURN
+========================================================= */
+
+function renderTurn() {
+
+    turnBanner.style.display =
+        "block";
+
+
+    if (!isRoomReady()) {
+
+        turnBanner.className =
+            "turn-banner waiting";
+
+        turnBanner.textContent =
+            "⏳ 等待第二位玩家加入房間";
+
+        return;
+
+    }
+
+
+    turnBanner.className =
+        "turn-banner";
+
+
+    if (
+        gameState.phase === "done"
+    ) {
+
+        turnBanner.textContent =
+            "🏆 所有球員已完成，可以創建文案";
+
+        return;
+
+    }
+
+
+    if (
+        gameState.turn === myRole
+    ) {
+
+        if (
+            gameState.phase === "roll"
+        ) {
+
+            turnBanner.textContent =
+                `🟢 到你 (${myRole}隊)！請抽取球隊`;
+
+        } else {
+
+            turnBanner.textContent =
+                `🟢 ${myRole}隊，請選擇位置並輸入球員`;
+
+        }
+
+    } else {
+
+        turnBanner.textContent =
+            `🔴 ${gameState.turn}隊回合，請等待`;
+
+    }
+
+}
+
+
+/* =========================================================
+BUTTONS
+========================================================= */
+
+function renderButtons() {
+
+    /* 未滿 2 人 */
+    if (!isRoomReady()) {
+
+        rollBtn.disabled = true;
+
+        rollBtn.textContent =
+            "等待第二位玩家";
+
+        displayCard.classList.add(
+            "locked"
+        );
+
+        createBtn.disabled = true;
+
+        return;
+
+    }
+
+
+    /* 遊戲完成 */
+    if (
+        gameState.phase === "done"
+    ) {
+
+        rollBtn.disabled = true;
+
+        rollBtn.textContent =
+            "本局已完成";
 
         createBtn.disabled =
-            true;
+            Number(
+                gameState.completed_count || 0
+            ) < 10;
 
-        clearBtn.disabled =
-            true;
+        return;
 
-        allInputs.forEach(
-            input => {
+    }
 
-                input.disabled =
-                    true;
+
+    /* Roll */
+    if (
+        gameState.phase === "roll"
+    ) {
+
+        rollBtn.disabled =
+            gameState.turn !== myRole ||
+            isRolling;
+
+        rollBtn.textContent =
+            gameState.turn === myRole
+                ? "隨機抽取球隊"
+                : "等待對方抽取";
+
+        createBtn.disabled = true;
+
+        return;
+
+    }
+
+
+    /* Input */
+    if (
+        gameState.phase === "input"
+    ) {
+
+        const team =
+            myRole.toLowerCase();
+
+        const hasText =
+            allInputs.some(
+                input =>
+                    input.id.startsWith(
+                        `${team}_`
+                    ) &&
+                    !input.disabled &&
+                    input.value.trim()
+            );
+
+
+        rollBtn.disabled =
+            gameState.turn !== myRole ||
+            !hasText;
+
+        rollBtn.textContent =
+            gameState.turn === myRole
+                ? "提交球員"
+                : "等待對方輸入";
+
+        createBtn.disabled = true;
+
+    }
+
+}
+
+
+/* =========================================================
+INPUT
+========================================================= */
+
+allInputs.forEach(
+    input => {
+
+        input.addEventListener(
+            "input",
+            () => {
+
+                renderButtons();
 
             }
         );
 
-        teamBoxA.classList.add("locked");
-        teamBoxB.classList.add("locked");
 
-        return;
+        input.addEventListener(
+            "keydown",
+            event => {
 
-    }
+                if (
+                    event.key === "Enter"
+                ) {
 
-
-    gameArea.classList.remove("locked");
-
-    teamBoxA.classList.remove("locked");
-    teamBoxB.classList.remove("locked");
-
-}
-
-
-/* =====================================================
-   Realtime
-===================================================== */
-
-function subscribeToRoom() {
-
-    if (realtimeChannel) {
-
-        supabaseClient.removeChannel(
-            realtimeChannel
-        );
-
-    }
-
-
-    realtimeChannel =
-        supabaseClient
-            .channel(
-                `nba-room-${currentRoomCode}`
-            )
-            .on(
-                "postgres_changes",
-                {
-                    event: "UPDATE",
-                    schema: "public",
-                    table: "nba_rooms",
-                    filter:
-                        `room_code=eq.${currentRoomCode}`
-                },
-                payload => {
+                    event.preventDefault();
 
                     if (
-                        payload.new &&
-                        payload.new.game_state
+                        input.value.trim()
                     ) {
 
-                        gameState =
-                            payload.new.game_state;
-
-                        renderState();
+                        submitCurrentInput(
+                            input
+                        );
 
                     }
 
                 }
-            )
-            .subscribe(
-                status => {
 
-                    console.log(
-                        "Realtime:",
-                        status
-                    );
+            }
+        );
 
-                }
-            );
-
-}
+    }
+);
 
 
-/* =====================================================
-   建立房間
-===================================================== */
+/* =========================================================
+CREATE ROOM
+========================================================= */
 
 async function createRoom() {
 
@@ -1809,7 +1852,9 @@ async function createRoom() {
 
 
         if (error) {
+
             throw error;
+
         }
 
 
@@ -1834,37 +1879,34 @@ async function createRoom() {
         );
 
 
-        updateRoomUI();
-
         subscribeToRoom();
 
         renderState();
 
 
         roomStatus.textContent =
-            "房間已建立，等待朋友加入";
+            "房間已建立，等待第二位玩家加入";
 
-    }
-    catch (error) {
+    } catch (error) {
 
         console.error(error);
+
+        roomStatus.textContent =
+            "建立失敗";
 
         alert(
             "建立房間失敗：\n" +
             error.message
         );
 
-        roomStatus.textContent =
-            "建立失敗";
-
     }
 
 }
 
 
-/* =====================================================
-   加入房間
-===================================================== */
+/* =========================================================
+JOIN
+========================================================= */
 
 async function joinRoom() {
 
@@ -1906,8 +1948,7 @@ async function joinRoom() {
             await supabaseClient.rpc(
                 "join_nba_room",
                 {
-                    p_code:
-                        code,
+                    p_code: code,
 
                     p_token:
                         playerToken
@@ -1916,7 +1957,9 @@ async function joinRoom() {
 
 
         if (error) {
+
             throw error;
+
         }
 
 
@@ -1941,43 +1984,121 @@ async function joinRoom() {
         );
 
 
-        updateRoomUI();
-
         subscribeToRoom();
 
         renderState();
 
 
         roomStatus.textContent =
-            "已成功加入房間";
+            "已加入房間，遊戲開始！";
 
-    }
-    catch (error) {
+    } catch (error) {
 
         console.error(error);
+
+        roomStatus.textContent =
+            "加入失敗";
 
         alert(
             "加入房間失敗：\n" +
             error.message
         );
 
-        roomStatus.textContent =
-            "加入失敗";
-
     }
 
 }
 
 
-/* =====================================================
-   Refresh
-===================================================== */
+/* =========================================================
+REALTIME
+========================================================= */
+
+function subscribeToRoom() {
+
+    if (realtimeChannel) {
+
+        supabaseClient.removeChannel(
+            realtimeChannel
+        );
+
+    }
+
+
+    realtimeChannel =
+        supabaseClient
+            .channel(
+                `nba-room-${currentRoomCode}`
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+
+                    schema: "public",
+
+                    table: "nba_rooms",
+
+                    filter:
+                        `room_code=eq.${currentRoomCode}`
+                },
+
+                payload => {
+
+                    console.log(
+                        "ROOM UPDATE",
+                        payload
+                    );
+
+
+                    if (
+                        payload.eventType ===
+                        "DELETE"
+                    ) {
+
+                        handleRoomDeleted();
+
+                        return;
+
+                    }
+
+
+                    if (
+                        payload.new &&
+                        payload.new.game_state
+                    ) {
+
+                        gameState =
+                            payload.new.game_state;
+
+
+                        renderState();
+
+                    }
+
+                }
+            )
+            .subscribe(
+                status => {
+
+                    console.log(
+                        "Realtime:",
+                        status
+                    );
+
+                }
+            );
+
+}
+
+
+/* =========================================================
+REFRESH
+========================================================= */
 
 async function refreshRoom() {
 
     if (
-        !currentRoomCode ||
-        !playerToken
+        !currentRoomCode
     ) {
 
         return;
@@ -2004,7 +2125,9 @@ async function refreshRoom() {
 
 
         if (error) {
+
             throw error;
+
         }
 
 
@@ -2017,8 +2140,7 @@ async function refreshRoom() {
 
         renderState();
 
-    }
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "refreshRoom:",
@@ -2030,351 +2152,32 @@ async function refreshRoom() {
 }
 
 
-/* =====================================================
-   Render
-===================================================== */
+/* =========================================================
+ROLL
+========================================================= */
 
-function renderState() {
-
-    if (!gameState) {
-
-        updateGameLock();
-
-        return;
-
-    }
-
-
-    updateRoomUI();
-
-    updateGameLock();
-
-    renderPlayers();
-
-    updateTurnUI();
-
-    updateButtons();
-
-    updateTeamDisplay();
-
+async function handleRollButton() {
 
     if (
-        Number(
-            gameState.completed_count || 0
-        ) >= 10
-    ) {
-
-        createBtn.disabled =
-            false;
-
-    }
-
-}
-
-
-/* =====================================================
-   Players
-===================================================== */
-
-function renderPlayers() {
-
-    const positions = [
-        "pg",
-        "sg",
-        "sf",
-        "pf",
-        "c"
-    ];
-
-
-    /*
-    未齊人：
-    全部灰色。
-    */
-
-    if (!isRoomReady()) {
-
-        allInputs.forEach(
-            input => {
-
-                input.disabled =
-                    true;
-
-            }
-        );
-
-        return;
-
-    }
-
-
-    /*
-    先全部同步 server state
-    */
-
-    ["a","b"].forEach(
-        team => {
-
-            positions.forEach(
-                position => {
-
-                    const input =
-                        document.getElementById(
-                            `${team}_${position}`
-                        );
-
-                    input.value =
-                        gameState[team]?.[position]
-                        || "";
-
-                    input.disabled =
-                        true;
-
-                }
-            );
-
-        }
-    );
-
-
-    /*
-    非 input 階段全部鎖住
-    */
-
-    if (
-        gameState.phase !== "input"
+        !gameState ||
+        !isRoomReady()
     ) {
 
         return;
 
     }
 
-
-    /*
-    未到自己回合
-    */
-
-    if (
-        gameState.turn !== myRole
-    ) {
-
-        return;
-
-    }
-
-
-    const team =
-        myRole.toLowerCase();
-
-
-    positions.forEach(
-        position => {
-
-            const input =
-                document.getElementById(
-                    `${team}_${position}`
-                );
-
-
-            /*
-            已經有球員：
-            永遠鎖住。
-            */
-
-            if (
-                gameState[team]?.[position]
-            ) {
-
-                input.disabled =
-                    true;
-
-                return;
-
-            }
-
-
-            /*
-            只有第一個空位開放。
-            */
-
-            const previousEmpty =
-                positions
-                    .slice(
-                        0,
-                        positions.indexOf(
-                            position
-                        )
-                    )
-                    .some(
-                        p =>
-                            !gameState[
-                                team
-                            ]?.[
-                                p
-                            ]
-                    );
-
-
-            input.disabled =
-                previousEmpty;
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   Turn
-===================================================== */
-
-function updateTurnUI() {
-
-    if (!gameState) {
-
-        turnBanner.style.display =
-            "none";
-
-        return;
-
-    }
-
-
-    turnBanner.style.display =
-        "block";
-
-
-    if (!isRoomReady()) {
-
-        turnBanner.textContent =
-            "⏳ 等待第二位玩家加入";
-
-        return;
-
-    }
-
-
-    if (
-        gameState.phase === "done"
-    ) {
-
-        turnBanner.textContent =
-            "🏆 所有球員已完成，可以創建文案";
-
-        return;
-
-    }
-
-
-    if (
-        gameState.turn === myRole
-    ) {
-
-        if (
-            gameState.phase === "roll"
-        ) {
-
-            turnBanner.textContent =
-                `🟢 到你 (${myRole}隊)！請抽取球隊`;
-
-        }
-        else {
-
-            turnBanner.textContent =
-                `🟢 到你 (${myRole}隊)！請輸入球員`;
-
-        }
-
-    }
-    else {
-
-        turnBanner.textContent =
-            `🔴 而家係 ${gameState.turn}隊回合，請等待`;
-
-    }
-
-}
-
-
-/* =====================================================
-   Buttons
-===================================================== */
-
-function updateButtons() {
-
-    /*
-    未齊人：
-    一律灰色。
-    */
-
-    if (!isRoomReady()) {
-
-        rollBtn.disabled =
-            true;
-
-        rollBtn.textContent =
-            "等待第二位玩家";
-
-        createBtn.disabled =
-            true;
-
-        clearBtn.disabled =
-            true;
-
-        return;
-
-    }
-
-
-    /*
-    Done
-    */
-
-    if (
-        gameState.phase === "done"
-    ) {
-
-        rollBtn.disabled =
-            true;
-
-        rollBtn.textContent =
-            "全部完成";
-
-        createBtn.disabled =
-            Number(
-                gameState.completed_count || 0
-            ) < 10;
-
-        return;
-
-    }
-
-
-    /*
-    Roll
-    */
 
     if (
         gameState.phase === "roll"
     ) {
 
-        rollBtn.disabled =
-            (
-                gameState.turn !== myRole ||
-                isRolling
-            );
-
-        rollBtn.textContent =
-            "隨機抽取球隊";
+        await startRolling();
 
         return;
 
     }
 
-
-    /*
-    Input
-    */
 
     if (
         gameState.phase === "input"
@@ -2384,154 +2187,46 @@ function updateButtons() {
             myRole.toLowerCase();
 
 
-        const positions = [
-            "pg",
-            "sg",
-            "sf",
-            "pf",
-            "c"
-        ];
-
-
-        const current =
-            positions
-                .map(
-                    position =>
-                        document.getElementById(
-                            `${team}_${position}`
-                        )
-                )
-                .find(
-                    input =>
-                        input &&
-                        !input.disabled
-                );
-
-
-        rollBtn.textContent =
-            "提交球員";
-
-
-        rollBtn.disabled =
-            (
-                gameState.turn !== myRole ||
-                !current ||
-                !current.value.trim()
+        const input =
+            allInputs.find(
+                item =>
+                    item.id.startsWith(
+                        `${team}_`
+                    ) &&
+                    !item.disabled &&
+                    item.value.trim()
             );
+
+
+        if (!input) {
+
+            alert(
+                "請先輸入球員"
+            );
+
+            return;
+
+        }
+
+
+        await submitCurrentInput(
+            input
+        );
 
     }
 
 }
 
 
-/* =====================================================
-   Team display
-===================================================== */
-
-function updateTeamDisplay() {
-
-    /*
-    ★★★ 最重要修正 ★★★
-
-    每一次更新都先將「待定」隱藏。
-    */
-
-    if (
-        pendingNode
-    ) {
-
-        pendingNode.classList.remove(
-            "show",
-            "pop"
-        );
-
-        pendingNode.style.display =
-            "none";
-
-    }
-
-
-    /*
-    未有抽籤結果：
-    顯示待定。
-    */
-
-    if (
-        gameState.selected_team_index === null ||
-        gameState.selected_team_index === undefined ||
-        gameState.selected_team_index === ""
-    ) {
-
-        if (pendingNode) {
-
-            pendingNode.style.display =
-                "flex";
-
-            pendingNode.classList.add(
-                "show"
-            );
-
-        }
-
-        return;
-
-    }
-
-
-    const index =
-        Number(
-            gameState.selected_team_index
-        );
-
-
-    if (
-        !teamNodeElements[index]
-    ) {
-
-        return;
-
-    }
-
-
-    teamNodeElements.forEach(
-        node => {
-
-            node.classList.remove(
-                "show",
-                "pop"
-            );
-
-            node.style.display =
-                "none";
-
-        }
-    );
-
-
-    const selected =
-        teamNodeElements[index];
-
-
-    selected.style.display =
-        "flex";
-
-    selected.classList.add(
-        "show"
-    );
-
-}
-
-
-/* =====================================================
-   Roll
-===================================================== */
+/* =========================================================
+ROLL
+========================================================= */
 
 async function startRolling() {
 
     if (
         isRolling ||
-        !gameState ||
-        !isRoomReady()
+        !gameState
     ) {
 
         return;
@@ -2552,20 +2247,15 @@ async function startRolling() {
         gameState.turn !== myRole
     ) {
 
-        alert(
-            "未到你的回合"
-        );
-
         return;
 
     }
 
 
-    isRolling =
-        true;
+    isRolling = true;
 
-    rollBtn.disabled =
-        true;
+    rollBtn.disabled = true;
+
 
     displayCard.classList.add(
         "active"
@@ -2591,7 +2281,9 @@ async function startRolling() {
 
 
         if (error) {
+
             throw error;
+
         }
 
 
@@ -2613,8 +2305,7 @@ async function startRolling() {
 
         renderState();
 
-    }
-    catch (error) {
+    } catch (error) {
 
         console.error(error);
 
@@ -2627,8 +2318,7 @@ async function startRolling() {
     }
 
 
-    isRolling =
-        false;
+    isRolling = false;
 
     displayCard.classList.remove(
         "active"
@@ -2639,9 +2329,9 @@ async function startRolling() {
 }
 
 
-/* =====================================================
-   Animation
-===================================================== */
+/* =========================================================
+ANIMATION
+========================================================= */
 
 function animateRoll(
     finalIndex
@@ -2650,19 +2340,18 @@ function animateRoll(
     return new Promise(
         resolve => {
 
-            let delay = 20;
-
             let count = 0;
 
             const maxSteps = 35;
 
-            let lastIndex =
-                activeNodeIndex;
+            let delay = 20;
+
+            let lastIndex = -1;
 
 
             function step() {
 
-                let randomIndex;
+                let index;
 
 
                 if (
@@ -2670,94 +2359,54 @@ function animateRoll(
                     maxSteps - 1
                 ) {
 
-                    randomIndex =
+                    index =
                         finalIndex;
 
-                }
-                else {
+                } else {
 
                     do {
 
-                        randomIndex =
+                        index =
                             Math.floor(
                                 Math.random() *
                                 nbaTeams.length
                             );
 
-                    }
-                    while (
-                        randomIndex ===
-                        lastIndex
+                    } while (
+                        index === lastIndex
                     );
 
                 }
 
 
-                if (
-                    lastIndex !== -1 &&
-                    teamNodeElements[
-                        lastIndex
-                    ]
-                ) {
+                teamNodes.forEach(
+                    node => {
 
-                    teamNodeElements[
-                        lastIndex
-                    ].classList.remove(
+                        node.classList.remove(
+                            "show",
+                            "pop"
+                        );
+
+                    }
+                );
+
+
+                const node =
+                    teamNodes[index];
+
+
+                if (node) {
+
+                    node.classList.add(
                         "show",
                         "pop"
                     );
 
-                    teamNodeElements[
-                        lastIndex
-                    ].style.display =
-                        "none";
-
                 }
 
 
-                /*
-                抽籤動畫期間，
-                待定一定隱藏。
-                */
-
-                pendingNode.style.display =
-                    "none";
-
-                pendingNode.classList.remove(
-                    "show"
-                );
-
-
                 lastIndex =
-                    randomIndex;
-
-                activeNodeIndex =
-                    randomIndex;
-
-
-                const node =
-                    teamNodeElements[
-                        randomIndex
-                    ];
-
-
-                node.style.display =
-                    "flex";
-
-
-                node.classList.remove(
-                    "pop"
-                );
-
-
-                void node.offsetWidth;
-
-
-                node.classList.add(
-                    "show",
-                    "pop"
-                );
-
+                    index;
 
                 count++;
 
@@ -2773,50 +2422,17 @@ function animateRoll(
                 }
 
 
-                const remaining =
-                    maxSteps - count;
-
-
                 if (
-                    remaining === 1
+                    count > 25
                 ) {
 
-                    delay = 550;
+                    delay += 30;
 
-                }
-                else if (
-                    remaining === 2
+                } else if (
+                    count > 20
                 ) {
 
-                    delay = 400;
-
-                }
-                else if (
-                    remaining === 3
-                ) {
-
-                    delay = 280;
-
-                }
-                else if (
-                    remaining === 4
-                ) {
-
-                    delay = 180;
-
-                }
-                else if (
-                    remaining === 5
-                ) {
-
-                    delay = 110;
-
-                }
-                else if (
-                    remaining <= 10
-                ) {
-
-                    delay += 10;
+                    delay += 15;
 
                 }
 
@@ -2837,66 +2453,9 @@ function animateRoll(
 }
 
 
-/* =====================================================
-   Input
-===================================================== */
-
-allInputs.forEach(
-    input => {
-
-        input.addEventListener(
-            "input",
-            () => {
-
-                if (
-                    !gameState ||
-                    !isRoomReady()
-                ) {
-
-                    input.value =
-                        "";
-
-                    return;
-
-                }
-
-
-                updateButtons();
-
-            }
-        );
-
-
-        input.addEventListener(
-            "keydown",
-            async event => {
-
-                if (
-                    event.key !== "Enter"
-                ) {
-
-                    return;
-
-                }
-
-
-                event.preventDefault();
-
-
-                await submitCurrentInput(
-                    input
-                );
-
-            }
-        );
-
-    }
-);
-
-
-/* =====================================================
-   Submit
-===================================================== */
+/* =========================================================
+SUBMIT PLAYER
+========================================================= */
 
 async function submitCurrentInput(
     input
@@ -2956,7 +2515,7 @@ async function submitCurrentInput(
     if (!name) {
 
         alert(
-            "請先輸入球員名字"
+            "請輸入球員名字"
         );
 
         return;
@@ -2964,22 +2523,7 @@ async function submitCurrentInput(
     }
 
 
-    /*
-    立即鎖定，避免連續點擊。
-    */
-
-    allInputs.forEach(
-        other => {
-
-            other.disabled =
-                true;
-
-        }
-    );
-
-
-    rollBtn.disabled =
-        true;
+    input.disabled = true;
 
 
     try {
@@ -3007,7 +2551,9 @@ async function submitCurrentInput(
 
 
         if (error) {
+
             throw error;
+
         }
 
 
@@ -3017,13 +2563,11 @@ async function submitCurrentInput(
 
         renderState();
 
-    }
-    catch (error) {
+    } catch (error) {
 
         console.error(error);
 
         alert(
-            "提交失敗：\n" +
             error.message
         );
 
@@ -3034,114 +2578,14 @@ async function submitCurrentInput(
 }
 
 
-/* =====================================================
-   Roll button
-===================================================== */
-
-rollBtn.addEventListener(
-    "click",
-    async () => {
-
-        if (
-            !gameState ||
-            !isRoomReady()
-        ) {
-
-            return;
-
-        }
-
-
-        if (
-            gameState.phase === "roll"
-        ) {
-
-            await startRolling();
-
-            return;
-
-        }
-
-
-        if (
-            gameState.phase === "input"
-        ) {
-
-            const team =
-                myRole.toLowerCase();
-
-
-            const positions = [
-                "pg",
-                "sg",
-                "sf",
-                "pf",
-                "c"
-            ];
-
-
-            const selected =
-                positions
-                    .map(
-                        position =>
-                            document.getElementById(
-                                `${team}_${position}`
-                            )
-                    )
-                    .find(
-                        input =>
-                            input &&
-                            !input.disabled
-                    );
-
-
-            if (
-                !selected ||
-                !selected.value.trim()
-            ) {
-
-                alert(
-                    "請先輸入球員名字"
-                );
-
-                return;
-
-            }
-
-
-            await submitCurrentInput(
-                selected
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   Create prompt
-===================================================== */
-
-createBtn.addEventListener(
-    "click",
-    generatePrompt
-);
-
+/* =========================================================
+GENERATE PROMPT
+========================================================= */
 
 function generatePrompt() {
 
     if (
         !gameState ||
-        !isRoomReady()
-    ) {
-
-        return;
-
-    }
-
-
-    if (
         Number(
             gameState.completed_count || 0
         ) < 10
@@ -3159,126 +2603,53 @@ function generatePrompt() {
         gameState.b;
 
 
-    const resultText =
-
-        `假設全員巔峯 請問A隊 PG “${a.pg}” SG “${a.sg}” SF“${a.sf}” PF “${a.pf}” C “${a.c}” 同埋 B隊 PG “${b.pg}” SG “${b.sg}” SF“${b.sf}” PF “${b.pf}” C “${b.c}” 邊一隊更強`;
-
-
     outputText.value =
-        resultText;
+
+        `假設全員巔峯，請問 A隊 PG「${a.pg}」SG「${a.sg}」SF「${a.sf}」PF「${a.pf}」C「${a.c}」同埋 B隊 PG「${b.pg}」SG「${b.sg}」SF「${b.sf}」PF「${b.pf}」C「${b.c}」，邊一隊更強？`;
 
 
     outputSection.style.display =
         "block";
 
 
-    outputSection.scrollIntoView({
-        behavior: "smooth"
-    });
-
-
-    clearBtn.disabled =
-        true;
-
-    hasCopiedPrompt =
-        false;
+    clearBtn.disabled = false;
 
 }
 
 
-/* =====================================================
-   Copy
-===================================================== */
-
-document
-    .getElementById("copyBtn")
-    .addEventListener(
-        "click",
-        copyText
-    );
-
+/* =========================================================
+COPY
+========================================================= */
 
 async function copyText() {
 
-    const text =
-        outputText.value;
+    if (!outputText.value) {
 
-
-    if (!text) {
         return;
+
     }
-
-
-    let success =
-        false;
 
 
     try {
 
-        if (
-            navigator.clipboard &&
-            window.isSecureContext
-        ) {
-
-            await navigator.clipboard.writeText(
-                text
-            );
-
-            success =
-                true;
-
-        }
-
-    }
-    catch (error) {
-
-        success =
-            false;
-
-    }
-
-
-    if (!success) {
-
-        try {
-
-            outputText.focus();
-
-            outputText.select();
-
-            success =
-                document.execCommand(
-                    "copy"
-                );
-
-        }
-        catch (error) {
-
-            success =
-                false;
-
-        }
-
-    }
-
-
-    if (success) {
-
-        hasCopiedPrompt =
-            true;
-
-        clearBtn.disabled =
-            false;
-
-        alert(
-            "文案已成功複製到剪貼簿！"
+        await navigator.clipboard.writeText(
+            outputText.value
         );
 
-    }
-    else {
+        alert(
+            "文案已成功複製！"
+        );
+
+    } catch {
+
+        outputText.select();
+
+        document.execCommand(
+            "copy"
+        );
 
         alert(
-            "複製失敗，請再試一次。"
+            "文案已成功複製！"
         );
 
     }
@@ -3286,20 +2657,14 @@ async function copyText() {
 }
 
 
-/* =====================================================
-   Clear
-===================================================== */
+/* =========================================================
+LEAVE ROOM
+========================================================= */
 
-clearBtn.addEventListener(
-    "click",
-    clearInputs
-);
-
-
-function clearInputs() {
+async function leaveRoom() {
 
     if (
-        !hasCopiedPrompt
+        !currentRoomCode
     ) {
 
         return;
@@ -3307,28 +2672,126 @@ function clearInputs() {
     }
 
 
-    allInputs.forEach(
-        input => {
+    const ok =
+        confirm(
+            "確定要退出目前房間嗎？"
+        );
 
-            input.value =
-                "";
 
-            input.disabled =
-                true;
+    if (!ok) {
+
+        return;
+
+    }
+
+
+    try {
+
+        roomStatus.textContent =
+            "正在退出房間...";
+
+
+        const {
+            error
+        } =
+            await supabaseClient.rpc(
+                "leave_nba_room",
+                {
+                    p_code:
+                        currentRoomCode,
+
+                    p_token:
+                        playerToken
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
 
         }
-    );
 
 
-    outputText.value =
-        "";
+        if (realtimeChannel) {
 
-    outputSection.style.display =
-        "none";
+            await supabaseClient.removeChannel(
+                realtimeChannel
+            );
+
+            realtimeChannel = null;
+
+        }
 
 
-    hasCopiedPrompt =
-        false;
+        localStorage.removeItem(
+            "nba_room_code"
+        );
+
+        localStorage.removeItem(
+            "nba_my_role"
+        );
+
+
+        currentRoomCode = null;
+
+        myRole = null;
+
+        gameState = null;
+
+
+        roomCode.textContent =
+            "未加入";
+
+        roleText.textContent =
+            "請建立或加入房間";
+
+        roomCount.textContent =
+            "👥 0 / 2";
+
+        roomStatus.textContent =
+            "已退出房間";
+
+
+        leaveRoomBtn.style.display =
+            "none";
+
+
+        outputSection.style.display =
+            "none";
+
+
+        resetGameUI();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "退出房間失敗：\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+ROOM DELETED
+========================================================= */
+
+function handleRoomDeleted() {
+
+    if (realtimeChannel) {
+
+        supabaseClient.removeChannel(
+            realtimeChannel
+        );
+
+        realtimeChannel = null;
+
+    }
 
 
     localStorage.removeItem(
@@ -3340,85 +2803,60 @@ function clearInputs() {
     );
 
 
-    currentRoomCode =
-        null;
+    currentRoomCode = null;
 
-    myRole =
-        null;
+    myRole = null;
 
-    gameState =
-        null;
+    gameState = null;
 
 
     roomCode.textContent =
         "未加入";
 
     roleText.textContent =
-        "請建立或加入房間";
+        "房間已結束";
+
+    roomCount.textContent =
+        "👥 0 / 2";
 
     roomStatus.textContent =
-        "尚未連接";
+        "房主已退出，房間已關閉";
 
 
-    turnBanner.style.display =
+    leaveRoomBtn.style.display =
         "none";
 
 
-    teamNodeElements.forEach(
-        node => {
-
-            node.classList.remove(
-                "show",
-                "pop"
-            );
-
-            node.style.display =
-                "none";
-
-        }
-    );
-
-
-    pendingNode.style.display =
-        "flex";
-
-    pendingNode.classList.add(
-        "show"
-    );
-
-
-    rollBtn.disabled =
-        true;
-
-    rollBtn.textContent =
-        "請先加入房間";
-
-
-    createBtn.disabled =
-        true;
-
-    clearBtn.disabled =
-        true;
-
-
-    gameArea.classList.add(
-        "locked"
-    );
+    resetGameUI();
 
 }
 
 
-/* =====================================================
-   URL ?room=
-===================================================== */
+/* =========================================================
+CLEAR LOCAL
+========================================================= */
 
-const urlParams =
-    new URLSearchParams(
-        window.location.search
-    );
+function clearLocalGame() {
+
+    outputText.value = "";
+
+    outputSection.style.display =
+        "none";
+
+    clearBtn.disabled =
+        true;
+
+}
+
+
+/* =========================================================
+URL ROOM
+========================================================= */
 
 const urlRoom =
-    urlParams.get("room");
+    new URLSearchParams(
+        window.location.search
+    ).get("room");
 
 
 if (urlRoom) {
@@ -3433,31 +2871,14 @@ if (urlRoom) {
 }
 
 
-/* =====================================================
-   房間按鈕
-===================================================== */
-
-document
-    .getElementById("createRoomBtn")
-    .addEventListener(
-        "click",
-        createRoom
-    );
-
-
-document
-    .getElementById("joinRoomBtn")
-    .addEventListener(
-        "click",
-        joinRoom
-    );
-
-
-/* =====================================================
-   Restore
-===================================================== */
+/* =========================================================
+RESTORE
+========================================================= */
 
 (async function restoreRoom() {
+
+    resetGameUI();
+
 
     if (
         currentRoomCode &&
@@ -3466,13 +2887,12 @@ document
 
         await refreshRoom();
 
-        if (gameState) {
 
-            updateRoomUI();
+        if (gameState) {
 
             subscribeToRoom();
 
-            renderState();
+            updateRoomUI();
 
             roomStatus.textContent =
                 "已重新連接房間";
@@ -3480,15 +2900,33 @@ document
         }
 
     }
-    else {
-
-        updateGameLock();
-
-    }
 
 })();
+
+
+/* =========================================================
+PERIODIC SYNC
+防止 Realtime 暫時斷線
+========================================================= */
+
+setInterval(
+    async () => {
+
+        if (
+            currentRoomCode &&
+            playerToken
+        ) {
+
+            await refreshRoom();
+
+        }
+
+    },
+    5000
+);
 
 </script>
 
 </body>
+
 </html>
