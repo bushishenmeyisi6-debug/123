@@ -573,6 +573,35 @@ Actions
     cursor: not-allowed;
 }
 
+/* =====================================================
+後悔／重新選擇位置
+===================================================== */
+.regret-btn {
+    width: 100%;
+    margin-top: 10px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 13px 18px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+.regret-btn:hover { background: #dc2626; }
+.regret-btn:disabled {
+    background: #cbd5e1;
+    color: #888;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+.audio-status {
+    margin-top: 8px;
+    font-size: .8rem;
+    color: #64748b;
+}
+
 
 /* =====================================================
 Output
@@ -899,6 +928,18 @@ Teams
 </div>
 
 
+<button
+    class="regret-btn"
+    id="regretBtn"
+    disabled
+>
+    我後悔了 我要選擇其他位置
+</button>
+
+<div class="audio-status" id="audioStatus">
+    🔊 音效會在你第一次操作頁面後啟用
+</div>
+
 <div class="action-btns">
 
     <button
@@ -964,7 +1005,7 @@ const SUPABASE_URL =
     "https://yafuniflixhbkdcqnqfz.supabase.co";
 
 const SUPABASE_KEY =
-    "sb_publishable__q45GsVlTu2bdKJ--l51Fw_t0dzy-nE";
+    "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhZnVuaWZsaXhoYmtkY3FucWZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyMjM0ODQsImV4cCI6MjEwMjc5OTQ4NH0.IBxTIxuHXDBT6OhyTtMxPsigZgx5oca7ZjFHS7h6Zyg";
 
 const {
     createClient
@@ -1059,6 +1100,12 @@ const createBtn =
 
 const clearBtn =
     document.getElementById("clearBtn");
+
+const regretBtn =
+    document.getElementById("regretBtn");
+
+const audioStatus =
+    document.getElementById("audioStatus");
 
 const turnBanner =
     document.getElementById("turnBanner");
@@ -1155,6 +1202,8 @@ let activeNodeIndex =
 let hasCopiedPrompt =
     false;
 
+let activeInputId = null;
+
 
 /*
 =========================================================
@@ -1183,64 +1232,48 @@ let animationPromise =
 
 let audioCtx = null;
 
-function playTickSound(final = false) {
-
-    try {
-
-        if (!audioCtx) {
-
-            audioCtx =
-                new (
-                    window.AudioContext ||
-                    window.webkitAudioContext
-                )();
-
-        }
-
-        if (
-            audioCtx.state === "suspended"
-        ) {
-
-            audioCtx.resume();
-
-        }
-
-        const osc =
-            audioCtx.createOscillator();
-
-        const gain =
-            audioCtx.createGain();
-
-        osc.type = "sine";
-
-        osc.frequency.value =
-            final ? 1046 : 1200;
-
-        gain.gain.value =
-            final ? .35 : .25;
-
-        gain.gain.exponentialRampToValueAtTime(
-            .001,
-            audioCtx.currentTime +
-            (final ? .6 : .02)
-        );
-
-        osc.connect(gain);
-
-        gain.connect(
-            audioCtx.destination
-        );
-
-        osc.start();
-
-        osc.stop(
-            audioCtx.currentTime +
-            (final ? .6 : .02)
-        );
-
-    } catch(e) {}
-
+function setAudioStatus(text) {
+    if (audioStatus) audioStatus.textContent = text;
 }
+
+let audioUnlockListenerActive = true;
+
+async function unlockAudio() {
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === "suspended") await audioCtx.resume();
+        setAudioStatus("🔊 音效已啟用");
+        return audioCtx.state === "running";
+    } catch (e) {
+        console.warn("Audio unlock failed:", e);
+        setAudioStatus("🔇 瀏覽器未允許音效，請點擊頁面後再試");
+        return false;
+    }
+}
+
+document.addEventListener("pointerdown", () => {
+    if (audioUnlockListenerActive) {
+        unlockAudio().finally(() => {
+            audioUnlockListenerActive = false;
+        });
+    }
+}, { passive: true, once: true });
+
+function playTickSound(final = false) {
+    try {
+        if (!audioCtx || audioCtx.state !== "running") return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const now = audioCtx.currentTime;
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(final ? 1046 : 1200, now);
+        gain.gain.setValueAtTime(final ? .32 : .20, now);
+        gain.gain.exponentialRampToValueAtTime(.001, now + (final ? .55 : .035));
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(now); osc.stop(now + (final ? .55 : .035));
+    } catch (e) { console.warn("Tick sound failed:", e); }
+}
+
 
 
 /* =========================================================
@@ -1280,6 +1313,9 @@ function resetDisplay() {
 
 
 function resetGameInputs() {
+
+    activeInputId = null;
+    updateRegretButton();
 
     allInputs.forEach(
         input => {
@@ -1636,12 +1672,19 @@ function subscribeToRoom() {
                                 ? gameState.selected_team_index
                                 : null;
 
+                        const oldPhase =
+                            gameState
+                                ? gameState.phase
+                                : null;
+
+                        const incomingPhase = incomingState.phase;
 
                         const hasNewTeam =
                             incomingSelected !== null &&
                             incomingSelected !== undefined &&
-                            Number(incomingSelected) !==
-                            Number(oldSelected);
+                            incomingPhase === "input" &&
+                            (oldPhase !== "input" ||
+                             Number(incomingSelected) !== Number(oldSelected));
 
 
                         if (
@@ -1999,13 +2042,14 @@ function renderState() {
     updateTeamDisplay();
 
 
-    createBtn.disabled =
-        !(
-            gameState.phase === "done" &&
-            Number(
-                gameState.completed_count
-            ) >= 10
-        );
+    const completed = Number(gameState.completed_count || 0);
+
+    createBtn.disabled = !(
+        gameState.phase === "done" &&
+        completed >= 10
+    );
+
+    updateRegretButton();
 
 }
 
@@ -2015,107 +2059,73 @@ function renderState() {
 ========================================================= */
 
 function renderPlayers() {
+    allInputs.forEach(input => {
+        const parts = input.id.split("_");
+        const team = parts[0];
+        const position = parts[1];
+        const serverValue = gameState[team]?.[position] || "";
+        if (!(activeInputId === input.id && !serverValue)) input.value = serverValue;
+        input.disabled = true;
+    });
 
-    allInputs.forEach(
-        input => {
+    if (Number(gameState.player_count) < 2) return;
+    if (gameState.phase !== "input") return;
+    if (gameState.turn !== myRole) return;
 
-            input.disabled = true;
+    const team = myRole.toLowerCase();
+    const positions = ["pg","sg","sf","pf","c"];
 
-            const parts =
-                input.id.split("_");
-
-            const team =
-                parts[0];
-
-            const position =
-                parts[1];
-
-            input.value =
-                gameState[team]?.[position] ||
-                "";
-
+    if (activeInputId) {
+        const active = document.getElementById(activeInputId);
+        if (active && active.id.startsWith(team + "_") && !gameState[team]?.[active.id.split("_")[1]]) {
+            active.disabled = false;
+        } else {
+            activeInputId = null;
         }
-    );
-
-
-    /*
-    未齊人：
-
-    全部鎖死。
-    */
-
-    if (
-        Number(
-            gameState.player_count
-        ) < 2
-    ) {
-
-        return;
-
     }
 
-
-    /*
-    不是 input：
-
-    全部鎖死。
-    */
-
-    if (
-        gameState.phase !== "input"
-    ) {
-
-        return;
-
+    if (!activeInputId) {
+        positions.forEach(position => {
+            const input = document.getElementById(`${team}_${position}`);
+            if (input && !gameState[team]?.[position]) input.disabled = false;
+        });
     }
 
-
-    /*
-    未到自己：
-
-    全部鎖死。
-    */
-
-    if (
-        gameState.turn !== myRole
-    ) {
-
-        return;
-
-    }
-
-
-    const team =
-        myRole.toLowerCase();
-
-
-    ["pg","sg","sf","pf","c"]
-        .forEach(
-            position => {
-
-                const input =
-                    document.getElementById(
-                        `${team}_${position}`
-                    );
-
-
-                if (
-                    !gameState[
-                        team
-                    ][
-                        position
-                    ]
-                ) {
-
-                    input.disabled =
-                        false;
-
-                }
-
-            }
-        );
-
+    updateRegretButton();
 }
+
+function updateRegretButton() {
+    regretBtn.disabled = !(
+        activeInputId &&
+        gameState &&
+        gameState.phase === "input" &&
+        gameState.turn === myRole
+    );
+}
+
+function selectInputForEditing(input) {
+    if (!gameState || gameState.phase !== "input" || gameState.turn !== myRole || input.disabled) return;
+    unlockAudio();
+    const team = myRole.toLowerCase();
+    if (!input.id.startsWith(team + "_")) return;
+    const position = input.id.split("_")[1];
+    if (gameState[team]?.[position]) return;
+    activeInputId = input.id;
+    allInputs.forEach(x => { if (x.id !== activeInputId) x.disabled = true; });
+    input.disabled = false;
+    input.focus();
+    updateRegretButton();
+}
+
+function regretCurrentInput() {
+    if (!activeInputId) return;
+    const input = document.getElementById(activeInputId);
+    if (input) input.value = "";
+    activeInputId = null;
+    renderPlayers();
+    updateRegretButton();
+}
+
 
 
 /* =========================================================
@@ -2123,114 +2133,36 @@ function renderPlayers() {
 ========================================================= */
 
 function focusNextAvailableInput() {
-
-    if (!gameState)
-        return;
-
-
-    if (
-        gameState.phase !== "input"
-    )
-        return;
-
-
-    if (
-        gameState.turn !== myRole
-    )
-        return;
-
-
-    const team =
-        myRole.toLowerCase();
-
-
-    const positions =
-        ["pg","sg","sf","pf","c"];
-
-
-    for (
-        const position of positions
-    ) {
-
-        const value =
-            gameState[
-                team
-            ]?.[
-                position
-            ];
-
-
-        if (!value) {
-
-            const nextInput =
-                document.getElementById(
-                    `${team}_${position}`
-                );
-
-
-            if (
-                nextInput &&
-                !nextInput.disabled
-            ) {
-
-                setTimeout(
-                    () => {
-
-                        nextInput.focus();
-
-                        try {
-
-                            nextInput.scrollIntoView({
-                                behavior: "smooth",
-                                block: "center"
-                            });
-
-                        } catch(e) {}
-
-                    },
-                    80
-                );
-
-            }
-
-            break;
-
-        }
-
-    }
-
+    /* 不再自動跳下一格。 */
 }
+
 
 
 /* =========================================================
 輸入框
 ========================================================= */
 
-allInputs.forEach(
-    input => {
+allInputs.forEach(input => {
+    input.addEventListener("pointerdown", () => selectInputForEditing(input));
+    input.addEventListener("focus", () => selectInputForEditing(input));
+    input.addEventListener("input", () => {
+        if (activeInputId === input.id) {
+            allInputs.forEach(x => { if (x.id !== activeInputId) x.disabled = true; });
+            updateRegretButton();
+        }
+    });
+    input.addEventListener("keydown", async event => {
+        if (event.key !== "Enter") return;
+        event.preventDefault();
+        await submitCurrentInput(input);
+    });
+});
 
-        input.addEventListener(
-            "keydown",
-            async event => {
+regretBtn.addEventListener("click", () => {
+    unlockAudio();
+    regretCurrentInput();
+});
 
-                if (
-                    event.key !== "Enter"
-                )
-                    return;
-
-
-                event.preventDefault();
-
-
-                await submitCurrentInput(
-                    input
-                );
-
-            }
-        );
-
-    }
-);
 
 
 /* =========================================================
@@ -2352,7 +2284,8 @@ async function submitCurrentInput(
         =========================================
         */
 
-        focusNextAvailableInput();
+        activeInputId = null;
+        renderState();
 
 
     } catch(error) {
@@ -2645,6 +2578,8 @@ function updateTeamDisplay() {
 ========================================================= */
 
 async function startRolling() {
+
+    await unlockAudio();
 
     if (isRolling)
         return;
@@ -3039,7 +2974,7 @@ function generatePrompt() {
 
     outputText.value =
 
-        `假設全員巔峯，請問 A隊 PG「${a.pg}」SG「${a.sg}」SF「${a.sf}」PF「${a.pf}」C「${a.c}」，同埋 B隊 PG「${b.pg}」SG「${b.sg}」SF「${b.sf}」PF「${b.pf}」C「${b.c}」，邊一隊更強？`;
+        `假設全員巔峯，A隊 PG "${a.pg}" SG "${a.sg}" SF "${a.sf}" PF "${a.pf}" C "${a.c}" 和 B隊 PG "${b.pg}" SG "${b.sg}" SF "${b.sf}" PF "${b.pf}" C "${b.c}"，邊一隊更強？`;
 
 
     outputSection.style.display =
@@ -3061,6 +2996,12 @@ function generatePrompt() {
 }
 
 
+createBtn.addEventListener("click", () => {
+    if (!gameState || gameState.phase !== "done") return;
+    generatePrompt();
+});
+
+
 /* =========================================================
 Copy
 ========================================================= */
@@ -3068,6 +3009,8 @@ Copy
 copyBtn.addEventListener(
     "click",
     async () => {
+
+        await unlockAudio();
 
         if (!outputText.value)
             return;
@@ -3155,15 +3098,15 @@ clearBtn.addEventListener(
 建立 / 加入 / 退出
 ========================================================= */
 
-createRoomBtn.addEventListener(
-    "click",
-    createRoom
-);
+createRoomBtn.addEventListener("click", async () => {
+    await unlockAudio();
+    await createRoom();
+});
 
-joinRoomBtn.addEventListener(
-    "click",
-    joinRoom
-);
+joinRoomBtn.addEventListener("click", async () => {
+    await unlockAudio();
+    await joinRoom();
+});
 
 leaveRoomBtn.addEventListener(
     "click",
@@ -3208,6 +3151,9 @@ createBtn.disabled =
     true;
 
 clearBtn.disabled =
+    true;
+
+regretBtn.disabled =
     true;
 
 </script>
