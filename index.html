@@ -964,7 +964,7 @@ const SUPABASE_URL =
     "https://yafuniflixhbkdcqnqfz.supabase.co";
 
 const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhZnVuaWZsaXhoYmtkY3FucWZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyMjM0ODQsImV4cCI6MjEwMjc5OTQ4NH0.IBxTIxuHXDBT6OhyTtMxPsigZgx5oca7ZjFHS7h6Zyg";
+    "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhZnVuaWZsaXhoYmtkY3FucWZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyMjM0ODQsImV4cCI6MjEwMjc5OTQ4NH0.IBxTIxuHXDBT6OhyTtMxPsigZgx5oca7ZjFHS7h6Zyg";
 
 const {
     createClient
@@ -1127,13 +1127,7 @@ nbaTeams.forEach(
 
 
 /* =========================================================
-非常重要：
-
-完全不用 localStorage。
-
-每次重新載入：
-= 新玩家
-= 新 token
+完全不用 Local Storage
 ========================================================= */
 
 const playerToken =
@@ -1160,6 +1154,27 @@ let activeNodeIndex =
 
 let hasCopiedPrompt =
     false;
+
+
+/*
+=========================================================
+動畫同步控制
+=========================================================
+
+lastAnimatedTeamIndex：
+記住最近一次已經播放過動畫的球隊。
+
+rollingTeamIndex：
+當某一次 Realtime 狀態正在播放動畫時，
+避免同一個狀態再次觸發。
+
+*/
+
+let lastAnimatedTeamIndex =
+    null;
+
+let animationPromise =
+    null;
 
 
 /* =========================================================
@@ -1250,10 +1265,16 @@ function resetDisplay() {
                 "pop"
             );
 
+            node.style.display =
+                "";
+
         }
     );
 
     pendingNode.classList.add("show");
+
+    pendingNode.style.display =
+        "";
 
 }
 
@@ -1514,10 +1535,6 @@ function updateRoomUI() {
     leaveRoomBtn.style.display =
         "block";
 
-    /*
-    已入房就不能再建立/加入。
-    */
-
     createRoomBtn.disabled =
         true;
 
@@ -1564,7 +1581,7 @@ function subscribeToRoom() {
                     filter:
                         `room_code=eq.${currentRoomCode}`
                 },
-                payload => {
+                async payload => {
 
                     /*
                     房主退出後，
@@ -1588,8 +1605,80 @@ function subscribeToRoom() {
                         payload.new.game_state
                     ) {
 
-                        gameState =
+                        const incomingState =
                             payload.new.game_state;
+
+
+                        /*
+                        =========================================
+                        核心修正：
+
+                        如果收到新的 selected_team_index，
+                        先播放動畫。
+
+                        對面裝置以前係：
+                        Realtime → renderState()
+                        → 直接顯示結果
+
+                        而家係：
+                        Realtime → animateRoll()
+                        → 顯示結果
+                        =========================================
+                        */
+
+                        const incomingSelected =
+                            incomingState
+                                .selected_team_index;
+
+
+                        const oldSelected =
+                            gameState
+                                ? gameState.selected_team_index
+                                : null;
+
+
+                        const hasNewTeam =
+                            incomingSelected !== null &&
+                            incomingSelected !== undefined &&
+                            Number(incomingSelected) !==
+                            Number(oldSelected);
+
+
+                        if (
+                            hasNewTeam &&
+                            !isRolling &&
+                            !animationPromise
+                        ) {
+
+                            const finalIndex =
+                                Number(
+                                    incomingSelected
+                                );
+
+
+                            animationPromise =
+                                animateRoll(
+                                    finalIndex
+                                );
+
+
+                            try {
+
+                                await animationPromise;
+
+                            } finally {
+
+                                animationPromise =
+                                    null;
+
+                            }
+
+                        }
+
+
+                        gameState =
+                            incomingState;
+
 
                         renderState();
 
@@ -1635,6 +1724,13 @@ function handleRoomClosed() {
         null;
 
     gameState =
+        null;
+
+
+    lastAnimatedTeamIndex =
+        null;
+
+    animationPromise =
         null;
 
 
@@ -1748,6 +1844,13 @@ async function leaveRoom() {
             null;
 
         gameState =
+            null;
+
+
+        lastAnimatedTeamIndex =
+            null;
+
+        animationPromise =
             null;
 
 
@@ -2016,6 +2119,90 @@ function renderPlayers() {
 
 
 /* =========================================================
+自動 Focus 下一格
+========================================================= */
+
+function focusNextAvailableInput() {
+
+    if (!gameState)
+        return;
+
+
+    if (
+        gameState.phase !== "input"
+    )
+        return;
+
+
+    if (
+        gameState.turn !== myRole
+    )
+        return;
+
+
+    const team =
+        myRole.toLowerCase();
+
+
+    const positions =
+        ["pg","sg","sf","pf","c"];
+
+
+    for (
+        const position of positions
+    ) {
+
+        const value =
+            gameState[
+                team
+            ]?.[
+                position
+            ];
+
+
+        if (!value) {
+
+            const nextInput =
+                document.getElementById(
+                    `${team}_${position}`
+                );
+
+
+            if (
+                nextInput &&
+                !nextInput.disabled
+            ) {
+
+                setTimeout(
+                    () => {
+
+                        nextInput.focus();
+
+                        try {
+
+                            nextInput.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center"
+                            });
+
+                        } catch(e) {}
+
+                    },
+                    80
+                );
+
+            }
+
+            break;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
 輸入框
 ========================================================= */
 
@@ -2109,6 +2296,8 @@ async function submitCurrentInput(
             "請輸入球員名字"
         );
 
+        input.focus();
+
         return;
 
     }
@@ -2150,7 +2339,20 @@ async function submitCurrentInput(
         gameState =
             data.state;
 
+
         renderState();
+
+
+        /*
+        =========================================
+        核心修正：
+
+        如果提交後仍然係自己回合，
+        自動去下一個空位。
+        =========================================
+        */
+
+        focusNextAvailableInput();
 
 
     } catch(error) {
@@ -2162,6 +2364,8 @@ async function submitCurrentInput(
         );
 
         await refreshRoom();
+
+        focusNextAvailableInput();
 
     }
 
@@ -2348,11 +2552,6 @@ function updateButtons() {
 
 /* =========================================================
 球隊顯示
-
-核心修正：
-
-有 selected_team_index
-→ 待定一定消失
 ========================================================= */
 
 function updateTeamDisplay() {
@@ -2378,12 +2577,18 @@ function updateTeamDisplay() {
                     "pop"
                 );
 
+                node.style.display =
+                    "";
+
             }
         );
 
         pendingNode.classList.add(
             "show"
         );
+
+        pendingNode.style.display =
+            "";
 
         return;
 
@@ -2404,15 +2609,12 @@ function updateTeamDisplay() {
 
 
     /*
-    最重要：
-
     先明確移除 Pending
     */
 
     pendingNode.classList.remove(
         "show"
     );
-
 
     pendingNode.style.display =
         "none";
@@ -2524,6 +2726,18 @@ async function startRolling() {
             );
 
 
+        /*
+        =========================================
+        房主自己抽：
+
+        直接播放一次。
+
+        Realtime 收到同一狀態時，
+        因為 isRolling = true，
+        不會再播放第二次。
+        =========================================
+        */
+
         await animateRoll(
             finalIndex
         );
@@ -2531,6 +2745,10 @@ async function startRolling() {
 
         gameState =
             data.state;
+
+
+        lastAnimatedTeamIndex =
+            finalIndex;
 
 
         renderState();
@@ -2556,6 +2774,7 @@ async function startRolling() {
     displayCard.classList.remove(
         "active"
     );
+
 
     renderState();
 
