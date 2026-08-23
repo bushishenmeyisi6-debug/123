@@ -5,718 +5,604 @@
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
 
 <title>NBA 球隊隨機抽籤 & 陣容對決</title>
 
 <style>
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        "Helvetica Neue",
-        Arial,
-        sans-serif;
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+Roboto,
+Arial,
+sans-serif;
 }
 
-body {
-
-    background: #f0f2f5;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    min-height: 100vh;
-
-    color: #333;
-
-    padding: 20px 0;
+body{
+background:#f0f2f5;
+min-height:100vh;
+color:#333;
+padding:20px 0;
 }
 
-.container {
-
-    background: #fff;
-
-    padding: 30px 25px;
-
-    border-radius: 20px;
-
-    box-shadow:
-        0 15px 35px rgba(0,0,0,.1);
-
-    text-align: center;
-
-    width: 90%;
-
-    max-width: 480px;
+.container{
+width:94%;
+max-width:520px;
+margin:auto;
+background:#fff;
+border-radius:20px;
+padding:25px 20px;
+box-shadow:0 15px 35px rgba(0,0,0,.1);
+position:relative;
 }
 
-h1 {
-
-    font-size: 1.3rem;
-
-    color: #555;
-
-    margin-bottom: 20px;
-
-    letter-spacing: 1px;
+h1{
+font-size:1.35rem;
+text-align:center;
+color:#555;
+margin-bottom:20px;
 }
 
 
-/* =====================================================
-房間
-===================================================== */
+/* =========================
+PAGE SWITCH
+========================= */
 
-.room-section {
-
-    background: #f8fafc;
-
-    border: 1px solid #e2e8f0;
-
-    border-radius: 14px;
-
-    padding: 15px;
-
-    margin-bottom: 20px;
+.page{
+display:none;
 }
 
-.room-title {
-
-    font-weight: 700;
-
-    color: #334155;
-
-    margin-bottom: 10px;
+.page.active{
+display:block;
 }
 
-.room-code {
-
-    font-size: 1.8rem;
-
-    font-weight: 900;
-
-    letter-spacing: 4px;
-
-    color: #006bb6;
-
-    margin: 8px 0;
+.page-switch{
+position:absolute;
+right:14px;
+top:14px;
+display:none;
+gap:5px;
 }
 
-.role-text {
-
-    font-size: .95rem;
-
-    color: #64748b;
-
-    margin-bottom: 12px;
+.page-switch button{
+border:0;
+background:#e2e8f0;
+padding:7px 10px;
+border-radius:8px;
+font-size:.75rem;
+font-weight:700;
+cursor:pointer;
 }
 
-.room-actions {
-
-    display: flex;
-
-    gap: 8px;
-}
-
-.room-input {
-
-    flex: 1;
-
-    min-width: 0;
-
-    padding: 10px;
-
-    border: 1px solid #cbd5e1;
-
-    border-radius: 8px;
-
-    outline: none;
-
-    text-align: center;
-
-    font-weight: 600;
-
-    letter-spacing: 1px;
-}
-
-.room-btn {
-
-    border: none;
-
-    color: #fff;
-
-    background: #006bb6;
-
-    border-radius: 8px;
-
-    padding: 10px 12px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-.room-btn:hover {
-
-    background: #005a99;
-}
-
-.room-btn:disabled {
-
-    background: #cbd5e1;
-
-    cursor: not-allowed;
-}
-
-.status-text {
-
-    margin-top: 10px;
-
-    font-size: .9rem;
-
-    color: #64748b;
-}
-
-.leave-btn {
-
-    margin-top: 10px;
-
-    width: 100%;
-
-    background: #ef4444;
-
-    color: white;
-
-    border: none;
-
-    border-radius: 8px;
-
-    padding: 9px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    display: none;
+.page-switch button.active{
+background:#006bb6;
+color:white;
 }
 
 
-/* =====================================================
-回合
-===================================================== */
+/* =========================
+ROOM PAGE
+========================= */
 
-.turn-banner {
+.room-section{
+background:#f8fafc;
+border:1px solid #e2e8f0;
+border-radius:15px;
+padding:18px;
+}
 
-    display: none;
+.room-title{
+font-size:1.1rem;
+font-weight:800;
+text-align:center;
+margin-bottom:15px;
+}
 
-    margin-bottom: 15px;
+.room-code{
+font-size:1.8rem;
+font-weight:900;
+letter-spacing:4px;
+text-align:center;
+color:#006bb6;
+margin:10px;
+}
 
-    padding: 10px;
+.room-status{
+text-align:center;
+font-size:.9rem;
+color:#64748b;
+margin:10px 0 15px;
+}
 
-    border-radius: 10px;
+.name-area{
+margin-bottom:15px;
+}
 
-    background: #eff6ff;
+.name-area label{
+display:block;
+font-weight:700;
+margin-bottom:7px;
+}
 
-    color: #1d4ed8;
+.name-input{
+width:100%;
+padding:12px;
+border:1px solid #cbd5e1;
+border-radius:9px;
+outline:none;
+font-size:1rem;
+}
 
-    font-weight: 700;
+.room-actions{
+display:flex;
+gap:8px;
+}
+
+.room-input{
+flex:1;
+min-width:0;
+padding:11px;
+border:1px solid #cbd5e1;
+border-radius:9px;
+text-align:center;
+font-weight:700;
+letter-spacing:2px;
+outline:none;
+}
+
+.room-btn{
+border:0;
+border-radius:9px;
+padding:11px 13px;
+font-weight:800;
+color:white;
+background:#006bb6;
+cursor:pointer;
+}
+
+.room-btn:disabled{
+background:#cbd5e1;
+cursor:not-allowed;
 }
 
 
-/* =====================================================
-Display
-===================================================== */
+/* =========================
+PLAYERS
+========================= */
 
-.display-card {
-
-    background: #fff;
-
-    border: 2px solid #e2e8f0;
-
-    border-radius: 16px;
-
-    padding: 20px;
-
-    margin-bottom: 20px;
-
-    min-height: 230px;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    position: relative;
-
-    overflow: hidden;
-
-    transition:
-        border-color .3s ease,
-        box-shadow .3s ease;
+.player-count{
+text-align:center;
+font-size:1rem;
+font-weight:800;
+margin:18px 0 12px;
 }
 
-.display-card.active {
-
-    border-color: #006bb6;
-
-    box-shadow:
-        0 0 15px rgba(0,107,182,.15);
+.players{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:25px;
 }
 
-.team-node {
-
-    display: none;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    width: 100%;
+.player-slot{
+width:115px;
+height:115px;
+border-radius:50%;
+border:3px solid #cbd5e1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:12px;
+background:#f8fafc;
+font-weight:800;
+overflow:hidden;
+word-break:break-word;
+transition:.25s;
 }
 
-.team-node.show {
-
-    display: flex;
+.player-slot.filled{
+border-color:#006bb6;
+background:#eff6ff;
 }
 
-.team-node.pop {
-
-    animation:
-        popIn .08s ease-out forwards;
+.player-slot.empty{
+color:#94a3b8;
+font-size:2rem;
 }
 
-@keyframes popIn {
-
-    from {
-        transform: scale(.9);
-    }
-
-    to {
-        transform: scale(1);
-    }
+.player-slot span{
+display:block;
+width:100%;
+line-height:1.15;
 }
 
-.team-logo {
-
-    width: 95px;
-
-    height: 95px;
-
-    margin-bottom: 12px;
-
-    object-fit: contain;
+.host-badge{
+text-align:center;
+font-size:.75rem;
+color:#006bb6;
+font-weight:700;
+margin-top:6px;
 }
 
-.team-zh {
-
-    font-size: 2.6rem;
-
-    font-weight: 800;
-
-    color: #1a202c;
-
-    line-height: 1.1;
-
-    margin-bottom: 6px;
+.start-game{
+width:100%;
+margin-top:20px;
+padding:14px;
+border:0;
+border-radius:11px;
+background:#10b981;
+color:white;
+font-size:1.05rem;
+font-weight:800;
+cursor:pointer;
 }
 
-.team-en {
+.start-game:disabled{
+background:#cbd5e1;
+color:#888;
+cursor:not-allowed;
+}
 
-    font-size: 1rem;
-
-    color: #718096;
-
-    font-weight: 500;
+.leave-btn{
+width:100%;
+margin-top:10px;
+padding:11px;
+border:0;
+border-radius:9px;
+background:#ef4444;
+color:white;
+font-weight:800;
+cursor:pointer;
 }
 
 
-/* =====================================================
-Roll
-===================================================== */
+/* =========================
+GAME
+========================= */
 
-.btn-roll {
-
-    background: #121212;
-
-    color: white;
-
-    border: none;
-
-    padding: 14px 24px;
-
-    font-size: 1.1rem;
-
-    font-weight: 600;
-
-    border-radius: 12px;
-
-    cursor: pointer;
-
-    width: 100%;
-
-    box-shadow:
-        0 4px 12px rgba(0,0,0,.15);
-
-    margin-bottom: 30px;
+.turn-banner{
+padding:10px;
+border-radius:10px;
+background:#eff6ff;
+color:#1d4ed8;
+font-weight:800;
+text-align:center;
+margin-bottom:15px;
 }
 
-.btn-roll:hover {
-
-    background: #333;
-}
-
-.btn-roll:disabled {
-
-    background: #cbd5e1;
-
-    color: #888;
-
-    cursor: not-allowed;
-
-    box-shadow: none;
+.game-page-title{
+font-size:1rem;
+font-weight:800;
+text-align:center;
+margin-bottom:12px;
 }
 
 
-/* =====================================================
-Teams
-===================================================== */
+/* =========================
+RECENT TEAM
+========================= */
 
-.divider {
-
-    height: 1px;
-
-    background: #e2e8f0;
-
-    margin: 10px 0 25px;
+.recent-team{
+display:none;
+background:#f8fafc;
+border:1px solid #e2e8f0;
+border-radius:10px;
+padding:8px;
+margin-bottom:10px;
+text-align:center;
+font-size:.85rem;
+color:#475569;
 }
 
-.teams-container {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    margin-bottom: 20px;
-}
-
-.team-box {
-
-    flex: 1;
-
-    background: #f8fafc;
-
-    padding: 15px 10px;
-
-    border-radius: 12px;
-
-    border: 1px solid #edf2f7;
-}
-
-.team-title {
-
-    font-weight: 700;
-
-    font-size: 1.1rem;
-
-    color: #2d3748;
-
-    margin-bottom: 15px;
-}
-
-.position-row {
-
-    display: flex;
-
-    align-items: center;
-
-    margin-bottom: 10px;
-}
-
-.pos-label {
-
-    width: 42px;
-
-    text-align: right;
-
-    font-weight: 700;
-
-    font-size: .95rem;
-
-    color: #4a5568;
-
-    padding-right: 4px;
-}
-
-.player-input {
-
-    flex: 1;
-
-    padding: 6px 10px;
-
-    border: 1px solid #cbd5e1;
-
-    border-radius: 8px;
-
-    font-size: .9rem;
-
-    outline: none;
-
-    width: 100%;
-
-    background: white;
-}
-
-.player-input:focus {
-
-    border-color: #006bb6;
-
-    box-shadow:
-        0 0 0 2px rgba(0,107,182,.15);
-}
-
-.player-input:disabled {
-
-    background: #e9eef5;
-
-    color: #94a3b8;
-
-    cursor: not-allowed;
+.recent-team strong{
+color:#006bb6;
 }
 
 
-/* =====================================================
-Actions
-===================================================== */
+/* =========================
+DISPLAY
+========================= */
 
-.action-btns {
-
-    display: flex;
-
-    gap: 10px;
+.display-card{
+background:white;
+border:2px solid #e2e8f0;
+border-radius:16px;
+padding:20px;
+min-height:240px;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+transition:.3s;
 }
 
-.btn-create {
-
-    flex: 3;
-
-    background: #10b981;
-
-    color: white;
-
-    border: none;
-
-    padding: 14px 18px;
-
-    font-size: 1.05rem;
-
-    font-weight: 600;
-
-    border-radius: 12px;
-
-    cursor: pointer;
+.display-card.active{
+border-color:#006bb6;
+box-shadow:0 0 15px rgba(0,107,182,.15);
 }
 
-.btn-create:disabled {
-
-    background: #cbd5e1;
-
-    color: #888;
-
-    cursor: not-allowed;
+.team-node{
+display:none;
+width:100%;
+flex-direction:column;
+align-items:center;
+justify-content:center;
 }
 
-.btn-clear {
-
-    flex: 1;
-
-    background: #ef4444;
-
-    color: white;
-
-    border: none;
-
-    padding: 14px 12px;
-
-    font-size: 1rem;
-
-    font-weight: 600;
-
-    border-radius: 12px;
-
-    cursor: pointer;
+.team-node.show{
+display:flex;
 }
 
-.btn-clear:disabled {
-
-    background: #cbd5e1;
-
-    color: #888;
-
-    cursor: not-allowed;
+.team-node.pop{
+animation:popIn .08s ease-out forwards;
 }
 
-/* =====================================================
-後悔／重新選擇位置
-===================================================== */
-.regret-btn {
-    width: 100%;
-    margin-top: 10px;
-    background: #ef4444;
-    color: white;
-    border: none;
-    padding: 13px 18px;
-    font-size: 1rem;
-    font-weight: 700;
-    border-radius: 12px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+@keyframes popIn{
+from{transform:scale(.9)}
+to{transform:scale(1)}
 }
-.regret-btn:hover { background: #dc2626; }
-.regret-btn:disabled {
-    background: #cbd5e1;
-    color: #888;
-    cursor: not-allowed;
-    box-shadow: none;
+
+.team-logo{
+width:95px;
+height:95px;
+object-fit:contain;
+margin-bottom:10px;
 }
-.audio-status {
-    margin-top: 8px;
-    font-size: .8rem;
-    color: #64748b;
+
+.team-zh{
+font-size:2.4rem;
+font-weight:900;
+color:#1a202c;
+}
+
+.team-en{
+font-size:.95rem;
+color:#718096;
 }
 
 
-/* =====================================================
-Output
-===================================================== */
+/* =========================
+ROLL
+========================= */
 
-.output-section {
-
-    margin-top: 20px;
-
-    display: none;
-
-    text-align: left;
-
-    background: #f1f5f9;
-
-    padding: 15px;
-
-    border-radius: 12px;
-
-    border: 1px solid #cbd5e1;
+.btn-roll{
+width:100%;
+margin-top:15px;
+margin-bottom:18px;
+padding:14px;
+border:0;
+border-radius:11px;
+background:#121212;
+color:white;
+font-size:1.05rem;
+font-weight:800;
+cursor:pointer;
 }
 
-.output-header {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 8px;
-}
-
-.output-status {
-
-    color: #10b981;
-
-    font-weight: 700;
-
-    font-size: .95rem;
-}
-
-.btn-copy {
-
-    background: #e2e8f0;
-
-    color: #334155;
-
-    border: none;
-
-    padding: 4px 10px;
-
-    font-size: .8rem;
-
-    font-weight: 600;
-
-    border-radius: 6px;
-
-    cursor: pointer;
-}
-
-.output-text {
-
-    width: 100%;
-
-    height: 90px;
-
-    border: none;
-
-    background: transparent;
-
-    font-size: .9rem;
-
-    color: #334155;
-
-    resize: none;
-
-    outline: none;
-
-    line-height: 1.4;
+.btn-roll:disabled{
+background:#cbd5e1;
+color:#888;
+cursor:not-allowed;
 }
 
 
-@media(max-width:420px) {
+/* =========================
+INPUT
+========================= */
 
-    .container {
+.input-page{
+display:none;
+}
 
-        width: 94%;
+.input-page.active{
+display:block;
+}
 
-        padding: 25px 15px;
-    }
+.teams-container{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
 
-    .teams-container {
+.team-box{
+flex:1;
+background:#f8fafc;
+border:1px solid #edf2f7;
+border-radius:12px;
+padding:12px 7px;
+}
 
-        gap: 8px;
-    }
+.team-title{
+text-align:center;
+font-weight:800;
+margin-bottom:12px;
+}
 
-    .team-box {
+.position-row{
+display:flex;
+align-items:center;
+margin-bottom:9px;
+}
 
-        padding: 12px 6px;
-    }
+.pos-label{
+width:37px;
+font-weight:800;
+font-size:.8rem;
+text-align:right;
+padding-right:4px;
+}
 
-    .pos-label {
+.player-input{
+width:100%;
+min-width:0;
+padding:7px;
+border:1px solid #cbd5e1;
+border-radius:7px;
+outline:none;
+font-size:.82rem;
+background:white;
+}
 
-        width: 38px;
+.player-input:focus{
+border-color:#006bb6;
+box-shadow:0 0 0 2px rgba(0,107,182,.15);
+}
 
-        font-size: .85rem;
-    }
+.player-input:disabled{
+background:#e9eef5;
+color:#94a3b8;
+}
 
-    .player-input {
 
-        font-size: .82rem;
+/* =========================
+REGRET
+========================= */
 
-        padding: 6px 7px;
-    }
+.regret-btn{
+width:100%;
+margin-top:10px;
+padding:12px;
+border:0;
+border-radius:10px;
+background:#ef4444;
+color:white;
+font-weight:800;
+cursor:pointer;
+display:none;
+}
+
+.regret-btn:disabled{
+background:#cbd5e1;
+cursor:not-allowed;
+}
+
+
+/* =========================
+OUTPUT
+========================= */
+
+.action-btns{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.btn-create{
+flex:3;
+border:0;
+border-radius:11px;
+padding:13px;
+background:#10b981;
+color:white;
+font-weight:800;
+cursor:pointer;
+}
+
+.btn-create:disabled{
+background:#cbd5e1;
+color:#888;
+cursor:not-allowed;
+}
+
+.btn-clear{
+flex:1;
+border:0;
+border-radius:11px;
+padding:13px;
+background:#ef4444;
+color:white;
+font-weight:800;
+cursor:pointer;
+}
+
+.btn-clear:disabled{
+background:#cbd5e1;
+color:#888;
+cursor:not-allowed;
+}
+
+.output-section{
+display:none;
+margin-top:15px;
+background:#f1f5f9;
+padding:14px;
+border-radius:11px;
+border:1px solid #cbd5e1;
+}
+
+.output-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:8px;
+}
+
+.output-status{
+color:#10b981;
+font-weight:800;
+}
+
+.btn-copy{
+border:0;
+background:#e2e8f0;
+padding:6px 10px;
+border-radius:6px;
+font-weight:700;
+cursor:pointer;
+}
+
+.output-text{
+width:100%;
+height:110px;
+border:0;
+background:transparent;
+resize:none;
+outline:none;
+line-height:1.5;
+}
+
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:420px){
+
+.container{
+padding:23px 13px;
+}
+
+.players{
+gap:15px;
+}
+
+.player-slot{
+width:105px;
+height:105px;
+}
+
+.teams-container{
+gap:6px;
+}
+
+.pos-label{
+width:34px;
+font-size:.75rem;
+}
+
+.player-input{
+font-size:.78rem;
+padding:6px 5px;
+}
+
 }
 
 </style>
@@ -728,200 +614,318 @@ Output
 
 <div class="container">
 
-<h1>
-NBA 球隊隨機抽籤
-</h1>
+<h1>NBA 球隊隨機抽籤</h1>
+
+
+<div class="page-switch" id="pageSwitch">
+
+<button id="roomPageBtn">
+房間
+</button>
+
+<button id="gamePageBtn">
+遊戲
+</button>
+
+</div>
 
 
 <!-- =====================================================
-房間
+ROOM PAGE
 ===================================================== -->
+
+<div class="page active" id="roomPage">
 
 <div class="room-section">
 
-    <div class="room-title">
-        聯機房間
-    </div>
+<div class="room-title">
+聯機房間
+</div>
 
-    <div
-        class="room-code"
-        id="roomCode"
-    >
-        未加入
-    </div>
 
-    <div
-        class="role-text"
-        id="roleText"
-    >
-        請建立或加入房間
-    </div>
+<div
+class="name-area"
+id="nameArea"
+>
 
-    <div class="room-actions">
+<label>
+你的名字
+</label>
 
-        <button
-            class="room-btn"
-            id="createRoomBtn"
-        >
-            建立房間
-        </button>
-
-        <input
-            id="joinRoomInput"
-            class="room-input"
-            placeholder="房間碼"
-            maxlength="6"
-        >
-
-        <button
-            class="room-btn"
-            id="joinRoomBtn"
-        >
-            加入
-        </button>
-
-    </div>
-
-    <div
-        class="status-text"
-        id="roomStatus"
-    >
-        尚未連接
-    </div>
-
-    <button
-        class="leave-btn"
-        id="leaveRoomBtn"
-    >
-        退出房間
-    </button>
+<input
+id="nameInput"
+class="name-input"
+maxlength="20"
+placeholder="輸入你的名字"
+>
 
 </div>
 
 
 <div
-    class="turn-banner"
-    id="turnBanner"
+class="room-code"
+id="roomCode"
 >
+未加入
 </div>
 
 
-<!-- =====================================================
-Display
-===================================================== -->
-
 <div
-    class="display-card"
-    id="displayCard"
+class="room-status"
+id="roomStatus"
+>
+請建立或加入房間
+</div>
+
+
+<div class="room-actions">
+
+<button
+class="room-btn"
+id="createRoomBtn"
+>
+建立房間
+</button>
+
+<input
+id="joinRoomInput"
+class="room-input"
+placeholder="房間碼"
+maxlength="6"
 >
 
-    <div
-        class="team-node show"
-        id="node-pending"
-    >
+<button
+class="room-btn"
+id="joinRoomBtn"
+>
+加入
+</button>
 
-        <img
-            src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png"
-            class="team-logo"
-            style="opacity:.35"
-        >
+</div>
 
-        <div class="team-zh">
-            待定
-        </div>
 
-        <div class="team-en">
-            Pending
-        </div>
+<div
+class="player-count"
+id="playerCount"
+>
+0/2
+</div>
 
-    </div>
+
+<div class="players">
+
+<div>
+<div
+class="player-slot empty"
+id="player1"
+>
+<span>＋</span>
+</div>
+<div
+class="host-badge"
+id="host1"
+>
+</div>
+</div>
+
+
+<div>
+<div
+class="player-slot empty"
+id="player2"
+>
+<span>＋</span>
+</div>
+<div
+class="host-badge"
+id="host2"
+>
+</div>
+</div>
 
 </div>
 
 
 <button
-    class="btn-roll"
-    id="rollBtn"
-    disabled
+class="start-game"
+id="startGameBtn"
+disabled
 >
-    請先建立或加入房間
+開始遊戲
 </button>
 
 
-<div class="divider"></div>
+<button
+class="leave-btn"
+id="leaveRoomBtn"
+style="display:none"
+>
+退出房間
+</button>
+
+</div>
+
+</div>
 
 
 <!-- =====================================================
-Teams
+GAME PAGE
 ===================================================== -->
+
+<div class="page" id="gamePage">
+
+
+<div
+class="turn-banner"
+id="turnBanner"
+>
+</div>
+
+
+<!-- =========================
+ROLL PAGE
+========================= -->
+
+<div
+id="rollPage"
+>
+
+<div class="game-page-title">
+抽取球隊
+</div>
+
+
+<div
+class="display-card"
+id="displayCard"
+>
+
+<div
+class="team-node show"
+id="pendingNode"
+>
+
+<img
+src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png"
+class="team-logo"
+style="opacity:.35"
+>
+
+<div class="team-zh">
+待定
+</div>
+
+<div class="team-en">
+Pending
+</div>
+
+</div>
+
+</div>
+
+
+<button
+class="btn-roll"
+id="rollBtn"
+disabled
+>
+等待
+</button>
+
+</div>
+
+
+<!-- =========================
+INPUT PAGE
+========================= -->
+
+<div
+id="inputPage"
+class="input-page"
+>
+
+<div
+class="recent-team"
+id="recentTeam"
+>
+剛剛抽到：
+<strong id="recentTeamName">
+</strong>
+</div>
+
+
+<div class="game-page-title">
+輸入球員
+</div>
+
 
 <div class="teams-container">
 
 
 <div class="team-box">
 
-    <div class="team-title">
-        A隊
-    </div>
+<div class="team-title">
+A隊
+</div>
 
-    <div class="position-row">
-        <span class="pos-label">PG-</span>
-        <input id="a_pg" class="player-input">
-    </div>
+<div class="position-row">
+<span class="pos-label">PG-</span>
+<input id="a_pg" class="player-input">
+</div>
 
-    <div class="position-row">
-        <span class="pos-label">SG-</span>
-        <input id="a_sg" class="player-input">
-    </div>
+<div class="position-row">
+<span class="pos-label">SG-</span>
+<input id="a_sg" class="player-input">
+</div>
 
-    <div class="position-row">
-        <span class="pos-label">SF-</span>
-        <input id="a_sf" class="player-input">
-    </div>
+<div class="position-row">
+<span class="pos-label">SF-</span>
+<input id="a_sf" class="player-input">
+</div>
 
-    <div class="position-row">
-        <span class="pos-label">PF-</span>
-        <input id="a_pf" class="player-input">
-    </div>
+<div class="position-row">
+<span class="pos-label">PF-</span>
+<input id="a_pf" class="player-input">
+</div>
 
-    <div class="position-row">
-        <span class="pos-label">C-</span>
-        <input id="a_c" class="player-input">
-    </div>
+<div class="position-row">
+<span class="pos-label">C-</span>
+<input id="a_c" class="player-input">
+</div>
 
 </div>
 
 
 <div class="team-box">
 
-    <div class="team-title">
-        B隊
-    </div>
+<div class="team-title">
+B隊
+</div>
 
-    <div class="position-row">
-        <span class="pos-label">PG-</span>
-        <input id="b_pg" class="player-input">
-    </div>
+<div class="position-row">
+<span class="pos-label">PG-</span>
+<input id="b_pg" class="player-input">
+</div>
 
-    <div class="position-row">
-        <span class="pos-label">SG-</span>
-        <input id="b_sg" class="player-input">
-    </div>
+<div class="position-row">
+<span class="pos-label">SG-</span>
+<input id="b_sg" class="player-input">
+</div>
 
-    <div class="position-row">
-        <span class="pos-label">SF-</span>
-        <input id="b_sf" class="player-input">
-    </div>
+<div class="position-row">
+<span class="pos-label">SF-</span>
+<input id="b_sf" class="player-input">
+</div>
 
-    <div class="position-row">
-        <span class="pos-label">PF-</span>
-        <input id="b_pf" class="player-input">
-    </div>
+<div class="position-row">
+<span class="pos-label">PF-</span>
+<input id="b_pf" class="player-input">
+</div>
 
-    <div class="position-row">
-        <span class="pos-label">C-</span>
-        <input id="b_c" class="player-input">
-    </div>
+<div class="position-row">
+<span class="pos-label">C-</span>
+<input id="b_c" class="player-input">
+</div>
 
 </div>
 
@@ -929,63 +933,74 @@ Teams
 
 
 <button
-    class="regret-btn"
-    id="regretBtn"
-    disabled
+class="btn-roll"
+id="submitBtn"
+disabled
 >
-    我後悔了 我要選擇其他位置
+提交球員
 </button>
 
-<div class="audio-status" id="audioStatus">
-    🔊 音效會在你第一次操作頁面後啟用
-</div>
 
-<div class="action-btns">
+<button
+class="regret-btn"
+id="regretBtn"
+>
+我後悔了 我要選擇其他位置
+</button>
 
-    <button
-        class="btn-create"
-        id="createBtn"
-        disabled
-    >
-        創建球隊完成
-    </button>
 
-    <button
-        class="btn-clear"
-        id="clearBtn"
-        disabled
-    >
-        清空
-    </button>
+<div
+class="action-btns"
+>
+
+<button
+class="btn-create"
+id="createBtn"
+disabled
+>
+創建球隊完成
+</button>
+
+<button
+class="btn-clear"
+id="clearBtn"
+disabled
+>
+清空
+</button>
 
 </div>
 
 
 <div
-    class="output-section"
-    id="outputSection"
+class="output-section"
+id="outputSection"
 >
 
-    <div class="output-header">
+<div class="output-header">
 
-        <span class="output-status">
-            已生成文案！
-        </span>
+<span class="output-status">
+已生成文案！
+</span>
 
-        <button
-            class="btn-copy"
-            id="copyBtn"
-        >
-            複製文案
-        </button>
+<button
+class="btn-copy"
+id="copyBtn"
+>
+複製文案
+</button>
 
-    </div>
+</div>
 
-    <textarea
-        class="output-text"
-        id="outputText"
-        readonly
-    ></textarea>
+<textarea
+id="outputText"
+class="output-text"
+readonly
+></textarea>
+
+</div>
+
+</div>
 
 </div>
 
@@ -994,35 +1009,36 @@ Teams
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
 
+
 /* =========================================================
-Supabase
+SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
-    "https://yafuniflixhbkdcqnqfz.supabase.co";
+"https://yafuniflixhbkdcqnqfz.supabase.co";
 
 const SUPABASE_KEY =
-    "sb_publishable__q45GsVlTu2bdKJ--l51Fw_t0dzy-nE";
+"eyJpc3MiOiJzdXBhYmxlIiwicmVmIjoieWFmdW5pZmxpeGhia2RjcW5xZnoiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4NzIyMzQ4NCwiZXhwIjoyMTAyNzk5NDg0fQ.IBxTIxuHXDBT6OhyTtMxPsigZgx5oca7ZjFHS7h6Zyg";
+
 
 const {
-    createClient
-} = window.supabase;
+createClient
+}=window.supabase;
 
-const supabaseClient =
-    createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+const supabaseClient=
+createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
 
 /* =========================================================
 NBA
 ========================================================= */
 
-const nbaTeams = [
+const nbaTeams=[
 
 ["老鷹","Atlanta Hawks","atl"],
 ["塞爾提克","Boston Celtics","bos"],
@@ -1055,15 +1071,11 @@ const nbaTeams = [
 ["爵士","Utah Jazz","utah"],
 ["奇才","Washington Wizards","was"]
 
-].map(x => ({
-
-    zh: x[0],
-
-    en: x[1],
-
-    logo:
-        `https://a.espncdn.com/i/teamlogos/nba/500/${x[2]}.png`
-
+].map(x=>({
+zh:x[0],
+en:x[1],
+logo:
+`https://a.espncdn.com/i/teamlogos/nba/500/${x[2]}.png`
 }));
 
 
@@ -1071,2090 +1083,1719 @@ const nbaTeams = [
 DOM
 ========================================================= */
 
-const roomCode =
-    document.getElementById("roomCode");
+const roomPage=
+document.getElementById("roomPage");
 
-const roleText =
-    document.getElementById("roleText");
+const gamePage=
+document.getElementById("gamePage");
 
-const roomStatus =
-    document.getElementById("roomStatus");
+const pageSwitch=
+document.getElementById("pageSwitch");
 
-const createRoomBtn =
-    document.getElementById("createRoomBtn");
+const roomPageBtn=
+document.getElementById("roomPageBtn");
 
-const joinRoomBtn =
-    document.getElementById("joinRoomBtn");
+const gamePageBtn=
+document.getElementById("gamePageBtn");
 
-const joinRoomInput =
-    document.getElementById("joinRoomInput");
+const nameInput=
+document.getElementById("nameInput");
 
-const leaveRoomBtn =
-    document.getElementById("leaveRoomBtn");
+const nameArea=
+document.getElementById("nameArea");
 
-const rollBtn =
-    document.getElementById("rollBtn");
+const roomCode=
+document.getElementById("roomCode");
 
-const createBtn =
-    document.getElementById("createBtn");
+const roomStatus=
+document.getElementById("roomStatus");
 
-const clearBtn =
-    document.getElementById("clearBtn");
+const playerCount=
+document.getElementById("playerCount");
 
-const regretBtn =
-    document.getElementById("regretBtn");
+const player1=
+document.getElementById("player1");
 
-const audioStatus =
-    document.getElementById("audioStatus");
+const player2=
+document.getElementById("player2");
 
-const turnBanner =
-    document.getElementById("turnBanner");
+const host1=
+document.getElementById("host1");
 
-const displayCard =
-    document.getElementById("displayCard");
+const host2=
+document.getElementById("host2");
 
-const pendingNode =
-    document.getElementById("node-pending");
+const createRoomBtn=
+document.getElementById("createRoomBtn");
 
-const outputSection =
-    document.getElementById("outputSection");
+const joinRoomBtn=
+document.getElementById("joinRoomBtn");
 
-const outputText =
-    document.getElementById("outputText");
+const joinRoomInput=
+document.getElementById("joinRoomInput");
 
-const copyBtn =
-    document.getElementById("copyBtn");
+const startGameBtn=
+document.getElementById("startGameBtn");
+
+const leaveRoomBtn=
+document.getElementById("leaveRoomBtn");
+
+const turnBanner=
+document.getElementById("turnBanner");
+
+const rollPage=
+document.getElementById("rollPage");
+
+const inputPage=
+document.getElementById("inputPage");
+
+const displayCard=
+document.getElementById("displayCard");
+
+const pendingNode=
+document.getElementById("pendingNode");
+
+const rollBtn=
+document.getElementById("rollBtn");
+
+const recentTeam=
+document.getElementById("recentTeam");
+
+const recentTeamName=
+document.getElementById("recentTeamName");
+
+const submitBtn=
+document.getElementById("submitBtn");
+
+const regretBtn=
+document.getElementById("regretBtn");
+
+const createBtn=
+document.getElementById("createBtn");
+
+const clearBtn=
+document.getElementById("clearBtn");
+
+const outputSection=
+document.getElementById("outputSection");
+
+const outputText=
+document.getElementById("outputText");
+
+const copyBtn=
+document.getElementById("copyBtn");
 
 
-const allInputs =
-    Array.from(
-        document.querySelectorAll(".player-input")
-    );
-
-
-/* =========================================================
-建立球隊 DOM
-========================================================= */
-
-const teamNodeElements = [];
-
-nbaTeams.forEach(
-    (team, index) => {
-
-        const node =
-            document.createElement("div");
-
-        node.className =
-            "team-node";
-
-        node.innerHTML = `
-
-            <img
-                src="${team.logo}"
-                class="team-logo"
-                alt="${team.en}"
-            >
-
-            <div class="team-zh">
-                ${team.zh}
-            </div>
-
-            <div class="team-en">
-                ${team.en}
-            </div>
-
-        `;
-
-        displayCard.appendChild(node);
-
-        teamNodeElements.push(node);
-
-    }
+const allInputs=
+Array.from(
+document.querySelectorAll(".player-input")
 );
 
 
 /* =========================================================
-完全不用 Local Storage
+TEAM NODES
 ========================================================= */
 
-const playerToken =
-    crypto.randomUUID();
+const teamNodeElements=[];
 
+nbaTeams.forEach(team=>{
 
-let currentRoomCode =
-    null;
+const node=
+document.createElement("div");
 
-let myRole =
-    null;
+node.className="team-node";
 
-let gameState =
-    null;
+node.innerHTML=`
 
-let realtimeChannel =
-    null;
+<img
+src="${team.logo}"
+class="team-logo"
+>
 
-let isRolling =
-    false;
+<div class="team-zh">
+${team.zh}
+</div>
 
-let activeNodeIndex =
-    -1;
+<div class="team-en">
+${team.en}
+</div>
 
-let hasCopiedPrompt =
-    false;
+`;
 
-let activeInputId = null;
+displayCard.appendChild(node);
 
+teamNodeElements.push(node);
 
-/*
-=========================================================
-動畫同步控制
-=========================================================
-
-lastAnimatedTeamIndex：
-記住最近一次已經播放過動畫的球隊。
-
-rollingTeamIndex：
-當某一次 Realtime 狀態正在播放動畫時，
-避免同一個狀態再次觸發。
-
-*/
-
-let lastAnimatedTeamIndex =
-    null;
-
-let animationPromise =
-    null;
-
-
-/* =========================================================
-音效
-========================================================= */
-
-let audioCtx = null;
-
-function setAudioStatus(text) {
-    if (audioStatus) audioStatus.textContent = text;
-}
-
-let audioUnlockListenerActive = true;
-
-async function unlockAudio() {
-    try {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === "suspended") await audioCtx.resume();
-        setAudioStatus("🔊 音效已啟用");
-        return audioCtx.state === "running";
-    } catch (e) {
-        console.warn("Audio unlock failed:", e);
-        setAudioStatus("🔇 瀏覽器未允許音效，請點擊頁面後再試");
-        return false;
-    }
-}
-
-document.addEventListener("pointerdown", () => {
-    if (audioUnlockListenerActive) {
-        unlockAudio().finally(() => {
-            audioUnlockListenerActive = false;
-        });
-    }
-}, { passive: true, once: true });
-
-function playTickSound(final = false) {
-    try {
-        if (!audioCtx || audioCtx.state !== "running") return;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        const now = audioCtx.currentTime;
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(final ? 1046 : 1200, now);
-        gain.gain.setValueAtTime(final ? .32 : .20, now);
-        gain.gain.exponentialRampToValueAtTime(.001, now + (final ? .55 : .035));
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.start(now); osc.stop(now + (final ? .55 : .035));
-    } catch (e) { console.warn("Tick sound failed:", e); }
-}
-
-
-
-/* =========================================================
-基本 UI
-========================================================= */
-
-function setStatus(text) {
-
-    roomStatus.textContent =
-        text;
-
-}
-
-
-function resetDisplay() {
-
-    teamNodeElements.forEach(
-        node => {
-
-            node.classList.remove(
-                "show",
-                "pop"
-            );
-
-            node.style.display =
-                "";
-
-        }
-    );
-
-    pendingNode.classList.add("show");
-
-    pendingNode.style.display =
-        "";
-
-}
-
-
-function resetGameInputs() {
-
-    activeInputId = null;
-    updateRegretButton();
-
-    allInputs.forEach(
-        input => {
-
-            input.value = "";
-
-            input.disabled = true;
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-建立房間
-========================================================= */
-
-async function createRoom() {
-
-    if (currentRoomCode) {
-
-        alert(
-            "你目前已經在房間內。\n請先退出目前房間。"
-        );
-
-        return;
-
-    }
-
-
-    createRoomBtn.disabled = true;
-
-    joinRoomBtn.disabled = true;
-
-    setStatus(
-        "正在建立房間..."
-    );
-
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient.rpc(
-                "create_nba_room",
-                {
-                    p_token:
-                        playerToken
-                }
-            );
-
-
-        if (error)
-            throw error;
-
-
-        currentRoomCode =
-            data.room_code;
-
-        myRole =
-            data.role;
-
-        gameState =
-            data.state;
-
-
-        updateRoomUI();
-
-        subscribeToRoom();
-
-        renderState();
-
-
-        setStatus(
-            "房間已建立，等待第二位玩家加入"
-        );
-
-
-    } catch(error) {
-
-        console.error(error);
-
-        alert(
-            "建立房間失敗：\n" +
-            error.message
-        );
-
-        createRoomBtn.disabled =
-            false;
-
-        joinRoomBtn.disabled =
-            false;
-
-        setStatus(
-            "建立失敗"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-加入房間
-========================================================= */
-
-async function joinRoom() {
-
-    if (currentRoomCode) {
-
-        alert(
-            "你目前已經在房間內。\n請先退出目前房間。"
-        );
-
-        return;
-
-    }
-
-
-    const code =
-        joinRoomInput.value
-            .trim()
-            .toUpperCase();
-
-
-    if (code.length !== 6) {
-
-        alert(
-            "請輸入 6 位房間碼"
-        );
-
-        return;
-
-    }
-
-
-    createRoomBtn.disabled = true;
-
-    joinRoomBtn.disabled = true;
-
-    setStatus(
-        "正在加入房間..."
-    );
-
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient.rpc(
-                "join_nba_room",
-                {
-                    p_code:
-                        code,
-
-                    p_token:
-                        playerToken
-                }
-            );
-
-
-        if (error)
-            throw error;
-
-
-        currentRoomCode =
-            data.room_code;
-
-        myRole =
-            data.role;
-
-        gameState =
-            data.state;
-
-
-        updateRoomUI();
-
-        subscribeToRoom();
-
-        renderState();
-
-
-        setStatus(
-            gameState.player_count >= 2
-                ? "房間已滿，遊戲開始！"
-                : "已加入，等待其他玩家"
-        );
-
-
-    } catch(error) {
-
-        console.error(error);
-
-        alert(
-            "加入房間失敗：\n" +
-            error.message
-        );
-
-        createRoomBtn.disabled =
-            false;
-
-        joinRoomBtn.disabled =
-            false;
-
-        setStatus(
-            "加入失敗"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-房間 UI
-========================================================= */
-
-function updateRoomUI() {
-
-    if (!currentRoomCode) {
-
-        roomCode.textContent =
-            "未加入";
-
-        roleText.textContent =
-            "請建立或加入房間";
-
-        leaveRoomBtn.style.display =
-            "none";
-
-        createRoomBtn.disabled =
-            false;
-
-        joinRoomBtn.disabled =
-            false;
-
-        return;
-
-    }
-
-
-    roomCode.textContent =
-        currentRoomCode;
-
-    roleText.textContent =
-        `你係 ${myRole}隊`;
-
-    leaveRoomBtn.style.display =
-        "block";
-
-    createRoomBtn.disabled =
-        true;
-
-    joinRoomBtn.disabled =
-        true;
-
-}
-
-
-/* =========================================================
-Realtime
-========================================================= */
-
-function subscribeToRoom() {
-
-    if (realtimeChannel) {
-
-        supabaseClient.removeChannel(
-            realtimeChannel
-        );
-
-        realtimeChannel =
-            null;
-
-    }
-
-
-    if (!currentRoomCode)
-        return;
-
-
-    realtimeChannel =
-        supabaseClient
-            .channel(
-                "nba-room-" +
-                currentRoomCode
-            )
-            .on(
-                "postgres_changes",
-                {
-                    event: "*",
-                    schema: "public",
-                    table: "nba_rooms",
-                    filter:
-                        `room_code=eq.${currentRoomCode}`
-                },
-                async payload => {
-
-                    /*
-                    房主退出後，
-                    room 會被刪除。
-                    */
-
-                    if (
-                        payload.eventType ===
-                        "DELETE"
-                    ) {
-
-                        handleRoomClosed();
-
-                        return;
-
-                    }
-
-
-                    if (
-                        payload.new &&
-                        payload.new.game_state
-                    ) {
-
-                        const incomingState =
-                            payload.new.game_state;
-
-
-                        /*
-                        =========================================
-                        核心修正：
-
-                        如果收到新的 selected_team_index，
-                        先播放動畫。
-
-                        對面裝置以前係：
-                        Realtime → renderState()
-                        → 直接顯示結果
-
-                        而家係：
-                        Realtime → animateRoll()
-                        → 顯示結果
-                        =========================================
-                        */
-
-                        const incomingSelected =
-                            incomingState
-                                .selected_team_index;
-
-
-                        const oldSelected =
-                            gameState
-                                ? gameState.selected_team_index
-                                : null;
-
-                        const oldPhase =
-                            gameState
-                                ? gameState.phase
-                                : null;
-
-                        const incomingPhase = incomingState.phase;
-
-                        const hasNewTeam =
-                            incomingSelected !== null &&
-                            incomingSelected !== undefined &&
-                            incomingPhase === "input" &&
-                            (oldPhase !== "input" ||
-                             Number(incomingSelected) !== Number(oldSelected));
-
-
-                        if (
-                            hasNewTeam &&
-                            !isRolling &&
-                            !animationPromise
-                        ) {
-
-                            const finalIndex =
-                                Number(
-                                    incomingSelected
-                                );
-
-
-                            animationPromise =
-                                animateRoll(
-                                    finalIndex
-                                );
-
-
-                            try {
-
-                                await animationPromise;
-
-                            } finally {
-
-                                animationPromise =
-                                    null;
-
-                            }
-
-                        }
-
-
-                        gameState =
-                            incomingState;
-
-
-                        renderState();
-
-                    }
-
-                }
-            )
-            .subscribe(
-                status => {
-
-                    console.log(
-                        "Realtime:",
-                        status
-                    );
-
-                }
-            );
-
-}
-
-
-/* =========================================================
-房間被關閉
-========================================================= */
-
-function handleRoomClosed() {
-
-    if (realtimeChannel) {
-
-        supabaseClient.removeChannel(
-            realtimeChannel
-        );
-
-        realtimeChannel = null;
-
-    }
-
-
-    currentRoomCode =
-        null;
-
-    myRole =
-        null;
-
-    gameState =
-        null;
-
-
-    lastAnimatedTeamIndex =
-        null;
-
-    animationPromise =
-        null;
-
-
-    resetGameInputs();
-
-    resetDisplay();
-
-
-    roomCode.textContent =
-        "未加入";
-
-    roleText.textContent =
-        "房間已結束";
-
-    setStatus(
-        "房間已關閉"
-    );
-
-
-    leaveRoomBtn.style.display =
-        "none";
-
-    createRoomBtn.disabled =
-        false;
-
-    joinRoomBtn.disabled =
-        false;
-
-
-    rollBtn.disabled =
-        true;
-
-    rollBtn.textContent =
-        "請先建立或加入房間";
-
-
-    createBtn.disabled =
-        true;
-
-    clearBtn.disabled =
-        true;
-
-
-    turnBanner.style.display =
-        "none";
-
-}
-
-
-/* =========================================================
-退出房間
-========================================================= */
-
-async function leaveRoom() {
-
-    if (!currentRoomCode)
-        return;
-
-
-    const confirmed =
-        confirm(
-            "確定要退出房間嗎？"
-        );
-
-
-    if (!confirmed)
-        return;
-
-
-    leaveRoomBtn.disabled =
-        true;
-
-
-    try {
-
-        const {
-            error
-        } =
-            await supabaseClient.rpc(
-                "leave_nba_room",
-                {
-                    p_code:
-                        currentRoomCode,
-
-                    p_token:
-                        playerToken
-                }
-            );
-
-
-        if (error)
-            throw error;
-
-
-        if (realtimeChannel) {
-
-            await supabaseClient.removeChannel(
-                realtimeChannel
-            );
-
-            realtimeChannel =
-                null;
-
-        }
-
-
-        currentRoomCode =
-            null;
-
-        myRole =
-            null;
-
-        gameState =
-            null;
-
-
-        lastAnimatedTeamIndex =
-            null;
-
-        animationPromise =
-            null;
-
-
-        resetGameInputs();
-
-        resetDisplay();
-
-
-        roomCode.textContent =
-            "未加入";
-
-        roleText.textContent =
-            "請建立或加入房間";
-
-        setStatus(
-            "已退出房間"
-        );
-
-
-        turnBanner.style.display =
-            "none";
-
-
-        rollBtn.disabled =
-            true;
-
-        rollBtn.textContent =
-            "請先建立或加入房間";
-
-
-        createBtn.disabled =
-            true;
-
-        clearBtn.disabled =
-            true;
-
-
-        leaveRoomBtn.style.display =
-            "none";
-
-
-        createRoomBtn.disabled =
-            false;
-
-        joinRoomBtn.disabled =
-            false;
-
-
-    } catch(error) {
-
-        console.error(error);
-
-        alert(
-            "退出房間失敗：\n" +
-            error.message
-        );
-
-        leaveRoomBtn.disabled =
-            false;
-
-    }
-
-}
-
-
-/* =========================================================
-重新取得房間
-========================================================= */
-
-async function refreshRoom() {
-
-    if (
-        !currentRoomCode
-    )
-        return;
-
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient.rpc(
-                "get_nba_room",
-                {
-                    p_code:
-                        currentRoomCode,
-
-                    p_token:
-                        playerToken
-                }
-            );
-
-
-        if (error)
-            throw error;
-
-
-        gameState =
-            data.state;
-
-        myRole =
-            data.role;
-
-        renderState();
-
-    } catch(error) {
-
-        console.error(error);
-
-    }
-
-}
-
-
-/* =========================================================
-Render
-========================================================= */
-
-function renderState() {
-
-    if (!gameState) {
-
-        resetGameInputs();
-
-        resetDisplay();
-
-        rollBtn.disabled =
-            true;
-
-        createBtn.disabled =
-            true;
-
-        return;
-
-    }
-
-
-    renderPlayers();
-
-    updateTurnUI();
-
-    updateButtons();
-
-    updateTeamDisplay();
-
-
-    const completed = Number(gameState.completed_count || 0);
-
-    createBtn.disabled = !(
-        gameState.phase === "done" &&
-        completed >= 10
-    );
-
-    updateRegretButton();
-
-}
-
-
-/* =========================================================
-玩家輸入
-========================================================= */
-
-function renderPlayers() {
-    allInputs.forEach(input => {
-        const parts = input.id.split("_");
-        const team = parts[0];
-        const position = parts[1];
-        const serverValue = gameState[team]?.[position] || "";
-        if (!(activeInputId === input.id && !serverValue)) input.value = serverValue;
-        input.disabled = true;
-    });
-
-    if (Number(gameState.player_count) < 2) return;
-    if (gameState.phase !== "input") return;
-    if (gameState.turn !== myRole) return;
-
-    const team = myRole.toLowerCase();
-    const positions = ["pg","sg","sf","pf","c"];
-
-    if (activeInputId) {
-        const active = document.getElementById(activeInputId);
-        if (active && active.id.startsWith(team + "_") && !gameState[team]?.[active.id.split("_")[1]]) {
-            active.disabled = false;
-        } else {
-            activeInputId = null;
-        }
-    }
-
-    if (!activeInputId) {
-        positions.forEach(position => {
-            const input = document.getElementById(`${team}_${position}`);
-            if (input && !gameState[team]?.[position]) input.disabled = false;
-        });
-    }
-
-    updateRegretButton();
-}
-
-function updateRegretButton() {
-    regretBtn.disabled = !(
-        activeInputId &&
-        gameState &&
-        gameState.phase === "input" &&
-        gameState.turn === myRole
-    );
-}
-
-function selectInputForEditing(input) {
-    if (!gameState || gameState.phase !== "input" || gameState.turn !== myRole || input.disabled) return;
-    unlockAudio();
-    const team = myRole.toLowerCase();
-    if (!input.id.startsWith(team + "_")) return;
-    const position = input.id.split("_")[1];
-    if (gameState[team]?.[position]) return;
-    activeInputId = input.id;
-    allInputs.forEach(x => { if (x.id !== activeInputId) x.disabled = true; });
-    input.disabled = false;
-    input.focus();
-    updateRegretButton();
-}
-
-function regretCurrentInput() {
-    if (!activeInputId) return;
-    const input = document.getElementById(activeInputId);
-    if (input) input.value = "";
-    activeInputId = null;
-    renderPlayers();
-    updateRegretButton();
-}
-
-
-
-/* =========================================================
-自動 Focus 下一格
-========================================================= */
-
-function focusNextAvailableInput() {
-    /* 不再自動跳下一格。 */
-}
-
-
-
-/* =========================================================
-輸入框
-========================================================= */
-
-allInputs.forEach(input => {
-    input.addEventListener("pointerdown", () => selectInputForEditing(input));
-    input.addEventListener("focus", () => selectInputForEditing(input));
-    input.addEventListener("input", () => {
-        if (activeInputId === input.id) {
-            allInputs.forEach(x => { if (x.id !== activeInputId) x.disabled = true; });
-            updateRegretButton();
-        }
-    });
-    input.addEventListener("keydown", async event => {
-        if (event.key !== "Enter") return;
-        event.preventDefault();
-        await submitCurrentInput(input);
-    });
-});
-
-regretBtn.addEventListener("click", () => {
-    unlockAudio();
-    regretCurrentInput();
 });
 
 
-
 /* =========================================================
-提交
+PLAYER TOKEN
+完全不使用 localStorage
 ========================================================= */
 
-async function submitCurrentInput(
-    input
-) {
-
-    if (!gameState)
-        return;
+const playerToken=
+crypto.randomUUID();
 
 
-    if (
-        gameState.player_count < 2
-    ) {
-
-        alert(
-            "請等待第二位玩家加入"
-        );
-
-        return;
-
-    }
+let currentRoomCode=null;
+let myRole=null;
+let isHost=false;
+let gameState=null;
+let realtimeChannel=null;
+let isRolling=false;
+let activeNodeIndex=-1;
+let selectedInput=null;
+let copied=false;
 
 
-    if (
-        gameState.phase !== "input"
-    )
-        return;
+/* =========================================================
+AUDIO
+========================================================= */
 
+let audioCtx=null;
 
-    if (
-        gameState.turn !== myRole
-    )
-        return;
+function playTickSound(final=false){
 
+try{
 
-    const team =
-        myRole.toLowerCase();
+if(!audioCtx){
 
-
-    if (
-        !input.id.startsWith(
-            team + "_"
-        )
-    )
-        return;
-
-
-    const position =
-        input.id.split("_")[1];
-
-
-    const name =
-        input.value.trim();
-
-
-    if (!name) {
-
-        alert(
-            "請輸入球員名字"
-        );
-
-        input.focus();
-
-        return;
-
-    }
-
-
-    allInputs.forEach(
-        x => x.disabled = true
-    );
-
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient.rpc(
-                "fill_nba_player",
-                {
-                    p_code:
-                        currentRoomCode,
-
-                    p_token:
-                        playerToken,
-
-                    p_position:
-                        position,
-
-                    p_player_name:
-                        name
-                }
-            );
-
-
-        if (error)
-            throw error;
-
-
-        gameState =
-            data.state;
-
-
-        renderState();
-
-
-        /*
-        =========================================
-        核心修正：
-
-        如果提交後仍然係自己回合，
-        自動去下一個空位。
-        =========================================
-        */
-
-        activeInputId = null;
-        renderState();
-
-
-    } catch(error) {
-
-        console.error(error);
-
-        alert(
-            error.message
-        );
-
-        await refreshRoom();
-
-        focusNextAvailableInput();
-
-    }
+audioCtx=
+new(
+window.AudioContext||
+window.webkitAudioContext
+)();
 
 }
 
-
-/* =========================================================
-回合 UI
-========================================================= */
-
-function updateTurnUI() {
-
-    if (!gameState) {
-
-        turnBanner.style.display =
-            "none";
-
-        return;
-
-    }
-
-
-    turnBanner.style.display =
-        "block";
-
-
-    const count =
-        Number(
-            gameState.player_count
-        );
-
-
-    if (count < 2) {
-
-        turnBanner.textContent =
-            "⏳ 等待第二位玩家加入";
-
-        return;
-
-    }
-
-
-    if (
-        gameState.phase === "done"
-    ) {
-
-        turnBanner.textContent =
-            "🏆 所有球員已完成，可以創建文案";
-
-        return;
-
-    }
-
-
-    if (
-        gameState.turn === myRole
-    ) {
-
-        if (
-            gameState.phase === "roll"
-        ) {
-
-            turnBanner.textContent =
-                `🟢 到你（${myRole}隊）！請隨機抽取球隊`;
-
-        } else {
-
-            turnBanner.textContent =
-                `🟢 ${myRole}隊請輸入一名球員`;
-
-        }
-
-    } else {
-
-        turnBanner.textContent =
-            `🔴 現在是 ${gameState.turn}隊回合`;
-
-    }
-
+if(audioCtx.state==="suspended"){
+audioCtx.resume();
 }
 
+const osc=
+audioCtx.createOscillator();
 
-/* =========================================================
-Buttons
-========================================================= */
+const gain=
+audioCtx.createGain();
 
-function updateButtons() {
+osc.type="sine";
 
-    /*
-    未齊兩人：
+osc.frequency.value=
+final?1046:1200;
 
-    所有遊戲按鈕灰色。
-    */
+gain.gain.value=
+final?.35:.25;
 
-    if (
-        Number(
-            gameState.player_count
-        ) < 2
-    ) {
-
-        rollBtn.disabled =
-            true;
-
-        rollBtn.textContent =
-            "等待第二位玩家";
-
-        createBtn.disabled =
-            true;
-
-        clearBtn.disabled =
-            true;
-
-        return;
-
-    }
-
-
-    if (
-        gameState.phase === "done"
-    ) {
-
-        rollBtn.disabled =
-            true;
-
-        rollBtn.textContent =
-            "遊戲完成";
-
-        return;
-
-    }
-
-
-    if (
-        gameState.phase === "roll"
-    ) {
-
-        rollBtn.disabled =
-            gameState.turn !== myRole;
-
-        rollBtn.textContent =
-            gameState.turn === myRole
-                ? "隨機抽取球隊"
-                : `等待 ${gameState.turn}隊`;
-
-        return;
-
-    }
-
-
-    if (
-        gameState.phase === "input"
-    ) {
-
-        const team =
-            myRole.toLowerCase();
-
-
-        const available =
-            ["pg","sg","sf","pf","c"]
-                .some(
-                    position =>
-                        !gameState[
-                            team
-                        ][
-                            position
-                        ]
-                );
-
-
-        rollBtn.disabled =
-            !(
-                gameState.turn === myRole &&
-                available
-            );
-
-
-        rollBtn.textContent =
-            "提交球員";
-
-    }
-
-}
-
-
-/* =========================================================
-球隊顯示
-========================================================= */
-
-function updateTeamDisplay() {
-
-    const selected =
-        gameState.selected_team_index;
-
-
-    /*
-    未抽球隊
-    */
-
-    if (
-        selected === null ||
-        selected === undefined
-    ) {
-
-        teamNodeElements.forEach(
-            node => {
-
-                node.classList.remove(
-                    "show",
-                    "pop"
-                );
-
-                node.style.display =
-                    "";
-
-            }
-        );
-
-        pendingNode.classList.add(
-            "show"
-        );
-
-        pendingNode.style.display =
-            "";
-
-        return;
-
-    }
-
-
-    const index =
-        Number(selected);
-
-
-    if (
-        !teamNodeElements[index]
-    ) {
-
-        return;
-
-    }
-
-
-    /*
-    先明確移除 Pending
-    */
-
-    pendingNode.classList.remove(
-        "show"
-    );
-
-    pendingNode.style.display =
-        "none";
-
-
-    teamNodeElements.forEach(
-        node => {
-
-            node.classList.remove(
-                "show",
-                "pop"
-            );
-
-        }
-    );
-
-
-    teamNodeElements[index]
-        .classList.add(
-            "show"
-        );
-
-}
-
-
-/* =========================================================
-抽籤
-========================================================= */
-
-async function startRolling() {
-
-    await unlockAudio();
-
-    if (isRolling)
-        return;
-
-
-    if (!gameState)
-        return;
-
-
-    if (
-        Number(
-            gameState.player_count
-        ) < 2
-    ) {
-
-        return;
-
-    }
-
-
-    if (
-        gameState.phase !== "roll"
-    )
-        return;
-
-
-    if (
-        gameState.turn !== myRole
-    ) {
-
-        alert(
-            "未到你的回合"
-        );
-
-        return;
-
-    }
-
-
-    isRolling =
-        true;
-
-
-    rollBtn.disabled =
-        true;
-
-
-    displayCard.classList.add(
-        "active"
-    );
-
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient.rpc(
-                "roll_nba_room",
-                {
-                    p_code:
-                        currentRoomCode,
-
-                    p_token:
-                        playerToken
-                }
-            );
-
-
-        if (error)
-            throw error;
-
-
-        const finalIndex =
-            Number(
-                data.state
-                    .selected_team_index
-            );
-
-
-        /*
-        =========================================
-        房主自己抽：
-
-        直接播放一次。
-
-        Realtime 收到同一狀態時，
-        因為 isRolling = true，
-        不會再播放第二次。
-        =========================================
-        */
-
-        await animateRoll(
-            finalIndex
-        );
-
-
-        gameState =
-            data.state;
-
-
-        lastAnimatedTeamIndex =
-            finalIndex;
-
-
-        renderState();
-
-
-    } catch(error) {
-
-        console.error(error);
-
-        alert(
-            error.message
-        );
-
-        await refreshRoom();
-
-    }
-
-
-    isRolling =
-        false;
-
-
-    displayCard.classList.remove(
-        "active"
-    );
-
-
-    renderState();
-
-}
-
-
-/* =========================================================
-動畫
-========================================================= */
-
-function animateRoll(
-    finalIndex
-) {
-
-    return new Promise(
-        resolve => {
-
-            let delay = 20;
-
-            let count = 0;
-
-            const maxSteps = 35;
-
-            let lastIndex =
-                activeNodeIndex;
-
-
-            function step() {
-
-                let index;
-
-
-                if (
-                    count ===
-                    maxSteps - 1
-                ) {
-
-                    index =
-                        finalIndex;
-
-                } else {
-
-                    do {
-
-                        index =
-                            Math.floor(
-                                Math.random() * 30
-                            );
-
-                    } while (
-                        index === lastIndex
-                    );
-
-                }
-
-
-                teamNodeElements.forEach(
-                    node => {
-
-                        node.classList.remove(
-                            "show",
-                            "pop"
-                        );
-
-                    }
-                );
-
-
-                pendingNode.classList.remove(
-                    "show"
-                );
-
-                pendingNode.style.display =
-                    "none";
-
-
-                const node =
-                    teamNodeElements[index];
-
-
-                node.classList.add(
-                    "show"
-                );
-
-
-                node.classList.remove(
-                    "pop"
-                );
-
-
-                void node.offsetWidth;
-
-
-                node.classList.add(
-                    "pop"
-                );
-
-
-                lastIndex =
-                    index;
-
-                activeNodeIndex =
-                    index;
-
-
-                count++;
-
-
-                const remaining =
-                    maxSteps - count;
-
-
-                playTickSound(
-                    remaining === 0
-                );
-
-
-                if (
-                    remaining === 0
-                ) {
-
-                    resolve();
-
-                    return;
-
-                }
-
-
-                if (remaining === 1)
-                    delay = 550;
-
-                else if (remaining === 2)
-                    delay = 400;
-
-                else if (remaining === 3)
-                    delay = 280;
-
-                else if (remaining === 4)
-                    delay = 180;
-
-                else if (remaining === 5)
-                    delay = 110;
-
-                else if (remaining <= 10)
-                    delay += 10;
-
-
-                setTimeout(
-                    step,
-                    delay
-                );
-
-            }
-
-
-            step();
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-Roll button
-========================================================= */
-
-rollBtn.addEventListener(
-    "click",
-    async () => {
-
-        if (!gameState)
-            return;
-
-
-        if (
-            gameState.player_count < 2
-        )
-            return;
-
-
-        if (
-            gameState.phase === "roll"
-        ) {
-
-            await startRolling();
-
-            return;
-
-        }
-
-
-        if (
-            gameState.phase === "input"
-        ) {
-
-            if (
-                gameState.turn !== myRole
-            )
-                return;
-
-
-            const team =
-                myRole.toLowerCase();
-
-
-            const input =
-                ["pg","sg","sf","pf","c"]
-                    .map(
-                        p =>
-                            document.getElementById(
-                                `${team}_${p}`
-                            )
-                    )
-                    .find(
-                        x =>
-                            !x.disabled &&
-                            x.value.trim()
-                    );
-
-
-            if (!input) {
-
-                alert(
-                    "請先輸入球員名字"
-                );
-
-                return;
-
-            }
-
-
-            await submitCurrentInput(
-                input
-            );
-
-        }
-
-    }
+gain.gain.exponentialRampToValueAtTime(
+.001,
+audioCtx.currentTime+
+(final?.6:.02)
 );
 
+osc.connect(gain);
+gain.connect(audioCtx.destination);
 
-/* =========================================================
-生成文案
-========================================================= */
+osc.start();
 
-function generatePrompt() {
-
-    if (
-        !gameState ||
-        gameState.phase !== "done"
-    )
-        return;
-
-
-    const a =
-        gameState.a;
-
-    const b =
-        gameState.b;
-
-
-    outputText.value =
-
-        `假設全員巔峯，A隊 PG "${a.pg}" SG "${a.sg}" SF "${a.sf}" PF "${a.pf}" C "${a.c}" 和 B隊 PG "${b.pg}" SG "${b.sg}" SF "${b.sf}" PF "${b.pf}" C "${b.c}"，邊一隊更強？`;
-
-
-    outputSection.style.display =
-        "block";
-
-
-    outputSection.scrollIntoView({
-        behavior: "smooth"
-    });
-
-
-    hasCopiedPrompt =
-        false;
-
-
-    clearBtn.disabled =
-        true;
-
-}
-
-
-createBtn.addEventListener("click", () => {
-    if (!gameState || gameState.phase !== "done") return;
-    generatePrompt();
-});
-
-
-/* =========================================================
-Copy
-========================================================= */
-
-copyBtn.addEventListener(
-    "click",
-    async () => {
-
-        await unlockAudio();
-
-        if (!outputText.value)
-            return;
-
-
-        try {
-
-            await navigator.clipboard.writeText(
-                outputText.value
-            );
-
-            hasCopiedPrompt =
-                true;
-
-            clearBtn.disabled =
-                false;
-
-            alert(
-                "文案已成功複製！"
-            );
-
-        } catch(error) {
-
-            outputText.select();
-
-            document.execCommand(
-                "copy"
-            );
-
-            hasCopiedPrompt =
-                true;
-
-            clearBtn.disabled =
-                false;
-
-            alert(
-                "文案已成功複製！"
-            );
-
-        }
-
-    }
+osc.stop(
+audioCtx.currentTime+
+(final?.6:.02)
 );
 
-
-/* =========================================================
-Clear
-========================================================= */
-
-clearBtn.addEventListener(
-    "click",
-    () => {
-
-        if (!hasCopiedPrompt)
-            return;
-
-
-        allInputs.forEach(
-            input => {
-
-                input.value = "";
-
-                input.disabled = true;
-
-            }
-        );
-
-
-        outputText.value = "";
-
-        outputSection.style.display =
-            "none";
-
-        hasCopiedPrompt =
-            false;
-
-        clearBtn.disabled =
-            true;
-
-    }
-);
-
-
-/* =========================================================
-建立 / 加入 / 退出
-========================================================= */
-
-createRoomBtn.addEventListener("click", async () => {
-    await unlockAudio();
-    await createRoom();
-});
-
-joinRoomBtn.addEventListener("click", async () => {
-    await unlockAudio();
-    await joinRoom();
-});
-
-leaveRoomBtn.addEventListener(
-    "click",
-    leaveRoom
-);
-
-
-/* =========================================================
-URL ?room=XXXXXX
-========================================================= */
-
-const params =
-    new URLSearchParams(
-        window.location.search
-    );
-
-const roomFromUrl =
-    params.get("room");
-
-if (roomFromUrl) {
-
-    joinRoomInput.value =
-        roomFromUrl
-            .trim()
-            .toUpperCase();
+}catch(e){}
 
 }
 
 
 /* =========================================================
-初始狀態
+FONT SIZE PLAYER
 ========================================================= */
 
-resetGameInputs();
+function fitPlayerName(el,name){
+
+const span=el.querySelector("span");
+
+span.textContent=name||"＋";
+
+if(!name){
+
+el.classList.add("empty");
+return;
+
+}
+
+el.classList.remove("empty");
+
+let size=1.1;
+
+if(name.length>=8) size=.9;
+if(name.length>=11) size=.75;
+if(name.length>=14) size=.65;
+if(name.length>=17) size=.55;
+
+span.style.fontSize=size+"rem";
+
+}
+
+
+/* =========================================================
+ROOM UI
+========================================================= */
+
+function updateRoomUI(){
+
+if(!currentRoomCode){
+
+roomCode.textContent="未加入";
+
+roomStatus.textContent=
+"請建立或加入房間";
+
+playerCount.textContent="0/2";
+
+fitPlayerName(player1,"");
+fitPlayerName(player2,"");
+
+host1.textContent="";
+host2.textContent="";
+
+nameArea.style.display="block";
+
+createRoomBtn.disabled=false;
+joinRoomBtn.disabled=false;
+
+startGameBtn.disabled=true;
+
+leaveRoomBtn.style.display="none";
+
+pageSwitch.style.display="none";
+
+return;
+
+}
+
+
+roomCode.textContent=
+currentRoomCode;
+
+nameArea.style.display="none";
+
+createRoomBtn.disabled=true;
+joinRoomBtn.disabled=true;
+
+leaveRoomBtn.style.display="block";
+
+playerCount.textContent=
+`${gameState?.player_count||1}/2`;
+
+const p1=
+gameState?.player1_name||
+"";
+
+const p2=
+gameState?.player2_name||
+"";
+
+fitPlayerName(player1,p1);
+fitPlayerName(player2,p2);
+
+host1.textContent=
+isHost?"房主":"";
+
+host2.textContent="";
+
+
+if(
+gameState?.player_count>=2
+){
+
+roomStatus.textContent=
+gameState.started
+?"遊戲進行中"
+:"兩位玩家已加入";
+
+}else{
+
+roomStatus.textContent=
+"等待第二位玩家加入";
+
+}
+
+
+startGameBtn.disabled=
+!(
+isHost &&
+gameState?.player_count>=2 &&
+!gameState?.started
+);
+
+}
+
+
+/* =========================================================
+PAGE
+========================================================= */
+
+function showPage(page){
+
+if(page==="room"){
+
+roomPage.classList.add("active");
+gamePage.classList.remove("active");
+
+roomPageBtn.classList.add("active");
+gamePageBtn.classList.remove("active");
+
+}else{
+
+roomPage.classList.remove("active");
+gamePage.classList.add("active");
+
+roomPageBtn.classList.remove("active");
+gamePageBtn.classList.add("active");
+
+}
+
+}
+
+
+roomPageBtn.onclick=()=>{
+showPage("room");
+};
+
+gamePageBtn.onclick=()=>{
+showPage("game");
+};
+
+
+/* =========================================================
+CREATE
+========================================================= */
+
+async function createRoom(){
+
+const name=
+nameInput.value.trim();
+
+if(!name){
+
+alert("請先輸入你的名字");
+nameInput.focus();
+return;
+
+}
+
+createRoomBtn.disabled=true;
+joinRoomBtn.disabled=true;
+
+roomStatus.textContent=
+"正在建立房間...";
+
+try{
+
+const {data,error}=
+await supabaseClient.rpc(
+"create_nba_room",
+{
+p_token:playerToken,
+p_name:name
+}
+);
+
+if(error)throw error;
+
+applyRoomData(data);
+
+subscribeToRoom();
+
+showPage("room");
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"建立房間失敗：\n"+
+error.message
+);
+
+createRoomBtn.disabled=false;
+joinRoomBtn.disabled=false;
+
+roomStatus.textContent=
+"建立失敗";
+
+}
+
+}
+
+
+/* =========================================================
+JOIN
+========================================================= */
+
+async function joinRoom(){
+
+const name=
+nameInput.value.trim();
+
+if(!name){
+
+alert("請先輸入你的名字");
+nameInput.focus();
+return;
+
+}
+
+const code=
+joinRoomInput.value
+.trim()
+.toUpperCase();
+
+if(code.length!==6){
+
+alert("請輸入 6 位房間碼");
+return;
+
+}
+
+createRoomBtn.disabled=true;
+joinRoomBtn.disabled=true;
+
+roomStatus.textContent=
+"正在加入房間...";
+
+try{
+
+const {data,error}=
+await supabaseClient.rpc(
+"join_nba_room",
+{
+p_code:code,
+p_token:playerToken,
+p_name:name
+}
+);
+
+if(error)throw error;
+
+applyRoomData(data);
+
+subscribeToRoom();
+
+showPage(
+data.started?"game":"room"
+);
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"加入房間失敗：\n"+
+error.message
+);
+
+createRoomBtn.disabled=false;
+joinRoomBtn.disabled=false;
+
+roomStatus.textContent=
+"加入失敗";
+
+}
+
+}
+
+
+/* =========================================================
+APPLY ROOM
+========================================================= */
+
+function applyRoomData(data){
+
+currentRoomCode=
+data.room_code;
+
+myRole=
+data.role;
+
+isHost=
+Boolean(data.is_host);
+
+gameState=
+data.state;
+
+if(!gameState.player1_name)
+gameState.player1_name=
+data.player1_name;
+
+if(!gameState.player2_name)
+gameState.player2_name=
+data.player2_name;
+
+gameState.player_count=
+data.player_count;
+
+gameState.started=
+data.started;
+
+updateRoomUI();
+
+renderGame();
+
+}
+
+
+/* =========================================================
+REALTIME
+========================================================= */
+
+function subscribeToRoom(){
+
+if(realtimeChannel){
+
+supabaseClient.removeChannel(
+realtimeChannel
+);
+
+realtimeChannel=null;
+
+}
+
+if(!currentRoomCode)return;
+
+
+realtimeChannel=
+supabaseClient
+.channel(
+"nba-room-"+currentRoomCode
+)
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"nba_rooms",
+filter:
+`room_code=eq.${currentRoomCode}`
+},
+payload=>{
+
+if(payload.eventType==="DELETE"){
+
+handleRoomClosed();
+return;
+
+}
+
+if(
+payload.new &&
+payload.new.game_state
+){
+
+const row=payload.new;
+
+gameState=
+row.game_state;
+
+gameState.player_count=
+row.player2_token?2:1;
+
+gameState.player1_name=
+row.player1_name;
+
+gameState.player2_name=
+row.player2_name;
+
+gameState.started=
+row.started;
+
+if(
+row.host_token===playerToken
+){
+isHost=true;
+}else{
+isHost=false;
+}
+
+updateRoomUI();
+
+renderGame();
+
+}
+
+}
+)
+.subscribe(
+status=>{
+console.log(
+"Realtime:",
+status
+);
+}
+);
+
+}
+
+
+/* =========================================================
+CLOSED
+========================================================= */
+
+function handleRoomClosed(){
+
+if(realtimeChannel){
+
+supabaseClient.removeChannel(
+realtimeChannel
+);
+
+realtimeChannel=null;
+
+}
+
+currentRoomCode=null;
+myRole=null;
+isHost=false;
+gameState=null;
+
+resetEverything();
+
+updateRoomUI();
+
+showPage("room");
+
+roomStatus.textContent=
+"房間已結束";
+
+}
+
+
+/* =========================================================
+LEAVE
+========================================================= */
+
+async function leaveRoom(){
+
+if(!currentRoomCode)return;
+
+if(
+!confirm("確定要退出房間嗎？")
+)return;
+
+leaveRoomBtn.disabled=true;
+
+try{
+
+const {error}=
+await supabaseClient.rpc(
+"leave_nba_room",
+{
+p_code:currentRoomCode,
+p_token:playerToken
+}
+);
+
+if(error)throw error;
+
+if(realtimeChannel){
+
+await supabaseClient.removeChannel(
+realtimeChannel
+);
+
+realtimeChannel=null;
+
+}
+
+currentRoomCode=null;
+myRole=null;
+isHost=false;
+gameState=null;
+
+resetEverything();
+
+updateRoomUI();
+
+showPage("room");
+
+roomStatus.textContent=
+"已退出房間";
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"退出房間失敗：\n"+
+error.message
+);
+
+}
+
+leaveRoomBtn.disabled=false;
+
+}
+
+
+/* =========================================================
+START GAME
+========================================================= */
+
+async function startGame(){
+
+if(!isHost)return;
+
+try{
+
+const {data,error}=
+await supabaseClient.rpc(
+"start_nba_game",
+{
+p_code:currentRoomCode,
+p_token:playerToken
+}
+);
+
+if(error)throw error;
+
+applyRoomData(data);
+
+showPage("game");
+
+}catch(error){
+
+alert(
+"開始遊戲失敗：\n"+
+error.message
+);
+
+}
+
+}
+
+
+/* =========================================================
+RESET
+========================================================= */
+
+function resetEverything(){
+
+allInputs.forEach(input=>{
+
+input.value="";
+input.disabled=true;
+
+});
 
 resetDisplay();
 
-rollBtn.disabled =
-    true;
+rollPage.style.display="block";
+inputPage.classList.remove("active");
 
-createBtn.disabled =
-    true;
+recentTeam.style.display="none";
 
-clearBtn.disabled =
-    true;
+turnBanner.textContent="";
 
-regretBtn.disabled =
-    true;
+outputSection.style.display="none";
+
+outputText.value="";
+
+createBtn.disabled=true;
+clearBtn.disabled=true;
+
+copied=false;
+selectedInput=null;
+
+}
+
+
+/* =========================================================
+RENDER GAME
+========================================================= */
+
+function renderGame(){
+
+if(!gameState)return;
+
+updateTurnBanner();
+
+updateGamePage();
+
+renderPlayers();
+
+updateOutputButton();
+
+}
+
+
+/* =========================================================
+TURN
+========================================================= */
+
+function updateTurnBanner(){
+
+if(
+!gameState.started
+){
+turnBanner.textContent=
+"等待房主開始遊戲";
+return;
+}
+
+if(
+gameState.phase==="done"
+){
+
+turnBanner.textContent=
+"🏆 所有球員已完成";
+
+return;
+
+}
+
+if(
+gameState.turn===myRole
+){
+
+if(gameState.phase==="roll"){
+
+turnBanner.textContent=
+`🟢 到你（${myRole}隊）回合，請抽取球隊`;
+
+}else{
+
+turnBanner.textContent=
+`🟢 ${myRole}隊請輸入一名球員`;
+
+}
+
+}else{
+
+turnBanner.textContent=
+`🔴 現在是 ${gameState.turn}隊回合`;
+
+}
+
+}
+
+
+/* =========================================================
+GAME PAGE
+========================================================= */
+
+function updateGamePage(){
+
+if(!gameState.started){
+
+pageSwitch.style.display="none";
+return;
+
+}
+
+pageSwitch.style.display="flex";
+
+
+if(
+gameState.phase==="roll"
+){
+
+rollPage.style.display="block";
+inputPage.classList.remove("active");
+
+}else{
+
+rollPage.style.display="none";
+inputPage.classList.add("active");
+
+}
+
+}
+
+
+/* =========================================================
+PLAYER INPUT
+========================================================= */
+
+function renderPlayers(){
+
+allInputs.forEach(input=>{
+
+const [team,pos]=
+input.id.split("_");
+
+input.value=
+gameState[team]?.[pos]||"";
+
+input.disabled=true;
+
+});
+
+
+if(
+!gameState.started ||
+gameState.phase!=="input" ||
+gameState.turn!==myRole
+){
+
+regretBtn.style.display="none";
+return;
+
+}
+
+
+const team=
+myRole.toLowerCase();
+
+
+const available=
+["pg","sg","sf","pf","c"]
+.some(
+p=>!gameState[team][p]
+);
+
+
+if(!available){
+
+regretBtn.style.display="none";
+return;
+
+}
+
+
+/*
+   如果目前未選任何框
+   五個都可以揀。
+*/
+
+if(!selectedInput){
+
+["pg","sg","sf","pf","c"]
+.forEach(pos=>{
+
+const input=
+document.getElementById(
+`${team}_${pos}`
+);
+
+if(!gameState[team][pos])
+input.disabled=false;
+
+});
+
+regretBtn.style.display="none";
+
+return;
+
+}
+
+
+/*
+   已選其中一個：
+   其他全部鎖死。
+*/
+
+["pg","sg","sf","pf","c"]
+.forEach(pos=>{
+
+const input=
+document.getElementById(
+`${team}_${pos}`
+);
+
+if(
+input===selectedInput &&
+!gameState[team][pos]
+){
+
+input.disabled=false;
+
+}else{
+
+input.disabled=true;
+
+}
+
+});
+
+
+regretBtn.style.display="block";
+
+regretBtn.disabled=false;
+
+
+/*
+   有輸入先可以提交
+*/
+
+submitBtn.disabled=
+!selectedInput ||
+!selectedInput.value.trim();
+
+}
+
+
+/* =========================================================
+INPUT FOCUS
+========================================================= */
+
+allInputs.forEach(input=>{
+
+input.addEventListener(
+"focus",
+()=>{
+
+if(
+!gameState ||
+gameState.phase!=="input" ||
+gameState.turn!==myRole
+)return;
+
+const team=
+myRole.toLowerCase();
+
+if(
+!input.id.startsWith(team+"_")
+)return;
+
+if(
+gameState[team][
+input.id.split("_")[1]
+]
+)return;
+
+
+/*
+  第一個被選中的框
+*/
+
+if(!selectedInput){
+
+selectedInput=input;
+
+renderPlayers();
+
+input.focus();
+
+}
+
+}
+);
+
+
+/*
+  一旦輸入：
+  其他框永久鎖到後悔
+*/
+
+input.addEventListener(
+"input",
+()=>{
+
+if(
+input!==selectedInput
+)return;
+
+submitBtn.disabled=
+!input.value.trim();
+
+}
+);
+
+
+/*
+  Enter
+*/
+
+input.addEventListener(
+"keydown",
+async event=>{
+
+if(event.key!=="Enter")
+return;
+
+event.preventDefault();
+
+if(
+selectedInput===input &&
+input.value.trim()
+){
+
+await submitCurrentInput();
+
+}
+
+}
+);
+
+});
+
+
+/* =========================================================
+REGRET
+========================================================= */
+
+regretBtn.addEventListener(
+"click",
+()=>{
+
+if(!selectedInput)return;
+
+selectedInput.value="";
+
+selectedInput=null;
+
+submitBtn.disabled=true;
+
+renderPlayers();
+
+}
+);
+
+
+/* =========================================================
+SUBMIT
+========================================================= */
+
+async function submitCurrentInput(){
+
+if(!selectedInput)return;
+
+const name=
+selectedInput.value.trim();
+
+if(!name){
+
+alert("請輸入球員名字");
+return;
+
+}
+
+
+const position=
+selectedInput.id.split("_")[1];
+
+
+submitBtn.disabled=true;
+
+try{
+
+const {data,error}=
+await supabaseClient.rpc(
+"fill_nba_player",
+{
+p_code:currentRoomCode,
+p_token:playerToken,
+p_position:position,
+p_player_name:name
+}
+);
+
+if(error)throw error;
+
+selectedInput=null;
+
+applyRoomData(data);
+
+}catch(error){
+
+console.error(error);
+
+alert(error.message);
+
+await refreshRoom();
+
+}
+
+}
+
+
+/* =========================================================
+SUBMIT BUTTON
+========================================================= */
+
+submitBtn.addEventListener(
+"click",
+submitCurrentInput
+);
+
+
+/* =========================================================
+ROLL
+========================================================= */
+
+rollBtn.addEventListener(
+"click",
+startRolling
+);
+
+
+async function startRolling(){
+
+if(isRolling)return;
+
+if(
+!gameState ||
+!gameState.started ||
+gameState.phase!=="roll"
+)return;
+
+if(
+gameState.turn!==myRole
+)return;
+
+
+isRolling=true;
+
+rollBtn.disabled=true;
+
+displayCard.classList.add("active");
+
+
+try{
+
+const {data,error}=
+await supabaseClient.rpc(
+"roll_nba_room",
+{
+p_code:currentRoomCode,
+p_token:playerToken
+}
+);
+
+if(error)throw error;
+
+const index=
+Number(
+data.state.selected_team_index
+);
+
+await animateRoll(index);
+
+applyRoomData(data);
+
+showRecentTeam(index);
+
+}catch(error){
+
+console.error(error);
+
+alert(error.message);
+
+await refreshRoom();
+
+}
+
+
+isRolling=false;
+
+displayCard.classList.remove("active");
+
+}
+
+
+/* =========================================================
+ANIMATION
+========================================================= */
+
+function animateRoll(finalIndex){
+
+return new Promise(resolve=>{
+
+let delay=20;
+let count=0;
+const maxSteps=35;
+let lastIndex=activeNodeIndex;
+
+
+function step(){
+
+let index;
+
+if(count===maxSteps-1){
+
+index=finalIndex;
+
+}else{
+
+do{
+
+index=
+Math.floor(
+Math.random()*30
+);
+
+}while(index===lastIndex);
+
+}
+
+
+teamNodeElements.forEach(node=>{
+node.classList.remove(
+"show",
+"pop"
+);
+});
+
+pendingNode.classList.remove("show");
+
+const node=
+teamNodeElements[index];
+
+node.classList.add("show");
+
+node.classList.remove("pop");
+
+void node.offsetWidth;
+
+node.classList.add("pop");
+
+lastIndex=index;
+activeNodeIndex=index;
+
+count++;
+
+const remaining=
+maxSteps-count;
+
+playTickSound(
+remaining===0
+);
+
+if(remaining===0){
+
+resolve();
+return;
+
+}
+
+if(remaining===1)
+delay=550;
+else if(remaining===2)
+delay=400;
+else if(remaining===3)
+delay=280;
+else if(remaining===4)
+delay=180;
+else if(remaining===5)
+delay=110;
+else if(remaining<=10)
+delay+=10;
+
+setTimeout(
+step,
+delay
+);
+
+}
+
+step();
+
+});
+
+}
+
+
+/* =========================================================
+SHOW RECENT TEAM
+========================================================= */
+
+function showRecentTeam(index){
+
+if(
+index===null ||
+index===undefined ||
+!nbaTeams[index]
+){
+
+recentTeam.style.display="none";
+return;
+
+}
+
+recentTeamName.textContent=
+`${nbaTeams[index].zh} (${nbaTeams[index].en})`;
+
+recentTeam.style.display="block";
+
+}
+
+
+/* =========================================================
+DISPLAY
+========================================================= */
+
+function resetDisplay(){
+
+teamNodeElements.forEach(node=>{
+node.classList.remove(
+"show",
+"pop"
+);
+});
+
+pendingNode.classList.add("show");
+
+}
+
+
+function updateDisplay(){
+
+const selected=
+gameState?.selected_team_index;
+
+if(
+selected===null ||
+selected===undefined
+){
+
+resetDisplay();
+return;
+
+}
+
+const index=
+Number(selected);
+
+if(!teamNodeElements[index])
+return;
+
+pendingNode.classList.remove("show");
+
+teamNodeElements.forEach(node=>{
+node.classList.remove(
+"show",
+"pop"
+);
+});
+
+teamNodeElements[index]
+.classList.add("show");
+
+}
+
+
+/* =========================================================
+OUTPUT
+========================================================= */
+
+function updateOutputButton(){
+
+if(
+!gameState ||
+gameState.phase!=="done"
+){
+
+createBtn.disabled=true;
+return;
+
+}
+
+createBtn.disabled=
+Number(
+gameState.completed_count
+)<10;
+
+}
+
+
+/* =========================================================
+CREATE PROMPT
+========================================================= */
+
+createBtn.addEventListener(
+"click",
+()=>{
+
+if(
+!gameState ||
+gameState.phase!=="done"
+)
+return;
+
+
+const a=gameState.a;
+const b=gameState.b;
+
+
+outputText.value=
+`假設全員巔峯，A隊 PG「${a.pg}」SG「${a.sg}」SF「${a.sf}」PF「${a.pf}」C「${a.c}」和 B隊 PG「${b.pg}」SG「${b.sg}」SF「${b.sf}」PF「${b.pf}」C「${b.c}」，邊一隊更強？`;
+
+
+outputSection.style.display="block";
+
+outputSection.scrollIntoView({
+behavior:"smooth"
+});
+
+clearBtn.disabled=true;
+
+copied=false;
+
+}
+);
+
+
+/* =========================================================
+COPY
+========================================================= */
+
+copyBtn.addEventListener(
+"click",
+async()=>{
+
+if(!outputText.value)
+return;
+
+try{
+
+await navigator.clipboard.writeText(
+outputText.value
+);
+
+}catch(e){
+
+outputText.select();
+
+document.execCommand("copy");
+
+}
+
+copied=true;
+
+clearBtn.disabled=false;
+
+alert("文案已成功複製！");
+
+}
+);
+
+
+/* =========================================================
+CLEAR
+========================================================= */
+
+clearBtn.addEventListener(
+"click",
+()=>{
+
+if(!copied)
+return;
+
+allInputs.forEach(input=>{
+input.value="";
+input.disabled=true;
+});
+
+outputText.value="";
+
+outputSection.style.display="none";
+
+clearBtn.disabled=true;
+
+copied=false;
+
+}
+);
+
+
+/* =========================================================
+REFRESH ROOM
+========================================================= */
+
+async function refreshRoom(){
+
+if(!currentRoomCode)
+return;
+
+try{
+
+const {data,error}=
+await supabaseClient.rpc(
+"get_nba_room",
+{
+p_code:currentRoomCode,
+p_token:playerToken
+}
+);
+
+if(error)throw error;
+
+applyRoomData(data);
+
+}catch(error){
+
+console.error(error);
+
+}
+
+}
+
+
+/* =========================================================
+BUTTONS
+========================================================= */
+
+createRoomBtn.onclick=
+createRoom;
+
+joinRoomBtn.onclick=
+joinRoom;
+
+startGameBtn.onclick=
+startGame;
+
+leaveRoomBtn.onclick=
+leaveRoom;
+
+
+/* =========================================================
+URL ROOM
+========================================================= */
+
+const params=
+new URLSearchParams(
+location.search
+);
+
+const roomFromUrl=
+params.get("room");
+
+if(roomFromUrl){
+
+joinRoomInput.value=
+roomFromUrl
+.trim()
+.toUpperCase();
+
+}
+
+
+/* =========================================================
+INITIAL
+========================================================= */
+
+resetEverything();
+
+updateRoomUI();
+
+showPage("room");
+
+
+/*
+  定期同步一次。
+  Realtime 正常時唔會靠佢，
+  但可以避免瀏覽器偶發斷線造成畫面唔同步。
+*/
+
+setInterval(
+async()=>{
+if(currentRoomCode)
+await refreshRoom();
+},
+5000
+);
 
 </script>
 
