@@ -1728,6 +1728,8 @@ let isHost = false;
 let gameState = null;
 
 let realtimeChannel = null;
+let roomSyncTimer = null;
+let roomSyncBusy = false;
 
 let isRolling = false;
 
@@ -2443,6 +2445,146 @@ async function joinRoom() {
 
 
 /* =========================================================
+房間同步保底
+========================================================= */
+
+async function syncRoomFromServer() {
+
+    if (!currentRoomCode || roomSyncBusy)
+        return;
+
+    roomSyncBusy = true;
+
+    try {
+
+        const { data, error } =
+            await supabaseClient.rpc(
+                "get_nba_room",
+                {
+                    p_code: currentRoomCode,
+                    p_token: playerToken
+                }
+            );
+
+        if (error)
+            throw error;
+
+        if (!data || !data.state)
+            return;
+
+        const incoming =
+            normalizeState(data.state);
+
+        if (!incoming)
+            return;
+
+        incoming.player1_name =
+            data.player1_name ??
+            incoming.player1_name ??
+            null;
+
+        incoming.player2_name =
+            data.player2_name ??
+            incoming.player2_name ??
+            null;
+
+        const oldState = gameState;
+        const oldCount = Number(
+            oldState?.player_count || 0
+        );
+
+        const changed =
+            JSON.stringify(incoming) !==
+            JSON.stringify(oldState);
+
+        if (!changed)
+            return;
+
+        gameState = incoming;
+
+        if (incoming.phase === "waiting") {
+            renderRoom();
+            showPage(roomPage);
+            return;
+        }
+
+        if (incoming.phase === "roll") {
+
+            if (
+                oldState &&
+                oldCount < 2 &&
+                Number(incoming.player_count) >= 2
+            ) {
+                renderRoom();
+            }
+
+            await handleIncomingRoll(
+                oldState,
+                incoming
+            );
+
+            return;
+        }
+
+        if (incoming.phase === "input") {
+            renderInputPage();
+            showPage(inputPage);
+            return;
+        }
+
+        if (incoming.phase === "done") {
+            renderInputPage();
+            showPage(inputPage);
+        }
+
+    } catch (error) {
+        console.warn("房間同步失敗:", error);
+    } finally {
+        roomSyncBusy = false;
+    }
+}
+
+function startRoomSync() {
+
+    stopRoomSync();
+
+    if (!currentRoomCode)
+        return;
+
+    // 立即同步一次，避免房主漏掉第二玩家加入事件。
+    syncRoomFromServer();
+
+    roomSyncTimer = setInterval(
+        () => {
+            if (!currentRoomCode) {
+                stopRoomSync();
+                return;
+            }
+
+            // 只在等待房間時作高頻保底同步，避免干擾遊戲動畫。
+            if (
+                !gameState ||
+                gameState.phase === "waiting"
+            ) {
+                syncRoomFromServer();
+            }
+        },
+        700
+    );
+}
+
+function stopRoomSync() {
+
+    if (roomSyncTimer) {
+        clearInterval(roomSyncTimer);
+        roomSyncTimer = null;
+    }
+
+    roomSyncBusy = false;
+}
+
+
+/* =========================================================
 Realtime
 ========================================================= */
 
@@ -2628,6 +2770,8 @@ Handle room deleted
 
 function handleRoomDeleted() {
 
+    stopRoomSync();
+
     if (realtimeChannel) {
 
         supabaseClient.removeChannel(
@@ -2723,6 +2867,8 @@ async function leaveRoom() {
         if (error)
             throw error;
 
+
+        stopRoomSync();
 
         if (realtimeChannel) {
 
