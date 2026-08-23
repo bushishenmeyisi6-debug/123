@@ -5,603 +5,1137 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>NBA 球隊隨機抽籤 & 陣容對決</title>
 
 <style>
 
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-font-family:
--apple-system,
-BlinkMacSystemFont,
-"Segoe UI",
-Roboto,
-Arial,
-sans-serif;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+}
+
+body {
+
+    background: #f0f2f5;
+
+    min-height: 100vh;
+
+    color: #333;
+
+    padding: 20px 0;
+}
+
+button,
+input,
+textarea {
+
+    font: inherit;
+
+}
+
+button {
+
+    -webkit-tap-highlight-color: transparent;
+
+}
+
+.app {
+
+    width: 94%;
+
+    max-width: 520px;
+
+    margin: 0 auto;
+
+}
+
+
+/* =====================================================
+Header
+===================================================== */
+
+.top-header {
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 16px 18px;
+
+    margin-bottom: 15px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.08);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+.top-title {
+
+    font-weight: 800;
+
+    color: #1e293b;
+
+}
+
+.page-switch {
+
+    border: none;
+
+    background: #e2e8f0;
+
+    color: #334155;
+
+    padding: 8px 12px;
+
+    border-radius: 9px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
 }
+
 
-body{
-background:#f0f2f5;
-min-height:100vh;
-color:#333;
-padding:20px 0;
+/* =====================================================
+Pages
+===================================================== */
+
+.page {
+
+    display: none;
+
 }
+
+.page.active {
 
-.container{
-width:94%;
-max-width:520px;
-margin:auto;
-background:#fff;
-border-radius:20px;
-padding:25px 20px;
-box-shadow:0 15px 35px rgba(0,0,0,.1);
-position:relative;
+    display: block;
+
 }
+
+
+/* =====================================================
+Card
+===================================================== */
+
+.card {
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 22px;
 
-h1{
-font-size:1.35rem;
-text-align:center;
-color:#555;
-margin-bottom:20px;
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.08);
+
+    margin-bottom: 15px;
+
 }
+
+
+/* =====================================================
+Room page
+===================================================== */
+
+.room-title {
+
+    text-align: center;
+
+    font-size: 1.35rem;
 
+    font-weight: 900;
 
-/* =========================
-PAGE SWITCH
-========================= */
+    color: #1e293b;
 
-.page{
-display:none;
+    margin-bottom: 5px;
+
 }
+
+.room-subtitle {
+
+    text-align: center;
 
-.page.active{
-display:block;
+    color: #64748b;
+
+    font-size: .9rem;
+
+    margin-bottom: 22px;
+
 }
+
+.name-label {
 
-.page-switch{
-position:absolute;
-right:14px;
-top:14px;
-display:none;
-gap:5px;
+    display: block;
+
+    text-align: left;
+
+    font-size: .9rem;
+
+    font-weight: 700;
+
+    color: #475569;
+
+    margin-bottom: 7px;
+
 }
+
+.name-input {
 
-.page-switch button{
-border:0;
-background:#e2e8f0;
-padding:7px 10px;
-border-radius:8px;
-font-size:.75rem;
-font-weight:700;
-cursor:pointer;
+    width: 100%;
+
+    padding: 13px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 11px;
+
+    outline: none;
+
+    text-align: center;
+
+    font-weight: 700;
+
+    margin-bottom: 12px;
+
 }
+
+.name-input:focus {
+
+    border-color: #006bb6;
 
-.page-switch button.active{
-background:#006bb6;
-color:white;
+    box-shadow:
+        0 0 0 3px rgba(0,107,182,.12);
+
 }
+
+.primary-btn {
+
+    width: 100%;
+
+    border: none;
 
+    background: #006bb6;
 
-/* =========================
-ROOM PAGE
-========================= */
+    color: white;
 
-.room-section{
-background:#f8fafc;
-border:1px solid #e2e8f0;
-border-radius:15px;
-padding:18px;
+    padding: 13px;
+
+    border-radius: 11px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
 }
+
+.primary-btn:disabled {
+
+    background: #cbd5e1;
+
+    cursor: not-allowed;
 
-.room-title{
-font-size:1.1rem;
-font-weight:800;
-text-align:center;
-margin-bottom:15px;
 }
 
-.room-code{
-font-size:1.8rem;
-font-weight:900;
-letter-spacing:4px;
-text-align:center;
-color:#006bb6;
-margin:10px;
+.room-divider {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #94a3b8;
+
+    margin: 18px 0;
+
+    font-size: .85rem;
+
 }
+
+.room-divider::before,
+.room-divider::after {
 
-.room-status{
-text-align:center;
-font-size:.9rem;
-color:#64748b;
-margin:10px 0 15px;
+    content: "";
+
+    height: 1px;
+
+    flex: 1;
+
+    background: #e2e8f0;
+
 }
+
+.join-row {
+
+    display: flex;
+
+    gap: 8px;
 
-.name-area{
-margin-bottom:15px;
 }
+
+.join-row input {
+
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 12px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 10px;
+
+    text-align: center;
 
-.name-area label{
-display:block;
-font-weight:700;
-margin-bottom:7px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    outline: none;
+
 }
+
+.join-row button {
+
+    border: none;
+
+    background: #121212;
 
-.name-input{
-width:100%;
-padding:12px;
-border:1px solid #cbd5e1;
-border-radius:9px;
-outline:none;
-font-size:1rem;
+    color: white;
+
+    border-radius: 10px;
+
+    padding: 0 17px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
 }
+
+.room-message {
+
+    text-align: center;
 
-.room-actions{
-display:flex;
-gap:8px;
+    color: #64748b;
+
+    margin-top: 14px;
+
+    font-size: .9rem;
+
 }
+
+
+/* =====================================================
+Waiting Room
+===================================================== */
+
+.waiting-room {
+
+    text-align: center;
 
-.room-input{
-flex:1;
-min-width:0;
-padding:11px;
-border:1px solid #cbd5e1;
-border-radius:9px;
-text-align:center;
-font-weight:700;
-letter-spacing:2px;
-outline:none;
 }
 
-.room-btn{
-border:0;
-border-radius:9px;
-padding:11px 13px;
-font-weight:800;
-color:white;
-background:#006bb6;
-cursor:pointer;
+.room-code-big {
+
+    font-size: 2.1rem;
+
+    letter-spacing: 5px;
+
+    font-weight: 900;
+
+    color: #006bb6;
+
+    margin: 8px 0 3px;
+
 }
+
+.room-count {
 
-.room-btn:disabled{
-background:#cbd5e1;
-cursor:not-allowed;
+    font-size: .95rem;
+
+    color: #64748b;
+
+    margin-bottom: 20px;
+
 }
+
+.players-row {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
 
+    gap: 20px;
 
-/* =========================
-PLAYERS
-========================= */
+    margin: 20px 0 25px;
 
-.player-count{
-text-align:center;
-font-size:1rem;
-font-weight:800;
-margin:18px 0 12px;
 }
+
+.player-circle {
+
+    width: 125px;
+
+    height: 125px;
+
+    border-radius: 50%;
+
+    border: 4px solid #cbd5e1;
+
+    background: #f8fafc;
+
+    display: flex;
+
+    align-items: center;
 
-.players{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:25px;
+    justify-content: center;
+
+    padding: 12px;
+
+    text-align: center;
+
+    overflow: hidden;
+
+    transition:
+        .25s ease;
+
 }
+
+.player-circle.filled {
+
+    border-color: #006bb6;
 
-.player-slot{
-width:115px;
-height:115px;
-border-radius:50%;
-border:3px solid #cbd5e1;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-padding:12px;
-background:#f8fafc;
-font-weight:800;
-overflow:hidden;
-word-break:break-word;
-transition:.25s;
+    background: #eff6ff;
+
 }
+
+.player-name {
+
+    font-weight: 900;
 
-.player-slot.filled{
-border-color:#006bb6;
-background:#eff6ff;
+    line-height: 1.1;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+
 }
+
+.player-empty {
 
-.player-slot.empty{
-color:#94a3b8;
-font-size:2rem;
+    color: #94a3b8;
+
+    font-weight: 800;
+
+    font-size: 1.8rem;
+
 }
+
+.host-badge {
+
+    margin-top: -8px;
+
+    margin-bottom: 14px;
+
+    color: #006bb6;
 
-.player-slot span{
-display:block;
-width:100%;
-line-height:1.15;
+    font-size: .8rem;
+
+    font-weight: 800;
+
 }
+
+.waiting-text {
 
-.host-badge{
-text-align:center;
-font-size:.75rem;
-color:#006bb6;
-font-weight:700;
-margin-top:6px;
+    color: #64748b;
+
+    font-size: .9rem;
+
+    margin-bottom: 15px;
+
 }
+
+.start-btn {
 
-.start-game{
-width:100%;
-margin-top:20px;
-padding:14px;
-border:0;
-border-radius:11px;
-background:#10b981;
-color:white;
-font-size:1.05rem;
-font-weight:800;
-cursor:pointer;
+    width: 100%;
+
+    border: none;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    background: #10b981;
+
+    color: white;
+
+    font-weight: 900;
+
+    font-size: 1.05rem;
+
+    cursor: pointer;
+
 }
+
+.start-btn:disabled {
 
-.start-game:disabled{
-background:#cbd5e1;
-color:#888;
-cursor:not-allowed;
+    background: #cbd5e1;
+
+    color: #888;
+
+    cursor: not-allowed;
+
 }
+
+.leave-btn {
 
-.leave-btn{
-width:100%;
-margin-top:10px;
-padding:11px;
-border:0;
-border-radius:9px;
-background:#ef4444;
-color:white;
-font-weight:800;
-cursor:pointer;
+    width: 100%;
+
+    margin-top: 9px;
+
+    border: none;
+
+    background: #ef4444;
+
+    color: white;
+
+    padding: 11px;
+
+    border-radius: 10px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
 }
+
+
+/* =====================================================
+Game
+===================================================== */
 
+.game-card {
 
-/* =========================
-GAME
-========================= */
+    text-align: center;
 
-.turn-banner{
-padding:10px;
-border-radius:10px;
-background:#eff6ff;
-color:#1d4ed8;
-font-weight:800;
-text-align:center;
-margin-bottom:15px;
 }
+
+.turn-banner {
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background: #eff6ff;
 
-.game-page-title{
-font-size:1rem;
-font-weight:800;
-text-align:center;
-margin-bottom:12px;
+    color: #1d4ed8;
+
+    font-weight: 800;
+
+    margin-bottom: 15px;
+
+    font-size: .9rem;
+
 }
+
+.phase-label {
+
+    color: #64748b;
+
+    font-size: .85rem;
 
+    font-weight: 700;
 
-/* =========================
-RECENT TEAM
-========================= */
+    margin-bottom: 7px;
 
-.recent-team{
-display:none;
-background:#f8fafc;
-border:1px solid #e2e8f0;
-border-radius:10px;
-padding:8px;
-margin-bottom:10px;
-text-align:center;
-font-size:.85rem;
-color:#475569;
 }
+
+.display-card {
+
+    background: #fff;
+
+    border: 2px solid #e2e8f0;
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    min-height: 270px;
+
+    display: flex;
 
-.recent-team strong{
-color:#006bb6;
+    justify-content: center;
+
+    align-items: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        border-color .3s ease,
+        box-shadow .3s ease;
+
 }
 
+.display-card.active {
 
-/* =========================
-DISPLAY
-========================= */
+    border-color: #006bb6;
 
-.display-card{
-background:white;
-border:2px solid #e2e8f0;
-border-radius:16px;
-padding:20px;
-min-height:240px;
-display:flex;
-align-items:center;
-justify-content:center;
-overflow:hidden;
-transition:.3s;
+    box-shadow:
+        0 0 15px rgba(0,107,182,.15);
+
 }
+
+.team-node {
 
-.display-card.active{
-border-color:#006bb6;
-box-shadow:0 0 15px rgba(0,107,182,.15);
+    display: none;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    width: 100%;
+
 }
+
+.team-node.show {
+
+    display: flex;
 
-.team-node{
-display:none;
-width:100%;
-flex-direction:column;
-align-items:center;
-justify-content:center;
 }
 
-.team-node.show{
-display:flex;
+.team-node.pop {
+
+    animation:
+        popIn .08s ease-out forwards;
+
 }
+
+@keyframes popIn {
 
-.team-node.pop{
-animation:popIn .08s ease-out forwards;
+    from {
+        transform: scale(.9);
+    }
+
+    to {
+        transform: scale(1);
+    }
+
 }
+
+.team-logo {
+
+    width: 105px;
 
-@keyframes popIn{
-from{transform:scale(.9)}
-to{transform:scale(1)}
+    height: 105px;
+
+    object-fit: contain;
+
+    margin-bottom: 10px;
+
 }
+
+.team-zh {
+
+    font-size: 2.5rem;
+
+    font-weight: 900;
+
+    line-height: 1.05;
 
-.team-logo{
-width:95px;
-height:95px;
-object-fit:contain;
-margin-bottom:10px;
+    color: #1a202c;
+
 }
+
+.team-en {
+
+    color: #718096;
 
-.team-zh{
-font-size:2.4rem;
-font-weight:900;
-color:#1a202c;
+    font-size: .95rem;
+
+    margin-top: 6px;
+
 }
+
+.roll-btn {
+
+    width: 100%;
+
+    border: none;
+
+    background: #121212;
+
+    color: white;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    font-size: 1.05rem;
+
+    font-weight: 800;
 
-.team-en{
-font-size:.95rem;
-color:#718096;
+    cursor: pointer;
+
+    margin-top: 15px;
+
 }
+
+.roll-btn:disabled {
 
+    background: #cbd5e1;
 
-/* =========================
-ROLL
-========================= */
+    color: #888;
 
-.btn-roll{
-width:100%;
-margin-top:15px;
-margin-bottom:18px;
-padding:14px;
-border:0;
-border-radius:11px;
-background:#121212;
-color:white;
-font-size:1.05rem;
-font-weight:800;
-cursor:pointer;
+    cursor: not-allowed;
+
 }
+
+
+/* =====================================================
+Last team mini display
+===================================================== */
+
+.last-team {
+
+    display: none;
+
+    margin-bottom: 14px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 11px;
+
+    padding: 9px;
+
+    align-items: center;
 
-.btn-roll:disabled{
-background:#cbd5e1;
-color:#888;
-cursor:not-allowed;
+    justify-content: center;
+
+    gap: 8px;
+
 }
 
+.last-team.show {
 
-/* =========================
-INPUT
-========================= */
+    display: flex;
 
-.input-page{
-display:none;
 }
+
+.last-team img {
 
-.input-page.active{
-display:block;
+    width: 30px;
+
+    height: 30px;
+
+    object-fit: contain;
+
 }
+
+.last-team-text {
 
-.teams-container{
-display:flex;
-gap:10px;
-margin-top:15px;
+    font-size: .82rem;
+
+    color: #475569;
+
+    font-weight: 800;
+
 }
+
+
+/* =====================================================
+Input page
+===================================================== */
+
+.input-page {
+
+    display: none;
 
-.team-box{
-flex:1;
-background:#f8fafc;
-border:1px solid #edf2f7;
-border-radius:12px;
-padding:12px 7px;
 }
 
-.team-title{
-text-align:center;
-font-weight:800;
-margin-bottom:12px;
+.input-page.active {
+
+    display: block;
+
 }
+
+.input-title {
+
+    text-align: center;
+
+    font-weight: 900;
+
+    font-size: 1.25rem;
+
+    color: #1e293b;
 
-.position-row{
-display:flex;
-align-items:center;
-margin-bottom:9px;
+    margin-bottom: 5px;
+
 }
+
+.input-subtitle {
+
+    text-align: center;
 
-.pos-label{
-width:37px;
-font-weight:800;
-font-size:.8rem;
-text-align:right;
-padding-right:4px;
+    color: #64748b;
+
+    font-size: .85rem;
+
+    margin-bottom: 14px;
+
 }
+
+.input-team-preview {
 
-.player-input{
-width:100%;
-min-width:0;
-padding:7px;
-border:1px solid #cbd5e1;
-border-radius:7px;
-outline:none;
-font-size:.82rem;
-background:white;
+    background: #eff6ff;
+
+    border-radius: 11px;
+
+    padding: 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-bottom: 16px;
+
 }
+
+.input-team-preview img {
+
+    width: 35px;
+
+    height: 35px;
 
-.player-input:focus{
-border-color:#006bb6;
-box-shadow:0 0 0 2px rgba(0,107,182,.15);
+    object-fit: contain;
+
 }
+
+.input-team-preview span {
+
+    color: #1d4ed8;
+
+    font-weight: 900;
 
-.player-input:disabled{
-background:#e9eef5;
-color:#94a3b8;
 }
 
+.position-list {
 
-/* =========================
-REGRET
-========================= */
+    display: flex;
 
-.regret-btn{
-width:100%;
-margin-top:10px;
-padding:12px;
-border:0;
-border-radius:10px;
-background:#ef4444;
-color:white;
-font-weight:800;
-cursor:pointer;
-display:none;
+    flex-direction: column;
+
+    gap: 10px;
+
 }
+
+.position-row {
 
-.regret-btn:disabled{
-background:#cbd5e1;
-cursor:not-allowed;
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
 }
+
+.pos-label {
 
+    width: 42px;
 
-/* =========================
-OUTPUT
-========================= */
+    text-align: right;
 
-.action-btns{
-display:flex;
-gap:10px;
-margin-top:15px;
+    font-weight: 900;
+
+    color: #475569;
+
+    font-size: .9rem;
+
 }
+
+.player-input {
+
+    flex: 1;
+
+    width: 100%;
+
+    padding: 11px;
 
-.btn-create{
-flex:3;
-border:0;
-border-radius:11px;
-padding:13px;
-background:#10b981;
-color:white;
-font-weight:800;
-cursor:pointer;
+    border: 1px solid #cbd5e1;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    font-weight: 700;
+
 }
+
+.player-input:focus {
+
+    border-color: #006bb6;
+
+    box-shadow:
+        0 0 0 3px rgba(0,107,182,.1);
 
-.btn-create:disabled{
-background:#cbd5e1;
-color:#888;
-cursor:not-allowed;
 }
 
-.btn-clear{
-flex:1;
-border:0;
-border-radius:11px;
-padding:13px;
-background:#ef4444;
-color:white;
-font-weight:800;
-cursor:pointer;
+.player-input:disabled {
+
+    background: #e9eef5;
+
+    color: #94a3b8;
+
+    cursor: not-allowed;
+
 }
+
+.regret-btn {
+
+    width: 100%;
+
+    border: none;
 
-.btn-clear:disabled{
-background:#cbd5e1;
-color:#888;
-cursor:not-allowed;
+    background: #ef4444;
+
+    color: white;
+
+    padding: 13px;
+
+    border-radius: 11px;
+
+    font-weight: 900;
+
+    margin-top: 14px;
+
+    cursor: pointer;
+
 }
 
-.output-section{
-display:none;
-margin-top:15px;
-background:#f1f5f9;
-padding:14px;
-border-radius:11px;
-border:1px solid #cbd5e1;
+.regret-btn:disabled {
+
+    background: #cbd5e1;
+
+    color: #888;
+
+    cursor: not-allowed;
+
 }
+
+
+/* =====================================================
+Final
+===================================================== */
+
+.final-actions {
 
-.output-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:8px;
+    display: flex;
+
+    gap: 9px;
+
+    margin-top: 18px;
+
 }
+
+.create-prompt-btn {
+
+    flex: 3;
+
+    border: none;
+
+    background: #10b981;
 
-.output-status{
-color:#10b981;
-font-weight:800;
+    color: white;
+
+    padding: 13px;
+
+    border-radius: 11px;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
 }
+
+.create-prompt-btn:disabled {
+
+    background: #cbd5e1;
+
+    color: #888;
 
-.btn-copy{
-border:0;
-background:#e2e8f0;
-padding:6px 10px;
-border-radius:6px;
-font-weight:700;
-cursor:pointer;
+    cursor: not-allowed;
+
 }
+
+.clear-btn {
+
+    flex: 1;
+
+    border: none;
+
+    background: #ef4444;
+
+    color: white;
+
+    padding: 13px;
 
-.output-text{
-width:100%;
-height:110px;
-border:0;
-background:transparent;
-resize:none;
-outline:none;
-line-height:1.5;
+    border-radius: 11px;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
 }
 
+.clear-btn:disabled {
 
-/* =========================
-MOBILE
-========================= */
+    background: #cbd5e1;
 
-@media(max-width:420px){
+    color: #888;
 
-.container{
-padding:23px 13px;
+    cursor: not-allowed;
+
 }
+
+.output-section {
+
+    display: none;
+
+    margin-top: 15px;
 
-.players{
-gap:15px;
+    background: #f1f5f9;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 12px;
+
+    padding: 13px;
+
 }
+
+.output-header {
+
+    display: flex;
+
+    justify-content: space-between;
 
-.player-slot{
-width:105px;
-height:105px;
+    align-items: center;
+
+    margin-bottom: 8px;
+
 }
+
+.output-status {
 
-.teams-container{
-gap:6px;
+    color: #10b981;
+
+    font-weight: 900;
+
+    font-size: .9rem;
+
 }
+
+.copy-btn {
 
-.pos-label{
-width:34px;
-font-size:.75rem;
+    border: none;
+
+    background: #e2e8f0;
+
+    color: #334155;
+
+    padding: 5px 10px;
+
+    border-radius: 7px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
 }
+
+.output-text {
+
+    width: 100%;
+
+    min-height: 110px;
+
+    border: none;
+
+    background: transparent;
+
+    resize: none;
+
+    outline: none;
 
-.player-input{
-font-size:.78rem;
-padding:6px 5px;
+    color: #334155;
+
+    line-height: 1.5;
+
 }
+
+
+/* =====================================================
+Mobile
+===================================================== */
+
+@media(max-width:430px) {
+
+    .player-circle {
+
+        width: 108px;
+
+        height: 108px;
+
+    }
+
+    .players-row {
+
+        gap: 12px;
+
+    }
+
+    .team-zh {
+
+        font-size: 2.2rem;
+
+    }
 
 }
 
@@ -612,433 +1146,521 @@ padding:6px 5px;
 
 <body>
 
-<div class="container">
-
-<h1>NBA 球隊隨機抽籤</h1>
+<div class="app">
 
 
-<div class="page-switch" id="pageSwitch">
+<!-- =====================================================
+TOP HEADER
+===================================================== -->
 
-<button id="roomPageBtn">
-房間
-</button>
+<div class="top-header">
 
-<button id="gamePageBtn">
-遊戲
-</button>
+    <div class="top-title">
+        NBA 球隊隨機抽籤
+    </div>
+
+    <button
+        class="page-switch"
+        id="pageSwitchBtn"
+        style="display:none"
+    >
+        房間
+    </button>
 
 </div>
 
 
 <!-- =====================================================
-ROOM PAGE
+PAGE 1：建立 / 加入
 ===================================================== -->
 
-<div class="page active" id="roomPage">
-
-<div class="room-section">
-
-<div class="room-title">
-聯機房間
-</div>
-
-
-<div
-class="name-area"
-id="nameArea"
+<section
+    id="entryPage"
+    class="page active"
 >
 
-<label>
-你的名字
-</label>
+<div class="card">
 
-<input
-id="nameInput"
-class="name-input"
-maxlength="20"
-placeholder="輸入你的名字"
->
+    <div class="room-title">
+        聯機房間
+    </div>
 
-</div>
+    <div class="room-subtitle">
+        兩位玩家一齊進行 NBA 隨機抽籤
+    </div>
 
 
-<div
-class="room-code"
-id="roomCode"
->
-未加入
-</div>
+    <label class="name-label">
+        你嘅名字
+    </label>
+
+    <input
+        id="entryName"
+        class="name-input"
+        maxlength="20"
+        placeholder="輸入你嘅名字"
+    >
 
 
-<div
-class="room-status"
-id="roomStatus"
->
-請建立或加入房間
-</div>
+    <button
+        id="createRoomBtn"
+        class="primary-btn"
+    >
+        建立房間
+    </button>
 
 
-<div class="room-actions">
-
-<button
-class="room-btn"
-id="createRoomBtn"
->
-建立房間
-</button>
-
-<input
-id="joinRoomInput"
-class="room-input"
-placeholder="房間碼"
-maxlength="6"
->
-
-<button
-class="room-btn"
-id="joinRoomBtn"
->
-加入
-</button>
-
-</div>
+    <div class="room-divider">
+        或者
+    </div>
 
 
-<div
-class="player-count"
-id="playerCount"
->
-0/2
-</div>
+    <label class="name-label">
+        加入房間
+    </label>
 
 
-<div class="players">
+    <div class="join-row">
 
-<div>
-<div
-class="player-slot empty"
-id="player1"
->
-<span>＋</span>
-</div>
-<div
-class="host-badge"
-id="host1"
->
-</div>
-</div>
+        <input
+            id="joinRoomInput"
+            maxlength="6"
+            placeholder="房間碼"
+        >
+
+        <button
+            id="joinRoomBtn"
+        >
+            加入
+        </button>
+
+    </div>
 
 
-<div>
-<div
-class="player-slot empty"
-id="player2"
->
-<span>＋</span>
-</div>
-<div
-class="host-badge"
-id="host2"
->
-</div>
-</div>
+    <div
+        id="entryMessage"
+        class="room-message"
+    >
+        尚未加入房間
+    </div>
 
 </div>
 
-
-<button
-class="start-game"
-id="startGameBtn"
-disabled
->
-開始遊戲
-</button>
-
-
-<button
-class="leave-btn"
-id="leaveRoomBtn"
-style="display:none"
->
-退出房間
-</button>
-
-</div>
-
-</div>
+</section>
 
 
 <!-- =====================================================
-GAME PAGE
+PAGE 2：房間
 ===================================================== -->
 
-<div class="page" id="gamePage">
-
-
-<div
-class="turn-banner"
-id="turnBanner"
->
-</div>
-
-
-<!-- =========================
-ROLL PAGE
-========================= -->
-
-<div
-id="rollPage"
+<section
+    id="roomPage"
+    class="page"
 >
 
-<div class="game-page-title">
-抽取球隊
+<div class="card waiting-room">
+
+    <div class="room-title">
+        等待房間
+    </div>
+
+    <div
+        id="roomCodeDisplay"
+        class="room-code-big"
+    >
+        ------
+    </div>
+
+    <div
+        id="roomCount"
+        class="room-count"
+    >
+        1/2
+    </div>
+
+
+    <div class="players-row">
+
+        <div
+            id="playerCircle1"
+            class="player-circle filled"
+        >
+
+            <span
+                id="playerName1"
+                class="player-name"
+            ></span>
+
+        </div>
+
+
+        <div
+            id="playerCircle2"
+            class="player-circle"
+        >
+
+            <span
+                id="playerName2"
+                class="player-empty"
+            >
+                +
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="hostBadge"
+        class="host-badge"
+    >
+        你係房主
+    </div>
+
+
+    <div
+        id="waitingText"
+        class="waiting-text"
+    >
+        等待第二位玩家加入
+    </div>
+
+
+    <button
+        id="startGameBtn"
+        class="start-btn"
+        disabled
+    >
+        開始遊戲
+    </button>
+
+
+    <button
+        id="leaveRoomBtn"
+        class="leave-btn"
+    >
+        退出房間
+    </button>
+
 </div>
 
+</section>
 
-<div
-class="display-card"
-id="displayCard"
+
+<!-- =====================================================
+PAGE 3：抽球隊
+===================================================== -->
+
+<section
+    id="rollPage"
+    class="page"
 >
 
-<div
-class="team-node show"
-id="pendingNode"
+<div class="card game-card">
+
+    <div
+        id="turnBannerRoll"
+        class="turn-banner"
+    >
+        等待遊戲
+    </div>
+
+
+    <div class="phase-label">
+        球隊抽籤
+    </div>
+
+
+    <div
+        id="lastTeamPreviewRoll"
+        class="last-team"
+    >
+
+        <img id="lastTeamLogoRoll">
+
+        <span
+            id="lastTeamTextRoll"
+            class="last-team-text"
+        ></span>
+
+    </div>
+
+
+    <div
+        id="displayCardRoll"
+        class="display-card"
+    >
+
+        <div
+            id="pendingRoll"
+            class="team-node show"
+        >
+
+            <img
+                src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png"
+                class="team-logo"
+                style="opacity:.35"
+            >
+
+            <div class="team-zh">
+                待定
+            </div>
+
+            <div class="team-en">
+                Pending
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <button
+        id="rollBtn"
+        class="roll-btn"
+        disabled
+    >
+        等待玩家
+    </button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+PAGE 4：輸入球員
+===================================================== -->
+
+<section
+    id="inputPage"
+    class="page"
 >
 
-<img
-src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png"
-class="team-logo"
-style="opacity:.35"
->
+<div class="card">
 
-<div class="team-zh">
-待定
-</div>
-
-<div class="team-en">
-Pending
-</div>
-
-</div>
-
-</div>
+    <div
+        id="turnBannerInput"
+        class="turn-banner"
+    >
+        等待玩家
+    </div>
 
 
-<button
-class="btn-roll"
-id="rollBtn"
-disabled
->
-等待
-</button>
+    <div class="input-title">
+        輸入球員
+    </div>
 
-</div>
+    <div class="input-subtitle">
+        其他玩家可以即時睇到你輸入嘅結果
+    </div>
 
 
-<!-- =========================
-INPUT PAGE
-========================= -->
+    <div
+        id="inputTeamPreview"
+        class="input-team-preview"
+    >
 
-<div
-id="inputPage"
-class="input-page"
->
+        <img
+            id="inputTeamLogo"
+        >
 
-<div
-class="recent-team"
-id="recentTeam"
->
-剛剛抽到：
-<strong id="recentTeamName">
-</strong>
-</div>
+        <span
+            id="inputTeamName"
+        ></span>
+
+    </div>
 
 
-<div class="game-page-title">
-輸入球員
-</div>
+    <div
+        id="positionList"
+        class="position-list"
+    >
+
+        <div class="position-row">
+            <span class="pos-label">PG-</span>
+            <input
+                id="a_pg"
+                class="player-input"
+            >
+        </div>
+
+        <div class="position-row">
+            <span class="pos-label">SG-</span>
+            <input
+                id="a_sg"
+                class="player-input"
+            >
+        </div>
+
+        <div class="position-row">
+            <span class="pos-label">SF-</span>
+            <input
+                id="a_sf"
+                class="player-input"
+            >
+        </div>
+
+        <div class="position-row">
+            <span class="pos-label">PF-</span>
+            <input
+                id="a_pf"
+                class="player-input"
+            >
+        </div>
+
+        <div class="position-row">
+            <span class="pos-label">C-</span>
+            <input
+                id="a_c"
+                class="player-input"
+            >
+        </div>
 
 
-<div class="teams-container">
+        <div class="position-row">
+            <span class="pos-label">PG-</span>
+            <input
+                id="b_pg"
+                class="player-input"
+            >
+        </div>
+
+        <div class="position-row">
+            <span class="pos-label">SG-</span>
+            <input
+                id="b_sg"
+                class="player-input"
+            >
+        </div>
+
+        <div class="position-row">
+            <span class="pos-label">SF-</span>
+            <input
+                id="b_sf"
+                class="player-input"
+            >
+        </div>
+
+        <div class="position-row">
+            <span class="pos-label">PF-</span>
+            <input
+                id="b_pf"
+                class="player-input"
+            >
+        </div>
+
+        <div class="position-row">
+            <span class="pos-label">C-</span>
+            <input
+                id="b_c"
+                class="player-input"
+            >
+        </div>
+
+    </div>
 
 
-<div class="team-box">
-
-<div class="team-title">
-A隊
-</div>
-
-<div class="position-row">
-<span class="pos-label">PG-</span>
-<input id="a_pg" class="player-input">
-</div>
-
-<div class="position-row">
-<span class="pos-label">SG-</span>
-<input id="a_sg" class="player-input">
-</div>
-
-<div class="position-row">
-<span class="pos-label">SF-</span>
-<input id="a_sf" class="player-input">
-</div>
-
-<div class="position-row">
-<span class="pos-label">PF-</span>
-<input id="a_pf" class="player-input">
-</div>
-
-<div class="position-row">
-<span class="pos-label">C-</span>
-<input id="a_c" class="player-input">
-</div>
-
-</div>
+    <button
+        id="regretBtn"
+        class="regret-btn"
+        disabled
+    >
+        我後悔了 我要選擇其他位置
+    </button>
 
 
-<div class="team-box">
+    <div class="final-actions">
 
-<div class="team-title">
-B隊
-</div>
+        <button
+            id="createPromptBtn"
+            class="create-prompt-btn"
+            disabled
+        >
+            創建球隊完成
+        </button>
 
-<div class="position-row">
-<span class="pos-label">PG-</span>
-<input id="b_pg" class="player-input">
-</div>
+        <button
+            id="clearBtn"
+            class="clear-btn"
+            disabled
+        >
+            清空
+        </button>
 
-<div class="position-row">
-<span class="pos-label">SG-</span>
-<input id="b_sg" class="player-input">
-</div>
-
-<div class="position-row">
-<span class="pos-label">SF-</span>
-<input id="b_sf" class="player-input">
-</div>
-
-<div class="position-row">
-<span class="pos-label">PF-</span>
-<input id="b_pf" class="player-input">
-</div>
-
-<div class="position-row">
-<span class="pos-label">C-</span>
-<input id="b_c" class="player-input">
-</div>
-
-</div>
-
-</div>
+    </div>
 
 
-<button
-class="btn-roll"
-id="submitBtn"
-disabled
->
-提交球員
-</button>
+    <div
+        id="outputSection"
+        class="output-section"
+    >
 
+        <div class="output-header">
 
-<button
-class="regret-btn"
-id="regretBtn"
->
-我後悔了 我要選擇其他位置
-</button>
+            <span class="output-status">
+                已生成文案！
+            </span>
 
+            <button
+                id="copyBtn"
+                class="copy-btn"
+            >
+                複製文案
+            </button>
 
-<div
-class="action-btns"
->
+        </div>
 
-<button
-class="btn-create"
-id="createBtn"
-disabled
->
-創建球隊完成
-</button>
+        <textarea
+            id="outputText"
+            class="output-text"
+            readonly
+        ></textarea>
 
-<button
-class="btn-clear"
-id="clearBtn"
-disabled
->
-清空
-</button>
-
-</div>
-
-
-<div
-class="output-section"
-id="outputSection"
->
-
-<div class="output-header">
-
-<span class="output-status">
-已生成文案！
-</span>
-
-<button
-class="btn-copy"
-id="copyBtn"
->
-複製文案
-</button>
+    </div>
 
 </div>
 
-<textarea
-id="outputText"
-class="output-text"
-readonly
-></textarea>
+</section>
 
-</div>
-
-</div>
-
-</div>
 
 </div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
 
-
 /* =========================================================
-SUPABASE
+Supabase
 ========================================================= */
 
 const SUPABASE_URL =
-"https://yafuniflixhbkdcqnqfz.supabase.co";
+    "https://yafuniflixhbkdcqnqfz.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable__q45GsVlTu2bdKJ--l51Fw_t0dzy-nE";
+    "sb_publishable__q45GsVlTu2bdKJ--l51Fw_t0dzy-nE";
 
 
 const {
-createClient
-}=window.supabase;
+    createClient
+} = window.supabase;
 
-const supabaseClient=
-createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
+
+const supabaseClient =
+    createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
 /* =========================================================
 NBA
 ========================================================= */
 
-const nbaTeams=[
+const nbaTeams = [
 
 ["老鷹","Atlanta Hawks","atl"],
 ["塞爾提克","Boston Celtics","bos"],
@@ -1071,1733 +1693,2814 @@ const nbaTeams=[
 ["爵士","Utah Jazz","utah"],
 ["奇才","Washington Wizards","was"]
 
-].map(x=>({
-zh:x[0],
-en:x[1],
-logo:
-`https://a.espncdn.com/i/teamlogos/nba/500/${x[2]}.png`
+].map(x => ({
+
+    zh: x[0],
+
+    en: x[1],
+
+    logo:
+        `https://a.espncdn.com/i/teamlogos/nba/500/${x[2]}.png`
+
 }));
+
+
+/* =========================================================
+Token
+========================================================= */
+
+const playerToken =
+    crypto.randomUUID();
+
+
+/* =========================================================
+State
+========================================================= */
+
+let currentRoomCode = null;
+
+let myRole = null;
+
+let myName = null;
+
+let isHost = false;
+
+let gameState = null;
+
+let realtimeChannel = null;
+
+let isRolling = false;
+
+let animationPromise = null;
+
+let selectedInputId = null;
+
+let hasCopiedPrompt = false;
 
 
 /* =========================================================
 DOM
 ========================================================= */
 
-const roomPage=
-document.getElementById("roomPage");
+const entryPage =
+    document.getElementById("entryPage");
 
-const gamePage=
-document.getElementById("gamePage");
+const roomPage =
+    document.getElementById("roomPage");
 
-const pageSwitch=
-document.getElementById("pageSwitch");
+const rollPage =
+    document.getElementById("rollPage");
 
-const roomPageBtn=
-document.getElementById("roomPageBtn");
+const inputPage =
+    document.getElementById("inputPage");
 
-const gamePageBtn=
-document.getElementById("gamePageBtn");
-
-const nameInput=
-document.getElementById("nameInput");
-
-const nameArea=
-document.getElementById("nameArea");
-
-const roomCode=
-document.getElementById("roomCode");
-
-const roomStatus=
-document.getElementById("roomStatus");
-
-const playerCount=
-document.getElementById("playerCount");
-
-const player1=
-document.getElementById("player1");
-
-const player2=
-document.getElementById("player2");
-
-const host1=
-document.getElementById("host1");
-
-const host2=
-document.getElementById("host2");
-
-const createRoomBtn=
-document.getElementById("createRoomBtn");
-
-const joinRoomBtn=
-document.getElementById("joinRoomBtn");
-
-const joinRoomInput=
-document.getElementById("joinRoomInput");
-
-const startGameBtn=
-document.getElementById("startGameBtn");
-
-const leaveRoomBtn=
-document.getElementById("leaveRoomBtn");
-
-const turnBanner=
-document.getElementById("turnBanner");
-
-const rollPage=
-document.getElementById("rollPage");
-
-const inputPage=
-document.getElementById("inputPage");
-
-const displayCard=
-document.getElementById("displayCard");
-
-const pendingNode=
-document.getElementById("pendingNode");
-
-const rollBtn=
-document.getElementById("rollBtn");
-
-const recentTeam=
-document.getElementById("recentTeam");
-
-const recentTeamName=
-document.getElementById("recentTeamName");
-
-const submitBtn=
-document.getElementById("submitBtn");
-
-const regretBtn=
-document.getElementById("regretBtn");
-
-const createBtn=
-document.getElementById("createBtn");
-
-const clearBtn=
-document.getElementById("clearBtn");
-
-const outputSection=
-document.getElementById("outputSection");
-
-const outputText=
-document.getElementById("outputText");
-
-const copyBtn=
-document.getElementById("copyBtn");
+const pageSwitchBtn =
+    document.getElementById("pageSwitchBtn");
 
 
-const allInputs=
-Array.from(
-document.querySelectorAll(".player-input")
+const entryName =
+    document.getElementById("entryName");
+
+const joinRoomInput =
+    document.getElementById("joinRoomInput");
+
+const entryMessage =
+    document.getElementById("entryMessage");
+
+const createRoomBtn =
+    document.getElementById("createRoomBtn");
+
+const joinRoomBtn =
+    document.getElementById("joinRoomBtn");
+
+
+const roomCodeDisplay =
+    document.getElementById("roomCodeDisplay");
+
+const roomCount =
+    document.getElementById("roomCount");
+
+const playerCircle1 =
+    document.getElementById("playerCircle1");
+
+const playerCircle2 =
+    document.getElementById("playerCircle2");
+
+const playerName1 =
+    document.getElementById("playerName1");
+
+const playerName2 =
+    document.getElementById("playerName2");
+
+const hostBadge =
+    document.getElementById("hostBadge");
+
+const waitingText =
+    document.getElementById("waitingText");
+
+const startGameBtn =
+    document.getElementById("startGameBtn");
+
+const leaveRoomBtn =
+    document.getElementById("leaveRoomBtn");
+
+
+const turnBannerRoll =
+    document.getElementById("turnBannerRoll");
+
+const turnBannerInput =
+    document.getElementById("turnBannerInput");
+
+const displayCardRoll =
+    document.getElementById("displayCardRoll");
+
+const pendingRoll =
+    document.getElementById("pendingRoll");
+
+const rollBtn =
+    document.getElementById("rollBtn");
+
+
+const lastTeamPreviewRoll =
+    document.getElementById("lastTeamPreviewRoll");
+
+const lastTeamLogoRoll =
+    document.getElementById("lastTeamLogoRoll");
+
+const lastTeamTextRoll =
+    document.getElementById("lastTeamTextRoll");
+
+
+const inputTeamLogo =
+    document.getElementById("inputTeamLogo");
+
+const inputTeamName =
+    document.getElementById("inputTeamName");
+
+const regretBtn =
+    document.getElementById("regretBtn");
+
+const createPromptBtn =
+    document.getElementById("createPromptBtn");
+
+const clearBtn =
+    document.getElementById("clearBtn");
+
+const outputSection =
+    document.getElementById("outputSection");
+
+const outputText =
+    document.getElementById("outputText");
+
+const copyBtn =
+    document.getElementById("copyBtn");
+
+
+const allInputs =
+    Array.from(
+        document.querySelectorAll(
+            ".player-input"
+        )
+    );
+
+
+/* =========================================================
+Team DOM
+========================================================= */
+
+const teamNodeElements = [];
+
+nbaTeams.forEach(
+    (team,index) => {
+
+        const node =
+            document.createElement("div");
+
+        node.className =
+            "team-node";
+
+        node.innerHTML = `
+
+            <img
+                src="${team.logo}"
+                class="team-logo"
+                alt="${team.en}"
+            >
+
+            <div class="team-zh">
+                ${team.zh}
+            </div>
+
+            <div class="team-en">
+                ${team.en}
+            </div>
+
+        `;
+
+        displayCardRoll.appendChild(node);
+
+        teamNodeElements.push(node);
+
+    }
 );
 
 
 /* =========================================================
-TEAM NODES
+Pages
 ========================================================= */
 
-const teamNodeElements=[];
+function showPage(page) {
 
-nbaTeams.forEach(team=>{
-
-const node=
-document.createElement("div");
-
-node.className="team-node";
-
-node.innerHTML=`
-
-<img
-src="${team.logo}"
-class="team-logo"
->
-
-<div class="team-zh">
-${team.zh}
-</div>
-
-<div class="team-en">
-${team.en}
-</div>
-
-`;
-
-displayCard.appendChild(node);
-
-teamNodeElements.push(node);
-
-});
+    [
+        entryPage,
+        roomPage,
+        rollPage,
+        inputPage
+    ].forEach(
+        x => x.classList.remove("active")
+    );
 
 
-/* =========================================================
-PLAYER TOKEN
-完全不使用 localStorage
-========================================================= */
-
-const playerToken=
-crypto.randomUUID();
+    page.classList.add("active");
 
 
-let currentRoomCode=null;
-let myRole=null;
-let isHost=false;
-let gameState=null;
-let realtimeChannel=null;
-let isRolling=false;
-let activeNodeIndex=-1;
-let selectedInput=null;
-let copied=false;
+    if (
+        page === entryPage
+    ) {
+
+        pageSwitchBtn.style.display =
+            "none";
+
+        return;
+
+    }
 
 
-/* =========================================================
-AUDIO
-========================================================= */
+    pageSwitchBtn.style.display =
+        "block";
 
-let audioCtx=null;
 
-function playTickSound(final=false){
+    if (
+        page === roomPage
+    ) {
 
-try{
+        pageSwitchBtn.textContent =
+            "遊戲";
 
-if(!audioCtx){
+    } else {
 
-audioCtx=
-new(
-window.AudioContext||
-window.webkitAudioContext
-)();
+        pageSwitchBtn.textContent =
+            "房間";
 
-}
-
-if(audioCtx.state==="suspended"){
-audioCtx.resume();
-}
-
-const osc=
-audioCtx.createOscillator();
-
-const gain=
-audioCtx.createGain();
-
-osc.type="sine";
-
-osc.frequency.value=
-final?1046:1200;
-
-gain.gain.value=
-final?.35:.25;
-
-gain.gain.exponentialRampToValueAtTime(
-.001,
-audioCtx.currentTime+
-(final?.6:.02)
-);
-
-osc.connect(gain);
-gain.connect(audioCtx.destination);
-
-osc.start();
-
-osc.stop(
-audioCtx.currentTime+
-(final?.6:.02)
-);
-
-}catch(e){}
+    }
 
 }
 
 
 /* =========================================================
-FONT SIZE PLAYER
+Player name font size
 ========================================================= */
 
-function fitPlayerName(el,name){
+function updatePlayerNameSize(
+    element,
+    name
+) {
 
-const span=el.querySelector("span");
+    element.textContent =
+        name || "";
 
-span.textContent=name||"＋";
 
-if(!name){
+    if (!name) {
 
-el.classList.add("empty");
-return;
+        element.className =
+            "player-empty";
 
-}
+        element.textContent =
+            "+";
 
-el.classList.remove("empty");
+        return;
 
-let size=1.1;
+    }
 
-if(name.length>=8) size=.9;
-if(name.length>=11) size=.75;
-if(name.length>=14) size=.65;
-if(name.length>=17) size=.55;
 
-span.style.fontSize=size+"rem";
+    element.className =
+        "player-name";
+
+
+    const length =
+        [...name].length;
+
+
+    let size = 1.45;
+
+
+    if (length <= 4)
+        size = 1.45;
+
+    else if (length <= 6)
+        size = 1.25;
+
+    else if (length <= 8)
+        size = 1.05;
+
+    else if (length <= 11)
+        size = .9;
+
+    else
+        size = .75;
+
+
+    element.style.fontSize =
+        size + "rem";
 
 }
 
 
 /* =========================================================
-ROOM UI
+Room UI
 ========================================================= */
 
-function updateRoomUI(){
+function renderRoom() {
 
-if(!currentRoomCode){
-
-roomCode.textContent="未加入";
-
-roomStatus.textContent=
-"請建立或加入房間";
-
-playerCount.textContent="0/2";
-
-fitPlayerName(player1,"");
-fitPlayerName(player2,"");
-
-host1.textContent="";
-host2.textContent="";
-
-nameArea.style.display="block";
-
-createRoomBtn.disabled=false;
-joinRoomBtn.disabled=false;
-
-startGameBtn.disabled=true;
-
-leaveRoomBtn.style.display="none";
-
-pageSwitch.style.display="none";
-
-return;
-
-}
+    if (!gameState)
+        return;
 
 
-roomCode.textContent=
-currentRoomCode;
-
-nameArea.style.display="none";
-
-createRoomBtn.disabled=true;
-joinRoomBtn.disabled=true;
-
-leaveRoomBtn.style.display="block";
-
-playerCount.textContent=
-`${gameState?.player_count||1}/2`;
-
-const p1=
-gameState?.player1_name||
-"";
-
-const p2=
-gameState?.player2_name||
-"";
-
-fitPlayerName(player1,p1);
-fitPlayerName(player2,p2);
-
-host1.textContent=
-isHost?"房主":"";
-
-host2.textContent="";
+    const count =
+        Number(
+            gameState.player_count || 1
+        );
 
 
-if(
-gameState?.player_count>=2
-){
-
-roomStatus.textContent=
-gameState.started
-?"遊戲進行中"
-:"兩位玩家已加入";
-
-}else{
-
-roomStatus.textContent=
-"等待第二位玩家加入";
-
-}
+    const p1 =
+        gameState.player1_name ||
+        myName ||
+        "";
 
 
-startGameBtn.disabled=
-!(
-isHost &&
-gameState?.player_count>=2 &&
-!gameState?.started
-);
+    const p2 =
+        gameState.player2_name ||
+        "";
+
+
+    roomCodeDisplay.textContent =
+        currentRoomCode || "------";
+
+
+    roomCount.textContent =
+        `${count}/2`;
+
+
+    updatePlayerNameSize(
+        playerName1,
+        p1
+    );
+
+
+    updatePlayerNameSize(
+        playerName2,
+        p2
+    );
+
+
+    playerCircle1.classList.add(
+        "filled"
+    );
+
+
+    if (p2) {
+
+        playerCircle2.classList.add(
+            "filled"
+        );
+
+    } else {
+
+        playerCircle2.classList.remove(
+            "filled"
+        );
+
+    }
+
+
+    hostBadge.style.display =
+        isHost ? "block" : "none";
+
+
+    if (count < 2) {
+
+        waitingText.textContent =
+            "等待第二位玩家加入";
+
+        startGameBtn.disabled =
+            true;
+
+    } else {
+
+        waitingText.textContent =
+            "兩位玩家已經到齊";
+
+        startGameBtn.disabled =
+            !isHost;
+
+    }
+
+
+    if (!isHost && count >= 2) {
+
+        startGameBtn.textContent =
+            "等待房主開始";
+
+    } else {
+
+        startGameBtn.textContent =
+            "開始遊戲";
+
+    }
 
 }
 
 
 /* =========================================================
-PAGE
+Room state helper
 ========================================================= */
 
-function showPage(page){
+function normalizeState(
+    state
+) {
 
-if(page==="room"){
-
-roomPage.classList.add("active");
-gamePage.classList.remove("active");
-
-roomPageBtn.classList.add("active");
-gamePageBtn.classList.remove("active");
-
-}else{
-
-roomPage.classList.remove("active");
-gamePage.classList.add("active");
-
-roomPageBtn.classList.remove("active");
-gamePageBtn.classList.add("active");
-
-}
-
-}
+    if (!state)
+        return null;
 
 
-roomPageBtn.onclick=()=>{
-showPage("room");
-};
+    return {
 
-gamePageBtn.onclick=()=>{
-showPage("game");
-};
+        player_count:
+            Number(
+                state.player_count || 1
+            ),
 
+        phase:
+            state.phase || "waiting",
 
-/* =========================================================
-CREATE
-========================================================= */
+        turn:
+            state.turn ?? "A",
 
-async function createRoom(){
+        completed_count:
+            Number(
+                state.completed_count || 0
+            ),
 
-const name=
-nameInput.value.trim();
+        selected_team_index:
+            state.selected_team_index,
 
-if(!name){
+        selected_team_role:
+            state.selected_team_role,
 
-alert("請先輸入你的名字");
-nameInput.focus();
-return;
+        team_history:
+            Array.isArray(
+                state.team_history
+            )
+                ? state.team_history
+                : [],
 
-}
+        a:
+            state.a || {
+                pg:"",
+                sg:"",
+                sf:"",
+                pf:"",
+                c:""
+            },
 
-createRoomBtn.disabled=true;
-joinRoomBtn.disabled=true;
+        b:
+            state.b || {
+                pg:"",
+                sg:"",
+                sf:"",
+                pf:"",
+                c:""
+            }
 
-roomStatus.textContent=
-"正在建立房間...";
-
-try{
-
-const {data,error}=
-await supabaseClient.rpc(
-"create_nba_room",
-{
-p_token:playerToken,
-p_name:name
-}
-);
-
-if(error)throw error;
-
-applyRoomData(data);
-
-subscribeToRoom();
-
-showPage("room");
-
-}catch(error){
-
-console.error(error);
-
-alert(
-"建立房間失敗：\n"+
-error.message
-);
-
-createRoomBtn.disabled=false;
-joinRoomBtn.disabled=false;
-
-roomStatus.textContent=
-"建立失敗";
-
-}
+    };
 
 }
 
 
 /* =========================================================
-JOIN
+Create room
 ========================================================= */
 
-async function joinRoom(){
+async function createRoom() {
 
-const name=
-nameInput.value.trim();
+    const name =
+        entryName.value.trim();
 
-if(!name){
 
-alert("請先輸入你的名字");
-nameInput.focus();
-return;
+    if (!name) {
 
-}
+        alert(
+            "請先輸入你嘅名字"
+        );
 
-const code=
-joinRoomInput.value
-.trim()
-.toUpperCase();
+        entryName.focus();
 
-if(code.length!==6){
+        return;
 
-alert("請輸入 6 位房間碼");
-return;
+    }
 
-}
 
-createRoomBtn.disabled=true;
-joinRoomBtn.disabled=true;
+    createRoomBtn.disabled =
+        true;
 
-roomStatus.textContent=
-"正在加入房間...";
+    joinRoomBtn.disabled =
+        true;
 
-try{
 
-const {data,error}=
-await supabaseClient.rpc(
-"join_nba_room",
-{
-p_code:code,
-p_token:playerToken,
-p_name:name
-}
-);
+    entryMessage.textContent =
+        "正在建立房間...";
 
-if(error)throw error;
 
-applyRoomData(data);
+    try {
 
-subscribeToRoom();
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "create_nba_room",
+                {
+                    p_token:
+                        playerToken,
 
-showPage(
-data.started?"game":"room"
-);
+                    p_name:
+                        name
+                }
+            );
 
-}catch(error){
 
-console.error(error);
+        if (error)
+            throw error;
 
-alert(
-"加入房間失敗：\n"+
-error.message
-);
 
-createRoomBtn.disabled=false;
-joinRoomBtn.disabled=false;
+        currentRoomCode =
+            data.room_code;
 
-roomStatus.textContent=
-"加入失敗";
+        myRole =
+            data.role;
 
-}
+        isHost =
+            !!data.is_host;
+
+        myName =
+            name;
+
+
+        gameState =
+            normalizeState(
+                data.state
+            );
+
+
+        gameState.player1_name =
+            data.player1_name;
+
+        gameState.player2_name =
+            data.player2_name;
+
+
+        await unlockAudio();
+
+
+        subscribeToRoom();
+
+        renderRoom();
+
+        showPage(roomPage);
+
+
+    } catch(error) {
+
+        console.error(error);
+
+        alert(
+            "建立房間失敗：\n" +
+            error.message
+        );
+
+
+        createRoomBtn.disabled =
+            false;
+
+        joinRoomBtn.disabled =
+            false;
+
+
+        entryMessage.textContent =
+            "建立失敗";
+
+    }
 
 }
 
 
 /* =========================================================
-APPLY ROOM
+Join
 ========================================================= */
 
-function applyRoomData(data){
+async function joinRoom() {
 
-currentRoomCode=
-data.room_code;
+    const name =
+        entryName.value.trim();
 
-myRole=
-data.role;
+    const code =
+        joinRoomInput.value
+            .trim()
+            .toUpperCase();
 
-isHost=
-Boolean(data.is_host);
 
-gameState=
-data.state;
+    if (!name) {
 
-if(!gameState.player1_name)
-gameState.player1_name=
-data.player1_name;
+        alert(
+            "請先輸入你嘅名字"
+        );
 
-if(!gameState.player2_name)
-gameState.player2_name=
-data.player2_name;
+        entryName.focus();
 
-gameState.player_count=
-data.player_count;
+        return;
 
-gameState.started=
-data.started;
+    }
 
-updateRoomUI();
 
-renderGame();
+    if (code.length !== 6) {
+
+        alert(
+            "請輸入 6 位房間碼"
+        );
+
+        joinRoomInput.focus();
+
+        return;
+
+    }
+
+
+    createRoomBtn.disabled =
+        true;
+
+    joinRoomBtn.disabled =
+        true;
+
+
+    entryMessage.textContent =
+        "正在加入房間...";
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "join_nba_room",
+                {
+                    p_code:
+                        code,
+
+                    p_token:
+                        playerToken,
+
+                    p_name:
+                        name
+                }
+            );
+
+
+        if (error)
+            throw error;
+
+
+        currentRoomCode =
+            data.room_code;
+
+        myRole =
+            data.role;
+
+        isHost =
+            !!data.is_host;
+
+        myName =
+            name;
+
+
+        gameState =
+            normalizeState(
+                data.state
+            );
+
+
+        gameState.player1_name =
+            data.player1_name;
+
+        gameState.player2_name =
+            data.player2_name;
+
+
+        await unlockAudio();
+
+
+        subscribeToRoom();
+
+        renderRoom();
+
+        showPage(roomPage);
+
+
+    } catch(error) {
+
+        console.error(error);
+
+        alert(
+            "加入房間失敗：\n" +
+            error.message
+        );
+
+
+        createRoomBtn.disabled =
+            false;
+
+        joinRoomBtn.disabled =
+            false;
+
+
+        entryMessage.textContent =
+            "加入失敗";
+
+    }
 
 }
 
 
 /* =========================================================
-REALTIME
+Realtime
 ========================================================= */
 
-function subscribeToRoom(){
+function subscribeToRoom() {
 
-if(realtimeChannel){
+    if (realtimeChannel) {
 
-supabaseClient.removeChannel(
-realtimeChannel
-);
+        supabaseClient.removeChannel(
+            realtimeChannel
+        );
 
-realtimeChannel=null;
+        realtimeChannel =
+            null;
 
-}
-
-if(!currentRoomCode)return;
+    }
 
 
-realtimeChannel=
-supabaseClient
-.channel(
-"nba-room-"+currentRoomCode
-)
-.on(
-"postgres_changes",
-{
-event:"*",
-schema:"public",
-table:"nba_rooms",
-filter:
-`room_code=eq.${currentRoomCode}`
-},
-payload=>{
+    if (!currentRoomCode)
+        return;
 
-if(payload.eventType==="DELETE"){
 
-handleRoomClosed();
-return;
+    realtimeChannel =
+        supabaseClient
+            .channel(
+                "nba-room-" +
+                currentRoomCode
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "nba_rooms",
+                    filter:
+                        `room_code=eq.${currentRoomCode}`
+                },
+                async payload => {
 
-}
+                    if (
+                        payload.eventType ===
+                        "DELETE"
+                    ) {
 
-if(
-payload.new &&
-payload.new.game_state
-){
+                        handleRoomDeleted();
 
-const row=payload.new;
+                        return;
 
-gameState=
-row.game_state;
+                    }
 
-gameState.player_count=
-row.player2_token?2:1;
 
-gameState.player1_name=
-row.player1_name;
+                    if (
+                        !payload.new
+                    )
+                        return;
 
-gameState.player2_name=
-row.player2_name;
 
-gameState.started=
-row.started;
+                    const row =
+                        payload.new;
 
-if(
-row.host_token===playerToken
-){
-isHost=true;
-}else{
-isHost=false;
-}
 
-updateRoomUI();
+                    const state =
+                        normalizeState(
+                            row.game_state
+                        );
 
-renderGame();
 
-}
+                    if (!state)
+                        return;
 
-}
-)
-.subscribe(
-status=>{
-console.log(
-"Realtime:",
-status
-);
-}
-);
+
+                    state.player1_name =
+                        row.player1_name;
+
+                    state.player2_name =
+                        row.player2_name;
+
+
+                    const oldState =
+                        gameState;
+
+
+                    gameState =
+                        state;
+
+
+                    /*
+                       房間等待頁
+                    */
+
+                    if (
+                        state.phase ===
+                        "waiting"
+                    ) {
+
+                        renderRoom();
+
+                        showPage(
+                            roomPage
+                        );
+
+                        return;
+
+                    }
+
+
+                    /*
+                       遊戲開始
+                    */
+
+                    if (
+                        state.phase ===
+                        "roll"
+                    ) {
+
+                        renderRoom();
+
+                        await handleIncomingRoll(
+                            oldState,
+                            state
+                        );
+
+                        return;
+
+                    }
+
+
+                    /*
+                       輸入球員
+                    */
+
+                    if (
+                        state.phase ===
+                        "input"
+                    ) {
+
+                        renderInputPage();
+
+                        showPage(
+                            inputPage
+                        );
+
+                        return;
+
+                    }
+
+
+                    /*
+                       完成
+                    */
+
+                    if (
+                        state.phase ===
+                        "done"
+                    ) {
+
+                        renderInputPage();
+
+                        showPage(
+                            inputPage
+                        );
+
+                    }
+
+                }
+            )
+            .subscribe(
+                status => {
+
+                    console.log(
+                        "Realtime:",
+                        status
+                    );
+
+                }
+            );
 
 }
 
 
 /* =========================================================
-CLOSED
+Handle room deleted
 ========================================================= */
 
-function handleRoomClosed(){
+function handleRoomDeleted() {
 
-if(realtimeChannel){
+    if (realtimeChannel) {
 
-supabaseClient.removeChannel(
-realtimeChannel
-);
+        supabaseClient.removeChannel(
+            realtimeChannel
+        );
 
-realtimeChannel=null;
+        realtimeChannel =
+            null;
 
-}
+    }
 
-currentRoomCode=null;
-myRole=null;
-isHost=false;
-gameState=null;
 
-resetEverything();
+    currentRoomCode =
+        null;
 
-updateRoomUI();
+    myRole =
+        null;
 
-showPage("room");
+    myName =
+        null;
 
-roomStatus.textContent=
-"房間已結束";
+    isHost =
+        false;
+
+    gameState =
+        null;
+
+    isRolling =
+        false;
+
+    animationPromise =
+        null;
+
+    selectedInputId =
+        null;
+
+
+    showPage(entryPage);
+
+
+    entryMessage.textContent =
+        "房間已結束";
+
+
+    createRoomBtn.disabled =
+        false;
+
+    joinRoomBtn.disabled =
+        false;
 
 }
 
 
 /* =========================================================
-LEAVE
+Leave
 ========================================================= */
 
-async function leaveRoom(){
+async function leaveRoom() {
 
-if(!currentRoomCode)return;
+    if (!currentRoomCode)
+        return;
 
-if(
-!confirm("確定要退出房間嗎？")
-)return;
 
-leaveRoomBtn.disabled=true;
+    if (
+        !confirm(
+            "確定要退出房間嗎？"
+        )
+    )
+        return;
 
-try{
 
-const {error}=
-await supabaseClient.rpc(
-"leave_nba_room",
-{
-p_code:currentRoomCode,
-p_token:playerToken
-}
-);
+    leaveRoomBtn.disabled =
+        true;
 
-if(error)throw error;
 
-if(realtimeChannel){
+    try {
 
-await supabaseClient.removeChannel(
-realtimeChannel
-);
+        const {
+            error
+        } =
+            await supabaseClient.rpc(
+                "leave_nba_room",
+                {
+                    p_code:
+                        currentRoomCode,
 
-realtimeChannel=null;
+                    p_token:
+                        playerToken
+                }
+            );
 
-}
 
-currentRoomCode=null;
-myRole=null;
-isHost=false;
-gameState=null;
+        if (error)
+            throw error;
 
-resetEverything();
 
-updateRoomUI();
+        if (realtimeChannel) {
 
-showPage("room");
+            await supabaseClient.removeChannel(
+                realtimeChannel
+            );
 
-roomStatus.textContent=
-"已退出房間";
+            realtimeChannel =
+                null;
 
-}catch(error){
+        }
 
-console.error(error);
 
-alert(
-"退出房間失敗：\n"+
-error.message
-);
+        currentRoomCode =
+            null;
 
-}
+        myRole =
+            null;
 
-leaveRoomBtn.disabled=false;
+        myName =
+            null;
+
+        isHost =
+            false;
+
+        gameState =
+            null;
+
+        isRolling =
+            false;
+
+        animationPromise =
+            null;
+
+        selectedInputId =
+            null;
+
+
+        resetAllInputs();
+
+
+        showPage(entryPage);
+
+
+        entryName.value =
+            "";
+
+        entryMessage.textContent =
+            "已退出房間";
+
+
+        createRoomBtn.disabled =
+            false;
+
+        joinRoomBtn.disabled =
+            false;
+
+
+    } catch(error) {
+
+        console.error(error);
+
+        alert(
+            "退出房間失敗：\n" +
+            error.message
+        );
+
+    }
+
+
+    leaveRoomBtn.disabled =
+        false;
 
 }
 
 
 /* =========================================================
-START GAME
+Start game
 ========================================================= */
 
-async function startGame(){
+async function startGame() {
 
-if(!isHost)return;
+    if (!isHost)
+        return;
 
-try{
 
-const {data,error}=
-await supabaseClient.rpc(
-"start_nba_game",
-{
-p_code:currentRoomCode,
-p_token:playerToken
-}
-);
+    if (!gameState)
+        return;
 
-if(error)throw error;
 
-applyRoomData(data);
+    if (
+        Number(
+            gameState.player_count
+        ) < 2
+    )
+        return;
 
-showPage("game");
 
-}catch(error){
+    startGameBtn.disabled =
+        true;
 
-alert(
-"開始遊戲失敗：\n"+
-error.message
-);
 
-}
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "start_nba_game",
+                {
+                    p_code:
+                        currentRoomCode,
+
+                    p_token:
+                        playerToken
+                }
+            );
+
+
+        if (error)
+            throw error;
+
+
+        gameState =
+            normalizeState(
+                data.state
+            );
+
+
+        gameState.player1_name =
+            gameState.player1_name ||
+            null;
+
+
+        /*
+           先進抽籤頁
+        */
+
+        showPage(
+            rollPage
+        );
+
+
+        renderRollPage();
+
+
+    } catch(error) {
+
+        console.error(error);
+
+        alert(
+            "開始遊戲失敗：\n" +
+            error.message
+        );
+
+
+        startGameBtn.disabled =
+            false;
+
+    }
 
 }
 
 
 /* =========================================================
-RESET
+Unlock Audio
 ========================================================= */
 
-function resetEverything(){
+let audioCtx = null;
 
-allInputs.forEach(input=>{
+async function unlockAudio() {
 
-input.value="";
-input.disabled=true;
+    try {
 
-});
+        if (!audioCtx) {
 
-resetDisplay();
+            audioCtx =
+                new (
+                    window.AudioContext ||
+                    window.webkitAudioContext
+                )();
 
-rollPage.style.display="block";
-inputPage.classList.remove("active");
+        }
 
-recentTeam.style.display="none";
 
-turnBanner.textContent="";
+        if (
+            audioCtx.state ===
+            "suspended"
+        ) {
 
-outputSection.style.display="none";
+            await audioCtx.resume();
 
-outputText.value="";
+        }
 
-createBtn.disabled=true;
-clearBtn.disabled=true;
 
-copied=false;
-selectedInput=null;
+        const osc =
+            audioCtx.createOscillator();
+
+        const gain =
+            audioCtx.createGain();
+
+
+        gain.gain.value =
+            0.00001;
+
+
+        osc.connect(gain);
+
+        gain.connect(
+            audioCtx.destination
+        );
+
+
+        osc.start();
+
+        osc.stop(
+            audioCtx.currentTime + .01
+        );
+
+    } catch(e) {
+
+        console.log(
+            "Audio unlock failed",
+            e
+        );
+
+    }
 
 }
 
 
 /* =========================================================
-RENDER GAME
+Sound
 ========================================================= */
 
-function renderGame(){
+function playTickSound(
+    final = false
+) {
 
-if(!gameState)return;
+    try {
 
-updateTurnBanner();
+        if (!audioCtx)
+            return;
 
-updateGamePage();
 
-renderPlayers();
+        if (
+            audioCtx.state ===
+            "suspended"
+        )
+            return;
 
-updateOutputButton();
+
+        const osc =
+            audioCtx.createOscillator();
+
+        const gain =
+            audioCtx.createGain();
+
+
+        osc.type =
+            "sine";
+
+
+        osc.frequency.value =
+            final
+                ? 1046
+                : 1200;
+
+
+        gain.gain.setValueAtTime(
+            final ? .32 : .18,
+            audioCtx.currentTime
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            audioCtx.currentTime +
+            (final ? .55 : .035)
+        );
+
+
+        osc.connect(gain);
+
+        gain.connect(
+            audioCtx.destination
+        );
+
+
+        osc.start();
+
+        osc.stop(
+            audioCtx.currentTime +
+            (final ? .55 : .035)
+        );
+
+    } catch(e) {}
 
 }
 
 
 /* =========================================================
-TURN
+Reset display
 ========================================================= */
 
-function updateTurnBanner(){
+function resetDisplay() {
 
-if(
-!gameState.started
-){
-turnBanner.textContent=
-"等待房主開始遊戲";
-return;
-}
+    teamNodeElements.forEach(
+        node => {
 
-if(
-gameState.phase==="done"
-){
+            node.classList.remove(
+                "show",
+                "pop"
+            );
 
-turnBanner.textContent=
-"🏆 所有球員已完成";
+        }
+    );
 
-return;
 
-}
-
-if(
-gameState.turn===myRole
-){
-
-if(gameState.phase==="roll"){
-
-turnBanner.textContent=
-`🟢 到你（${myRole}隊）回合，請抽取球隊`;
-
-}else{
-
-turnBanner.textContent=
-`🟢 ${myRole}隊請輸入一名球員`;
-
-}
-
-}else{
-
-turnBanner.textContent=
-`🔴 現在是 ${gameState.turn}隊回合`;
-
-}
+    pendingRoll.classList.add(
+        "show"
+    );
 
 }
 
 
 /* =========================================================
-GAME PAGE
+Animate roll
 ========================================================= */
 
-function updateGamePage(){
+function animateRoll(
+    finalIndex
+) {
 
-if(!gameState.started){
-
-pageSwitch.style.display="none";
-return;
-
-}
-
-pageSwitch.style.display="flex";
+    if (
+        animationPromise
+    )
+        return animationPromise;
 
 
-if(
-gameState.phase==="roll"
-){
+    animationPromise =
+        new Promise(
+            resolve => {
 
-rollPage.style.display="block";
-inputPage.classList.remove("active");
+                let count = 0;
 
-}else{
+                const maxSteps =
+                    35;
 
-rollPage.style.display="none";
-inputPage.classList.add("active");
+                let delay = 20;
 
-}
+                let last =
+                    -1;
+
+
+                function step() {
+
+                    let index;
+
+
+                    if (
+                        count ===
+                        maxSteps - 1
+                    ) {
+
+                        index =
+                            finalIndex;
+
+                    } else {
+
+                        do {
+
+                            index =
+                                Math.floor(
+                                    Math.random() *
+                                    nbaTeams.length
+                                );
+
+                        } while (
+                            index === last
+                        );
+
+                    }
+
+
+                    teamNodeElements.forEach(
+                        node => {
+
+                            node.classList.remove(
+                                "show",
+                                "pop"
+                            );
+
+                        }
+                    );
+
+
+                    pendingRoll.classList.remove(
+                        "show"
+                    );
+
+
+                    const node =
+                        teamNodeElements[index];
+
+
+                    node.classList.add(
+                        "show"
+                    );
+
+
+                    void node.offsetWidth;
+
+
+                    node.classList.add(
+                        "pop"
+                    );
+
+
+                    last =
+                        index;
+
+
+                    count++;
+
+
+                    const remaining =
+                        maxSteps -
+                        count;
+
+
+                    playTickSound(
+                        remaining === 0
+                    );
+
+
+                    if (
+                        remaining === 0
+                    ) {
+
+                        setTimeout(
+                            resolve,
+                            350
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        remaining === 1
+                    )
+                        delay = 550;
+
+                    else if (
+                        remaining === 2
+                    )
+                        delay = 400;
+
+                    else if (
+                        remaining === 3
+                    )
+                        delay = 280;
+
+                    else if (
+                        remaining === 4
+                    )
+                        delay = 180;
+
+                    else if (
+                        remaining === 5
+                    )
+                        delay = 110;
+
+                    else if (
+                        remaining <= 10
+                    )
+                        delay += 10;
+
+
+                    setTimeout(
+                        step,
+                        delay
+                    );
+
+                }
+
+
+                step();
+
+            }
+        );
+
+
+    animationPromise.finally(
+        () => {
+
+            animationPromise =
+                null;
+
+        }
+    );
+
+
+    return animationPromise;
 
 }
 
 
 /* =========================================================
-PLAYER INPUT
+Incoming roll
 ========================================================= */
 
-function renderPlayers(){
+async function handleIncomingRoll(
+    oldState,
+    newState
+) {
 
-allInputs.forEach(input=>{
-
-const [team,pos]=
-input.id.split("_");
-
-input.value=
-gameState[team]?.[pos]||"";
-
-input.disabled=true;
-
-});
+    const newIndex =
+        newState.selected_team_index;
 
 
-if(
-!gameState.started ||
-gameState.phase!=="input" ||
-gameState.turn!==myRole
-){
-
-regretBtn.style.display="none";
-return;
-
-}
+    const oldIndex =
+        oldState
+            ? oldState.selected_team_index
+            : null;
 
 
-const team=
-myRole.toLowerCase();
+    /*
+       roll 階段嘅新狀態可能未有新隊伍，
+       所以直接顯示 roll page。
+    */
+
+    if (
+        newIndex === null ||
+        newIndex === undefined
+    ) {
+
+        renderRollPage();
+
+        showPage(
+            rollPage
+        );
+
+        return;
+
+    }
 
 
-const available=
-["pg","sg","sf","pf","c"]
-.some(
-p=>!gameState[team][p]
-);
+    const changed =
+        oldIndex === null ||
+        oldIndex === undefined ||
+        Number(newIndex) !==
+        Number(oldIndex);
 
 
-if(!available){
+    if (changed) {
 
-regretBtn.style.display="none";
-return;
-
-}
-
-
-/*
-   如果目前未選任何框
-   五個都可以揀。
-*/
-
-if(!selectedInput){
-
-["pg","sg","sf","pf","c"]
-.forEach(pos=>{
-
-const input=
-document.getElementById(
-`${team}_${pos}`
-);
-
-if(!gameState[team][pos])
-input.disabled=false;
-
-});
-
-regretBtn.style.display="none";
-
-return;
-
-}
+        showPage(
+            rollPage
+        );
 
 
-/*
-   已選其中一個：
-   其他全部鎖死。
-*/
-
-["pg","sg","sf","pf","c"]
-.forEach(pos=>{
-
-const input=
-document.getElementById(
-`${team}_${pos}`
-);
-
-if(
-input===selectedInput &&
-!gameState[team][pos]
-){
-
-input.disabled=false;
-
-}else{
-
-input.disabled=true;
-
-}
-
-});
+        displayCardRoll.classList.add(
+            "active"
+        );
 
 
-regretBtn.style.display="block";
+        isRolling =
+            true;
 
-regretBtn.disabled=false;
+
+        rollBtn.disabled =
+            true;
 
 
-/*
-   有輸入先可以提交
-*/
+        await animateRoll(
+            Number(newIndex)
+        );
 
-submitBtn.disabled=
-!selectedInput ||
-!selectedInput.value.trim();
+
+        isRolling =
+            false;
+
+
+        displayCardRoll.classList.remove(
+            "active"
+        );
+
+    }
+
+
+    /*
+       抽完球隊後，
+       所有人自動進入輸入頁。
+    */
+
+    if (
+        newState.phase ===
+        "input"
+    ) {
+
+        renderInputPage();
+
+        showPage(
+            inputPage
+        );
+
+    } else {
+
+        renderRollPage();
+
+    }
 
 }
 
 
 /* =========================================================
-INPUT FOCUS
+Render roll page
 ========================================================= */
 
-allInputs.forEach(input=>{
+function renderRollPage() {
 
-input.addEventListener(
-"focus",
-()=>{
-
-if(
-!gameState ||
-gameState.phase!=="input" ||
-gameState.turn!==myRole
-)return;
-
-const team=
-myRole.toLowerCase();
-
-if(
-!input.id.startsWith(team+"_")
-)return;
-
-if(
-gameState[team][
-input.id.split("_")[1]
-]
-)return;
+    if (!gameState)
+        return;
 
 
-/*
-  第一個被選中的框
-*/
+    const turn =
+        gameState.turn;
 
-if(!selectedInput){
 
-selectedInput=input;
+    if (
+        turn === myRole
+    ) {
 
-renderPlayers();
+        turnBannerRoll.textContent =
+            `🟢 到你（${myRole}隊）！請抽取球隊`;
 
-input.focus();
+        rollBtn.disabled =
+            isRolling;
+
+        rollBtn.textContent =
+            "隨機抽取球隊";
+
+    } else {
+
+        turnBannerRoll.textContent =
+            `🔴 現在係 ${turn}隊抽取球隊`;
+
+        rollBtn.disabled =
+            true;
+
+        rollBtn.textContent =
+            `等待 ${turn}隊抽取`;
+
+    }
+
+
+    /*
+       如果已有最近一次球隊
+    */
+
+    if (
+        gameState.selected_team_index !==
+        null &&
+        gameState.selected_team_index !==
+        undefined
+    ) {
+
+        const index =
+            Number(
+                gameState.selected_team_index
+            );
+
+
+        if (
+            nbaTeams[index]
+        ) {
+
+            lastTeamPreviewRoll.classList.add(
+                "show"
+            );
+
+
+            lastTeamLogoRoll.src =
+                nbaTeams[index].logo;
+
+
+            lastTeamTextRoll.textContent =
+                `啱啱抽到：${nbaTeams[index].zh} ${nbaTeams[index].en}`;
+
+        }
+
+    } else {
+
+        lastTeamPreviewRoll.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    if (
+        !isRolling
+    ) {
+
+        /*
+           正常狀態下顯示最近結果，
+           未有結果則顯示待定。
+        */
+
+        const selected =
+            gameState.selected_team_index;
+
+
+        if (
+            selected === null ||
+            selected === undefined
+        ) {
+
+            resetDisplay();
+
+        } else {
+
+            showFinalTeam(
+                Number(selected)
+            );
+
+        }
+
+    }
 
 }
-
-}
-);
-
-
-/*
-  一旦輸入：
-  其他框永久鎖到後悔
-*/
-
-input.addEventListener(
-"input",
-()=>{
-
-if(
-input!==selectedInput
-)return;
-
-submitBtn.disabled=
-!input.value.trim();
-
-}
-);
-
-
-/*
-  Enter
-*/
-
-input.addEventListener(
-"keydown",
-async event=>{
-
-if(event.key!=="Enter")
-return;
-
-event.preventDefault();
-
-if(
-selectedInput===input &&
-input.value.trim()
-){
-
-await submitCurrentInput();
-
-}
-
-}
-);
-
-});
 
 
 /* =========================================================
-REGRET
+Show final team
 ========================================================= */
+
+function showFinalTeam(
+    index
+) {
+
+    if (
+        !teamNodeElements[index]
+    )
+        return;
+
+
+    teamNodeElements.forEach(
+        node => {
+
+            node.classList.remove(
+                "show",
+                "pop"
+            );
+
+        }
+    );
+
+
+    pendingRoll.classList.remove(
+        "show"
+    );
+
+
+    teamNodeElements[index]
+        .classList.add(
+            "show"
+        );
+
+}
+
+
+/* =========================================================
+Render input
+========================================================= */
+
+function renderInputPage() {
+
+    if (!gameState)
+        return;
+
+
+    const currentRole =
+        gameState.turn;
+
+
+    if (
+        gameState.phase ===
+        "done"
+    ) {
+
+        turnBannerInput.textContent =
+            "🏆 所有球員已經完成";
+
+    } else if (
+        currentRole === myRole
+    ) {
+
+        turnBannerInput.textContent =
+            `🟢 到你（${myRole}隊）輸入球員`;
+
+    } else {
+
+        turnBannerInput.textContent =
+            `👀 ${currentRole}隊正在輸入球員`;
+
+    }
+
+
+    const selected =
+        gameState.selected_team_index;
+
+
+    if (
+        selected !== null &&
+        selected !== undefined &&
+        nbaTeams[
+            Number(selected)
+        ]
+    ) {
+
+        const team =
+            nbaTeams[
+                Number(selected)
+            ];
+
+
+        inputTeamLogo.src =
+            team.logo;
+
+
+        inputTeamName.textContent =
+            `${team.zh} · ${team.en}`;
+
+    }
+
+
+    renderInputs();
+
+
+    updateRegretButton();
+
+    updateFinalButtons();
+
+}
+
+
+/* =========================================================
+Render inputs
+========================================================= */
+
+function renderInputs() {
+
+    allInputs.forEach(
+        input => {
+
+            const [
+                team,
+                position
+            ] =
+                input.id.split("_");
+
+
+            input.value =
+                gameState[
+                    team
+                ]?.[
+                    position
+                ] || "";
+
+
+            input.disabled =
+                true;
+
+        }
+    );
+
+
+    if (
+        gameState.phase !==
+        "input"
+    )
+        return;
+
+
+    if (
+        gameState.turn !==
+        myRole
+    )
+        return;
+
+
+    const team =
+        myRole.toLowerCase();
+
+
+    /*
+       已經揀緊一個框：
+       只可以繼續嗰個框。
+    */
+
+    if (selectedInputId) {
+
+        const selected =
+            document.getElementById(
+                selectedInputId
+            );
+
+
+        if (
+            selected &&
+            !selected.value
+        ) {
+
+            selected.disabled =
+                false;
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+       未揀位置：
+       5 個自己位置都可以揀。
+    */
+
+    [
+        "pg",
+        "sg",
+        "sf",
+        "pf",
+        "c"
+    ].forEach(
+        position => {
+
+            const input =
+                document.getElementById(
+                    `${team}_${position}`
+                );
+
+
+            if (
+                input &&
+                !input.value
+            ) {
+
+                input.disabled =
+                    false;
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+Input selection
+========================================================= */
+
+allInputs.forEach(
+    input => {
+
+        input.addEventListener(
+            "focus",
+            () => {
+
+                if (!gameState)
+                    return;
+
+
+                if (
+                    gameState.phase !==
+                    "input"
+                )
+                    return;
+
+
+                if (
+                    gameState.turn !==
+                    myRole
+                )
+                    return;
+
+
+                const team =
+                    myRole.toLowerCase();
+
+
+                if (
+                    !input.id.startsWith(
+                        team + "_"
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                /*
+                   一揀位置，
+                   立即鎖其他位置。
+                */
+
+                selectedInputId =
+                    input.id;
+
+
+                lockOtherInputs(
+                    input.id
+                );
+
+
+                updateRegretButton();
+
+            }
+        );
+
+
+        input.addEventListener(
+            "keydown",
+            async event => {
+
+                if (
+                    event.key !==
+                    "Enter"
+                )
+                    return;
+
+
+                event.preventDefault();
+
+
+                if (
+                    input.value.trim()
+                ) {
+
+                    await submitCurrentInput(
+                        input
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+Lock other inputs
+========================================================= */
+
+function lockOtherInputs(
+    selectedId
+) {
+
+    allInputs.forEach(
+        input => {
+
+            if (
+                input.id ===
+                selectedId
+            )
+                return;
+
+
+            input.disabled =
+                true;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+Regret
+========================================================= */
+
+function updateRegretButton() {
+
+    regretBtn.disabled =
+        !selectedInputId ||
+        gameState?.turn !== myRole ||
+        gameState?.phase !== "input";
+
+}
+
 
 regretBtn.addEventListener(
-"click",
-()=>{
+    "click",
+    () => {
 
-if(!selectedInput)return;
+        if (
+            !selectedInputId
+        )
+            return;
 
-selectedInput.value="";
 
-selectedInput=null;
+        const input =
+            document.getElementById(
+                selectedInputId
+            );
 
-submitBtn.disabled=true;
 
-renderPlayers();
+        if (!input)
+            return;
 
-}
+
+        /*
+           清空當前輸入
+        */
+
+        input.value =
+            "";
+
+
+        /*
+           放返 5 個位置畀玩家揀
+        */
+
+        selectedInputId =
+            null;
+
+
+        renderInputs();
+
+
+        updateRegretButton();
+
+    }
 );
 
 
 /* =========================================================
-SUBMIT
+Submit input
 ========================================================= */
 
-async function submitCurrentInput(){
+async function submitCurrentInput(
+    input
+) {
 
-if(!selectedInput)return;
-
-const name=
-selectedInput.value.trim();
-
-if(!name){
-
-alert("請輸入球員名字");
-return;
-
-}
+    if (!gameState)
+        return;
 
 
-const position=
-selectedInput.id.split("_")[1];
+    if (
+        gameState.phase !==
+        "input"
+    )
+        return;
 
 
-submitBtn.disabled=true;
+    if (
+        gameState.turn !==
+        myRole
+    )
+        return;
 
-try{
 
-const {data,error}=
-await supabaseClient.rpc(
-"fill_nba_player",
-{
-p_code:currentRoomCode,
-p_token:playerToken,
-p_position:position,
-p_player_name:name
-}
-);
+    if (
+        selectedInputId !==
+        input.id
+    ) {
 
-if(error)throw error;
+        return;
 
-selectedInput=null;
+    }
 
-applyRoomData(data);
 
-}catch(error){
+    const name =
+        input.value.trim();
 
-console.error(error);
 
-alert(error.message);
+    if (!name) {
 
-await refreshRoom();
+        alert(
+            "請輸入球員名字"
+        );
 
-}
+        input.focus();
+
+        return;
+
+    }
+
+
+    const position =
+        input.id.split("_")[1];
+
+
+    /*
+       提交期間全部鎖死
+    */
+
+    allInputs.forEach(
+        x => x.disabled = true
+    );
+
+
+    regretBtn.disabled =
+        true;
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "fill_nba_player",
+                {
+                    p_code:
+                        currentRoomCode,
+
+                    p_token:
+                        playerToken,
+
+                    p_position:
+                        position,
+
+                    p_player_name:
+                        name
+                }
+            );
+
+
+        if (error)
+            throw error;
+
+
+        gameState =
+            normalizeState(
+                data.state
+            );
+
+
+        /*
+           取得下一狀態
+        */
+
+        selectedInputId =
+            null;
+
+
+        /*
+           如果完成
+        */
+
+        if (
+            gameState.phase ===
+            "done"
+        ) {
+
+            renderInputPage();
+
+            showPage(
+                inputPage
+            );
+
+            return;
+
+        }
+
+
+        /*
+           下一回合：
+           回到抽球隊頁
+        */
+
+        if (
+            gameState.phase ===
+            "roll"
+        ) {
+
+            renderRollPage();
+
+            showPage(
+                rollPage
+            );
+
+        }
+
+    } catch(error) {
+
+        console.error(error);
+
+        alert(
+            error.message
+        );
+
+
+        renderInputs();
+
+        updateRegretButton();
+
+    }
 
 }
 
 
 /* =========================================================
-SUBMIT BUTTON
+Final buttons
 ========================================================= */
 
-submitBtn.addEventListener(
-"click",
-submitCurrentInput
-);
+function allPlayersComplete() {
+
+    if (!gameState)
+        return false;
+
+
+    return (
+        gameState.phase ===
+        "done" &&
+        Number(
+            gameState.completed_count
+        ) >= 10
+    );
+
+}
+
+
+function updateFinalButtons() {
+
+    const complete =
+        allPlayersComplete();
+
+
+    createPromptBtn.disabled =
+        !complete;
+
+
+    clearBtn.disabled =
+        !hasCopiedPrompt;
+
+}
 
 
 /* =========================================================
-ROLL
+Generate prompt
 ========================================================= */
 
-rollBtn.addEventListener(
-"click",
-startRolling
-);
+function generatePrompt() {
+
+    if (
+        !allPlayersComplete()
+    )
+        return;
 
 
-async function startRolling(){
+    const a =
+        gameState.a;
 
-if(isRolling)return;
-
-if(
-!gameState ||
-!gameState.started ||
-gameState.phase!=="roll"
-)return;
-
-if(
-gameState.turn!==myRole
-)return;
+    const b =
+        gameState.b;
 
 
-isRolling=true;
+    outputText.value =
 
-rollBtn.disabled=true;
-
-displayCard.classList.add("active");
+        `假設全員巔峯，A隊 PG "${a.pg}" SG "${a.sg}" SF "${a.sf}" PF "${a.pf}" C "${a.c}" 和 B隊 PG "${b.pg}" SG "${b.sg}" SF "${b.sf}" PF "${b.pf}" C "${b.c}"，邊一隊更強？`;
 
 
-try{
-
-const {data,error}=
-await supabaseClient.rpc(
-"roll_nba_room",
-{
-p_code:currentRoomCode,
-p_token:playerToken
-}
-);
-
-if(error)throw error;
-
-const index=
-Number(
-data.state.selected_team_index
-);
-
-await animateRoll(index);
-
-applyRoomData(data);
-
-showRecentTeam(index);
-
-}catch(error){
-
-console.error(error);
-
-alert(error.message);
-
-await refreshRoom();
-
-}
+    outputSection.style.display =
+        "block";
 
 
-isRolling=false;
+    hasCopiedPrompt =
+        false;
 
-displayCard.classList.remove("active");
+
+    updateFinalButtons();
+
+
+    outputSection.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+    });
 
 }
 
 
 /* =========================================================
-ANIMATION
-========================================================= */
-
-function animateRoll(finalIndex){
-
-return new Promise(resolve=>{
-
-let delay=20;
-let count=0;
-const maxSteps=35;
-let lastIndex=activeNodeIndex;
-
-
-function step(){
-
-let index;
-
-if(count===maxSteps-1){
-
-index=finalIndex;
-
-}else{
-
-do{
-
-index=
-Math.floor(
-Math.random()*30
-);
-
-}while(index===lastIndex);
-
-}
-
-
-teamNodeElements.forEach(node=>{
-node.classList.remove(
-"show",
-"pop"
-);
-});
-
-pendingNode.classList.remove("show");
-
-const node=
-teamNodeElements[index];
-
-node.classList.add("show");
-
-node.classList.remove("pop");
-
-void node.offsetWidth;
-
-node.classList.add("pop");
-
-lastIndex=index;
-activeNodeIndex=index;
-
-count++;
-
-const remaining=
-maxSteps-count;
-
-playTickSound(
-remaining===0
-);
-
-if(remaining===0){
-
-resolve();
-return;
-
-}
-
-if(remaining===1)
-delay=550;
-else if(remaining===2)
-delay=400;
-else if(remaining===3)
-delay=280;
-else if(remaining===4)
-delay=180;
-else if(remaining===5)
-delay=110;
-else if(remaining<=10)
-delay+=10;
-
-setTimeout(
-step,
-delay
-);
-
-}
-
-step();
-
-});
-
-}
-
-
-/* =========================================================
-SHOW RECENT TEAM
-========================================================= */
-
-function showRecentTeam(index){
-
-if(
-index===null ||
-index===undefined ||
-!nbaTeams[index]
-){
-
-recentTeam.style.display="none";
-return;
-
-}
-
-recentTeamName.textContent=
-`${nbaTeams[index].zh} (${nbaTeams[index].en})`;
-
-recentTeam.style.display="block";
-
-}
-
-
-/* =========================================================
-DISPLAY
-========================================================= */
-
-function resetDisplay(){
-
-teamNodeElements.forEach(node=>{
-node.classList.remove(
-"show",
-"pop"
-);
-});
-
-pendingNode.classList.add("show");
-
-}
-
-
-function updateDisplay(){
-
-const selected=
-gameState?.selected_team_index;
-
-if(
-selected===null ||
-selected===undefined
-){
-
-resetDisplay();
-return;
-
-}
-
-const index=
-Number(selected);
-
-if(!teamNodeElements[index])
-return;
-
-pendingNode.classList.remove("show");
-
-teamNodeElements.forEach(node=>{
-node.classList.remove(
-"show",
-"pop"
-);
-});
-
-teamNodeElements[index]
-.classList.add("show");
-
-}
-
-
-/* =========================================================
-OUTPUT
-========================================================= */
-
-function updateOutputButton(){
-
-if(
-!gameState ||
-gameState.phase!=="done"
-){
-
-createBtn.disabled=true;
-return;
-
-}
-
-createBtn.disabled=
-Number(
-gameState.completed_count
-)<10;
-
-}
-
-
-/* =========================================================
-CREATE PROMPT
-========================================================= */
-
-createBtn.addEventListener(
-"click",
-()=>{
-
-if(
-!gameState ||
-gameState.phase!=="done"
-)
-return;
-
-
-const a=gameState.a;
-const b=gameState.b;
-
-
-outputText.value=
-`假設全員巔峯，A隊 PG「${a.pg}」SG「${a.sg}」SF「${a.sf}」PF「${a.pf}」C「${a.c}」和 B隊 PG「${b.pg}」SG「${b.sg}」SF「${b.sf}」PF「${b.pf}」C「${b.c}」，邊一隊更強？`;
-
-
-outputSection.style.display="block";
-
-outputSection.scrollIntoView({
-behavior:"smooth"
-});
-
-clearBtn.disabled=true;
-
-copied=false;
-
-}
-);
-
-
-/* =========================================================
-COPY
+Copy
 ========================================================= */
 
 copyBtn.addEventListener(
-"click",
-async()=>{
+    "click",
+    async () => {
 
-if(!outputText.value)
-return;
+        if (
+            !outputText.value
+        )
+            return;
 
-try{
 
-await navigator.clipboard.writeText(
-outputText.value
-);
+        try {
 
-}catch(e){
+            await navigator.clipboard.writeText(
+                outputText.value
+            );
 
-outputText.select();
+        } catch(e) {
 
-document.execCommand("copy");
+            outputText.select();
 
-}
+            document.execCommand(
+                "copy"
+            );
 
-copied=true;
+        }
 
-clearBtn.disabled=false;
 
-alert("文案已成功複製！");
+        hasCopiedPrompt =
+            true;
 
-}
+
+        clearBtn.disabled =
+            false;
+
+
+        alert(
+            "文案已成功複製！"
+        );
+
+    }
 );
 
 
 /* =========================================================
-CLEAR
+Clear
 ========================================================= */
 
 clearBtn.addEventListener(
-"click",
-()=>{
+    "click",
+    () => {
 
-if(!copied)
-return;
+        if (
+            !hasCopiedPrompt
+        )
+            return;
 
-allInputs.forEach(input=>{
-input.value="";
-input.disabled=true;
-});
 
-outputText.value="";
+        allInputs.forEach(
+            input => {
 
-outputSection.style.display="none";
+                input.value =
+                    "";
 
-clearBtn.disabled=true;
+                input.disabled =
+                    true;
 
-copied=false;
+            }
+        );
 
-}
+
+        outputText.value =
+            "";
+
+        outputSection.style.display =
+            "none";
+
+
+        hasCopiedPrompt =
+            false;
+
+
+        clearBtn.disabled =
+            true;
+
+    }
 );
 
 
 /* =========================================================
-REFRESH ROOM
+Page switch
 ========================================================= */
 
-async function refreshRoom(){
+pageSwitchBtn.addEventListener(
+    "click",
+    () => {
 
-if(!currentRoomCode)
-return;
+        if (
+            !currentRoomCode
+        )
+            return;
 
-try{
 
-const {data,error}=
-await supabaseClient.rpc(
-"get_nba_room",
-{
-p_code:currentRoomCode,
-p_token:playerToken
-}
+        /*
+           房間 ↔ 遊戲
+        */
+
+        if (
+            roomPage.classList.contains(
+                "active"
+            )
+        ) {
+
+            if (
+                gameState &&
+                gameState.phase !==
+                "waiting"
+            ) {
+
+                if (
+                    gameState.phase ===
+                    "roll"
+                ) {
+
+                    renderRollPage();
+
+                    showPage(
+                        rollPage
+                    );
+
+                } else {
+
+                    renderInputPage();
+
+                    showPage(
+                        inputPage
+                    );
+
+                }
+
+            }
+
+        } else {
+
+            renderRoom();
+
+            showPage(
+                roomPage
+            );
+
+        }
+
+    }
 );
 
-if(error)throw error;
-
-applyRoomData(data);
-
-}catch(error){
-
-console.error(error);
-
-}
-
-}
-
 
 /* =========================================================
-BUTTONS
+Buttons
 ========================================================= */
 
-createRoomBtn.onclick=
-createRoom;
-
-joinRoomBtn.onclick=
-joinRoom;
-
-startGameBtn.onclick=
-startGame;
-
-leaveRoomBtn.onclick=
-leaveRoom;
-
-
-/* =========================================================
-URL ROOM
-========================================================= */
-
-const params=
-new URLSearchParams(
-location.search
+createRoomBtn.addEventListener(
+    "click",
+    createRoom
 );
 
-const roomFromUrl=
-params.get("room");
+joinRoomBtn.addEventListener(
+    "click",
+    joinRoom
+);
 
-if(roomFromUrl){
+startGameBtn.addEventListener(
+    "click",
+    startGame
+);
 
-joinRoomInput.value=
-roomFromUrl
-.trim()
-.toUpperCase();
+leaveRoomBtn.addEventListener(
+    "click",
+    leaveRoom
+);
+
+
+/* =========================================================
+Roll
+========================================================= */
+
+rollBtn.addEventListener(
+    "click",
+    async () => {
+
+        if (
+            isRolling ||
+            !gameState
+        )
+            return;
+
+
+        if (
+            gameState.phase !==
+            "roll"
+        )
+            return;
+
+
+        if (
+            gameState.turn !==
+            myRole
+        )
+            return;
+
+
+        /*
+           再 unlock 一次，
+           確保玩家已經有 audio permission。
+        */
+
+        await unlockAudio();
+
+
+        isRolling =
+            true;
+
+
+        rollBtn.disabled =
+            true;
+
+
+        displayCardRoll.classList.add(
+            "active"
+        );
+
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.rpc(
+                    "roll_nba_room",
+                    {
+                        p_code:
+                            currentRoomCode,
+
+                        p_token:
+                            playerToken
+                    }
+                );
+
+
+            if (error)
+                throw error;
+
+
+            const finalIndex =
+                Number(
+                    data.state
+                        .selected_team_index
+                );
+
+
+            /*
+               自己先播放
+            */
+
+            await animateRoll(
+                finalIndex
+            );
+
+
+            gameState =
+                normalizeState(
+                    data.state
+                );
+
+
+            /*
+               抽完後直接去輸入頁
+            */
+
+            if (
+                gameState.phase ===
+                "input"
+            ) {
+
+                renderInputPage();
+
+                showPage(
+                    inputPage
+                );
+
+            }
+
+        } catch(error) {
+
+            console.error(error);
+
+            alert(
+                error.message
+            );
+
+        }
+
+
+        isRolling =
+            false;
+
+
+        displayCardRoll.classList.remove(
+            "active"
+        );
+
+    }
+);
+
+
+/* =========================================================
+Reset inputs
+========================================================= */
+
+function resetAllInputs() {
+
+    allInputs.forEach(
+        input => {
+
+            input.value =
+                "";
+
+            input.disabled =
+                true;
+
+        }
+    );
+
+
+    selectedInputId =
+        null;
+
+
+    regretBtn.disabled =
+        true;
 
 }
 
 
 /* =========================================================
-INITIAL
+URL room
 ========================================================= */
 
-resetEverything();
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
 
-updateRoomUI();
 
-showPage("room");
+const roomFromUrl =
+    params.get("room");
 
 
-/*
-  定期同步一次。
-  Realtime 正常時唔會靠佢，
-  但可以避免瀏覽器偶發斷線造成畫面唔同步。
-*/
+if (roomFromUrl) {
 
-setInterval(
-async()=>{
-if(currentRoomCode)
-await refreshRoom();
-},
-5000
+    joinRoomInput.value =
+        roomFromUrl
+            .trim()
+            .toUpperCase();
+
+}
+
+
+/* =========================================================
+Initial
+========================================================= */
+
+resetAllInputs();
+
+resetDisplay();
+
+showPage(
+    entryPage
 );
 
 </script>
 
 </body>
+
 </html>
